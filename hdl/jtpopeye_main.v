@@ -33,6 +33,10 @@ module jtpopeye_main(
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
+    // PROM 4K
+    input   [14:0]      prog_addr,
+    input               prom_main_we,
+    input   [7:0]       prom_din,
     //
     output              RV_n,
     output              cpu_cen,
@@ -46,18 +50,83 @@ wire iorq_n;
 wire wr_n, rd_n;
 wire iowr = ~wr_n & ~iorq_n;
 
-wire [7:0] cabinet_input;
+wire [7:0] cabinet_input, ram_data, rom_data, sec_data, cpu_dout;
+reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs;
+wire CSBW_n = ~(CSB | CSB_l);
+
+////////////////////////////
+// device selection
+always @(*) begin
+    sec_cs = 1'b0;
+    CSB    = 1'b0;
+    CSV    = 1'b0;
+    ram_cs = 1'b0;
+    rom_cs = 1'b0;
+    case ( AD[15:13] )
+        3'b1_00: ram_cs = (!mreq_n | DMCS) && !AD[11];
+        3'b1_01: CSV = !mreq_n;
+        3'b1_10: CSB = !mreq_n;
+        3'b1_11: sec_cs = 1'b1;
+        default: rom_cs = 1'b1;
+    endcase
+end
+
+always @(posedge clk) if(cpu_cen) begin
+    CSB_l <= CSB;
+end
 
 // Address obfuscation
-assign AD[2:0]   = Ascrambled[2:0];
-assign AD[ 3]    = Ascrambled[4];
-assign AD[ 4]    = Ascrambled[5];
-assign AD[ 5]    = Ascrambled[9];
-assign AD[ 6]    = Ascrambled[3];
+assign AD[2:0]   = ~Ascrambled[2:0]; // 6E
+assign AD[ 3]    = ~Ascrambled[4];
+assign AD[ 4]    = ~Ascrambled[5];
+assign AD[ 5]    = ~Ascrambled[9];
+assign AD[ 6]    = Ascrambled[3];  // 6F
 assign AD[ 7]    = Ascrambled[6];
 assign AD[ 8]    = Ascrambled[7];
 assign AD[ 9]    = Ascrambled[8];
-assign AD[15:10] = Ascrambled[15:10];
+assign AD[15:10] = Ascrambled[15:10]; // 6H
+
+///////////////////////////
+// Game ROM
+
+jtgng_prom #(.aw(15),.dw(8),.simfile("../../../rom/1943/bm05.4k.lsb")) u_prom(
+    .clk    ( clk               ),
+    .cen    ( cpu_cen           ),
+    .data   ( prom_din          ),
+    .rd_addr( AD[14:0]          ),
+    .wr_addr( prog_addr[14:0]   ),
+    .we     ( prom_main_we      ),
+    .q      ( rom_data          )
+);
+
+///////////////////////////
+// Game RAM
+
+wire RAM_we = ram_cs && !wr_n;
+
+jtgng_ram #(.aw(11)) u_ram(
+    .clk    ( clk        ),
+    .cen    ( cpu_cen    ),
+    .data   ( cpu_dout   ),
+    .addr   ( AD[10:0]   ),
+    .we     ( RAM_we     ),
+    .q      ( ram_data   )
+);
+
+///////////////////////////
+// Security
+
+wire sec_wr_n = !sec_cs && wr_n;
+
+jtpopeye_security u_security(
+    .clk    ( clk      ),
+    .cen    ( cpu_cen  ),
+    .din    ( cpu_dout ),
+    .dout   ( sec_data ),
+    .rd_n   ( rd_n     ),
+    .wr_n   ( sec_wr_n ),
+    .A0     ( AD[0]    )
+);
 
 ///////////////////////////
 // cabinet input
@@ -90,6 +159,18 @@ always @(*) begin
         endcase
 end
 
+///////////////////////////
+// CPU data input
+reg [7:0] cpu_din;
+
+always @(*)
+    cpu_din = 8'h0;
+    case( {rom_cs, ram_cs, in_cs, sec_cs } )
+        4'b10_00: cpu_din = rom_data;
+        4'b01_00: cpu_din = ram_data;
+        4'b00_10: cpu_din = cabinet_input;
+        4'b00_01: cpu_din = sec_data;
+    endcase
 
 
 T80s u_cpu(
@@ -128,13 +209,16 @@ end
 
 wire bc = (iowr & AD[0]) | ay_cs;
 
+// Each audio output has a different filter on it!
+// To do: proper filter stage
+
 jt49_bus u_ay( // note that input ports are not multiplexed
     .rst_n  ( rst_n     ),
     .clk    ( clk       ),
     .clk_en ( cen2      ),
     .bdir   ( iowr      ),
     .bc1    ( bc        ),
-    .din    ( dout      ),
+    .din    ( cpu_dout  ),
     .sel    ( 1'b0      ),
     .dout   ( ay0_dout  ),
     .sound  ( sound0    ),
