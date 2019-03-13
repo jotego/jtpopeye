@@ -19,27 +19,100 @@
 `timescale 1ns/1ps
 
 module jtpopeye_dma(
-    input              rst_n,
-    input              clk,
-    input              cen,
-    // PROM programming
-    input   [7:0]      prog_addr,
-    input              prom_4a_we
-    input              prom_5b_we
-    input              prom_5a_we
-    input              prom_3a_we
-    input   [7:0]      prom_din,
-    // mixing
-    input              HBD_n,
-    input              VB_n,
-    // video data
-    input   [4:0]      bakc,
-    input   [5:0]      objc,
-    input   [1:0]      objv,
-    input   [3:0]      txtc,
-    input              txtv,
-    // output video
-    output  reg [2:0]  red,
-    output  reg [2:0]  green,
-    output  reg [2:0]  blue   // LSB is always zero
+    input               rst_n,
+    input               clk,
+    input               cen,
+
+    input               VB,
+    input      [1:0]    H,
+    input               HBD_n,
+    input      [7:0]    main_data,
+
+    output reg [7:0]    AD_DMA,
+    output              dma_cs, // tell main memory to get data out for DMA
+    output reg          busrq_n,
+    output     [28:0]   gfx_data
 );
+
+reg [10:0] DM;
+
+reg [1:0] Hl;
+wire H0_negedge = !H[0] && Hl[0];
+
+reg VBl;
+wire VB_posedge = VB && !VBl;
+
+// Address bus is obfuscated
+always @(*) begin
+    AD_DMA[2] = DM[0];
+    AD_DMA[6] = DM[1];
+    AD_DMA[3] = DM[2];
+    AD_DMA[4] = DM[3];
+    AD_DMA[7] = DM[4];
+    AD_DMA[8] = DM[5];
+    AD_DMA[9] = DM[6];
+    AD_DMA[5] = DM[7];
+end
+
+always @(posedge clk) if(cen) begin
+    Hl <= H;
+    if( VB_posedge ) 
+        DM <= 11'd0;
+    else if( H0_negedge ) DM <= DM+11'd1;
+end
+
+
+always @(posedge clk or negedge rst_n)
+    if(!rst_n) busrq_n <= 1'b1;
+    else if(cen) begin
+        if( VB_posedge ) busrq_n <= 1'b0;
+        if( DM[10]     ) busrq_n <= 1'b1; // DMA done
+    end
+
+reg [3:0] DMCS;
+
+always @(*) begin
+    DMCS[0] = dma_cs && DM[9:8]==2'd0;
+    DMCS[1] = dma_cs && DM[9:8]==2'd1;
+    DMCS[2] = dma_cs && DM[9:8]==2'd2;
+    DMCS[3] = dma_cs && DM[9:8]==2'd3;
+end
+
+jtgng_ram #(.aw(8), .dw(8)) u_ram0(
+    .clk    ( clk            ),
+    .cen    ( cen            ),
+    .data   ( main_data      ),
+    .addr   ( DM[7:0]        ),
+    .we     ( DMCS[0]        ),
+    .q      ( gfx_data[7:0]  )
+);
+
+jtgng_ram #(.aw(8), .dw(8)) u_ram1(
+    .clk    ( clk            ),
+    .cen    ( cen            ),
+    .data   ( main_data      ),
+    .addr   ( DM[7:0]        ),
+    .we     ( DMCS[1]        ),
+    .q      ( gfx_data[15:8] )
+);
+
+jtgng_ram #(.aw(8), .dw(8)) u_ram2(
+    .clk    ( clk            ),
+    .cen    ( cen            ),
+    .data   ( main_data      ),
+    .addr   ( DM[7:0]        ),
+    .we     ( DMCS[2]        ),
+    .q      ( gfx_data[23:16])
+);
+
+
+jtgng_ram #(.aw(8), .dw(5)) u_ram3(
+    .clk    ( clk            ),
+    .cen    ( cen            ),
+    .data   ( main_data[4:0] ),
+    .addr   ( DM[7:0]        ),
+    .we     ( DMCS[3]        ),
+    .q      ( gfx_data[28:24])
+);
+
+endmodule // jtpopeye_dma

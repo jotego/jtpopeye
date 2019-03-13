@@ -19,17 +19,19 @@
 `timescale 1ns/1ps
 
 module jtpopeye_main(
-    input              rst_n,
-    input              clk,
-    input              cen4,
-    input              cen2,
-    input              LVBL,
+    input               rst_n,
+    input               clk,
+    input               cen4,
+    input               cen2,
+    input               LVBL,
     // cabinet I/O
-    input   [6:0]      joystick1,
-    input   [6:0]      joystick2,
-    input   [1:0]      start_button,
-    input              coin_input,
-    input              service,
+    input   [6:0]       joystick1,
+    input   [6:0]       joystick2,
+    input   [1:0]       start_button,
+    input               coin_input,
+    input               service,
+    // DMA
+    input               DMCS
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
@@ -41,7 +43,7 @@ module jtpopeye_main(
     output              RV_n,
     output              cpu_cen,
     // Sound output
-    output reg [ 8:0]  snd
+    output reg [ 8:0]   snd
 );
 
 wire [15:0] AD, Ascrambled;
