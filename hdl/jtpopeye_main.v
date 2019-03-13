@@ -33,7 +33,7 @@ module jtpopeye_main(
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
-    // PROM 4K
+    // PROM
     input   [14:0]      prog_addr,
     input               prom_main_we,
     input   [7:0]       prom_din,
