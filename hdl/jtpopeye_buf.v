@@ -28,6 +28,8 @@ module jtpopeye_buf(
     input               RV_n,
 
     input      [ 7:0]   V,
+    input      [ 7:0]   H,
+    input               H2O,
     input      [28:0]   gfx_data, // DO
 
     output reg [17:0]   DJ
@@ -49,8 +51,17 @@ wire [17:0] ram_din = { gfx_data[28], gfx_data[26:24]&{3{~V[0]}},
         gfx_data[1:0], gfx_data[23:21], gfx_data[20:16], 
         adder_data, gfx_data[27] };
 
+wire [5:0] scan_addr = { H[7:3], H2O };
+wire [5:0] wr_addr   = gfx_data[7:2];
+
 reg [5:0] ADR0, ADR1;
 reg [17:0] DJ0, DJ1;
+wire line_sel = V[0];
+
+always @(*) begin
+    ADR0 = !line_sel ? scan_addr : wr_addr;
+    ADR1 =  line_sel ? scan_addr : wr_addr;
+end
 
 jtgng_ram #(.aw(6), .dw(18)) u_ram0(
     .clk    ( clk            ),
@@ -71,6 +82,6 @@ jtgng_ram #(.aw(6), .dw(18)) u_ram1(
 );
 
 always @(posedge clk)
-    if( latch_condition ) DJ <= line_sel ? DJ1 : DJ0;
+    if( H[1:0]==2'b11 ) DJ <= line_sel ? DJ1 : DJ0;
 
 endmodule // jtpopeye_dma

@@ -25,8 +25,8 @@ module jtpopeye_main(
     input               cen2,
     input               LVBL,
     // cabinet I/O
-    input   [6:0]       joystick1,
-    input   [6:0]       joystick2,
+    input   [4:0]       joystick1,
+    input   [4:0]       joystick2,
     input   [1:0]       start_button,
     input               coin_input,
     input               service,
@@ -40,7 +40,7 @@ module jtpopeye_main(
     input               prom_main_we,
     input   [7:0]       prom_din,
     //
-    output              RV_n,
+    output              RV_n,   // flip
     output              cpu_cen,
     // Sound output
     output reg [ 8:0]   snd
@@ -201,7 +201,7 @@ T80s u_cpu(
 reg  [7:0] dip_data;
 wire [7:0] IOA;
 wire [2:0] dip_mux = IOA[3:1];
-assign RV_n = IOA[0];
+assign RV_n = ~IOA[0];
 
 always @( * ) begin
     dip_data[3:0] = dip_sw1;
