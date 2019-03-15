@@ -59,7 +59,7 @@ jtpopeye_video_dec(
 wire we = CSV & ~MEMWR0_n;
 
 always @(*) begin
-    ram_addr = we ? ADx[9:0];
+    ram_addr = we ? ADx[9:0] : { V[7:3], H[7:3] };
     wev = we & ~AD[10];
     wec = we &  AD[10];
 end

@@ -33,6 +33,7 @@ module jtpopeye_timing(
     output reg          HB,
     output reg          HBD_n, // HB - DMA
     output reg          VB,
+    output              INITEO_n,
     // PROM programming
     input   [7:0]       prog_addr,
     input               prom_7j_we,
@@ -90,7 +91,6 @@ always @(posedge clk)
     end
 
 // V blanking
-always @(posedge clk)
 
 wire [7:0] prom_addr = { HB, Hcnt[7:1] };
 

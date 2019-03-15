@@ -25,6 +25,7 @@ module jtpopeye_obj(
 
     input               ROHVS,
     input               ROHVCK,
+    input      [28:0]   DO,
     input               RV_n,
     input               INITEO_n,
 
@@ -34,7 +35,7 @@ module jtpopeye_obj(
     output     [12:0]   obj_addr,
     input      [31:0]   objrom_data,
     // pixel data
-    output     [ 2:0]   OBJC,
+    output     [ 5:0]   OBJC,
     output     [ 1:0]   OBJV
 );
 

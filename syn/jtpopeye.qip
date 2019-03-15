@@ -1,0 +1,8 @@
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_video.v     ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_video_dec.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_txt.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_timing.v    ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_obj.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_colmix.v    ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_buf.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_bak.v       ]

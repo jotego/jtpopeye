@@ -30,9 +30,9 @@ module jtpopeye_bak(
 
     input      [12:0]   AD,
     input      [ 8:0]   ROVI,
-    input      [ 7:0]   DO,
+    input      [28:0]   DO,
     input      [ 7:0]   DD,
-    output reg [ 3:0]   BAKC
+    output reg [ 4:0]   BAKC
 );
 
 reg [7:0] ROH;
