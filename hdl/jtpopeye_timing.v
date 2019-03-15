@@ -21,8 +21,8 @@
 module jtpopeye_timing(
     input               rst_n,
     input               clk,
-    input               cen10,
-    input               cen5,
+    input               pxl2_cen,   // OBJ pixel runs at twice the speed
+    input               pxl_cen,
 
     input               RV_n,     // Flip
 
@@ -57,7 +57,7 @@ end
 reg HBlatch;
 
 always @(posedge clk )
-    if(cen10) begin
+    if(pxl2_cen) begin
         if( !Hnext[7] ) begin
             Hcnt[7:0] <= Hnext;
         end else begin
@@ -81,7 +81,7 @@ always @(*) begin
 end
 
 always @(posedge clk)
-    if( cen10 ) begin
+    if( pxl2_cen ) begin
         Vupl <= Vup;
         if( Vup_edge ) begin
             Vcnt <= Vcnt+9'd1;

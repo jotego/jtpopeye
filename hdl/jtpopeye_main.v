@@ -32,6 +32,7 @@ module jtpopeye_main(
     input               service,
     // DMA
     input               DMCS
+    output              MEMWRO,
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
@@ -51,6 +52,7 @@ assign cpu_cen = cen4;
 wire iorq_n;
 wire wr_n, rd_n;
 wire iowr = ~wr_n & ~iorq_n;
+assign MEMWRO = ~wr_n & ~mreq_n;
 
 wire [7:0] cabinet_input, ram_data, rom_data, sec_data, cpu_dout;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs;
@@ -61,7 +63,7 @@ wire CSBW_n = ~(CSB | CSB_l);
 always @(*) begin
     sec_cs = 1'b0;
     CSB    = 1'b0;
-    CSV    = 1'b0;
+    CSV    = 1'b0;  // TXT CS
     ram_cs = 1'b0;
     rom_cs = 1'b0;
     case ( AD[15:13] )

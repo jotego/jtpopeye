@@ -27,32 +27,32 @@ module jtpopeye_buf(
     input               ROHVCK,
     input               RV_n,
 
-    input      [ 7:0]   V,
     input      [ 7:0]   H,
+    input      [ 7:0]   V,
     input               H2O,
-    input      [28:0]   gfx_data, // DO
+    input      [28:0]   DO,
 
+    output reg [ 8:0]   ROVI,
     output reg [17:0]   DJ
 );
 
-reg [8:0] ROVI;
 reg ROVI_hc; // half carry
 reg [3:0] nc;
 
 always @(*) begin
-    ROVI = { 1'b0, gfx_data[15:8] } + { 1'b0, V[7:0] } 
+    ROVI = { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
         + { 8'd0, ~RV_n ^ ROHVCK }; // carry in
-    { ROVI_hc, nc } = { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] };
+    { ROVI_hc, nc } = { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
 end
 
-wire [2:0] adder_data = {3{gfx_data[27]}} ^ ROVI[2:0];
+wire [2:0] adder_data = {3{DO[27]}} ^ ROVI[2:0];
 
-wire [17:0] ram_din = { gfx_data[28], gfx_data[26:24]&{3{~V[0]}}, 
-        gfx_data[1:0], gfx_data[23:21], gfx_data[20:16], 
-        adder_data, gfx_data[27] };
+wire [17:0] ram_din = { DO[28], DO[26:24]&{3{~V[0]}}, 
+        DO[1:0], DO[23:21], DO[20:16], 
+        adder_data, DO[27] };
 
 wire [5:0] scan_addr = { H[7:3], H2O };
-wire [5:0] wr_addr   = gfx_data[7:2];
+wire [5:0] wr_addr   = DO[7:2];
 
 reg [5:0] ADR0, ADR1;
 reg [17:0] DJ0, DJ1;

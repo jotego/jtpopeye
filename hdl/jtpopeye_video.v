@@ -23,30 +23,85 @@ module jtpopeye_video(
     input               clk,
     input               cen,
     input               cpu_cen,
+    input               pxl_cen,
+
+    input      [ 7:0]   DD,
+    // CPU interface
+    input      [12:0]   AD,
+    input               CSBW_n,
+    input               CSV,
+    input               DWRBK_n,
+    input               MEMWRO,
+    input               RV_n,
+    // SDRAM interface
+    output     [12:0]   obj_addr,
+    input      [31:0]   objrom_data,    
     // PROM
     input   [10:0]      prog_addr,
-    input               prom_5n_we,
     input   [7:0]       prom_din,    
+    input               prom_5n_we,
+    input               prom_7j_we,     // timing
+    input               prom_4a_we,
+    input               prom_5b_we,
+    input               prom_5a_we,
+    input               prom_3a_we,   
+    // output video
+    output              HB,         // horizontal blanking
+    output              HBD_n, // HB - DMA
+    output              VB,         // vertical blanking
+
+    output      [2:0]   red,
+    output      [2:0]   green,
+    output      [2:0]   blue   // LSB is always zero
 );
 
-wire [3:0] TXTC;
+wire [3:0] TXTC, BAKC;
 wire       TXTV;
 wire [2:0] OBJC;
 wire [1:0] OBJV;
 
+wire [ 7:0] H, V;
+wire [ 8:0] ROVI;
+wire [17:0] DJ;
+wire [28:0] DO;
+wire        RV = ~RV_n;
+wire        H2O;
+wire        pxl_cen;    // TXT pixel clock
+
+jtpopeye_timing u_timing(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .pxl_cen            ( pxl_cen       ),
+    .pxl_cen            ( pxl2_cen      ),
+
+    .RV_n               ( RV_n          ),     // Flip
+    // Counters
+    .H                  ( H             ),
+    .V                  ( V             ),
+    .H2O                ( H2O           ),
+    // blankings
+    .HB                 ( HB            ),
+    .HBD_n              ( HBD_n         ), // HB - DMA
+    .VB                 ( VB            ),
+    // PROM programming
+    .prog_addr          ( prog_addr     ),
+    .prom_7j_we         ( prom_7j_we    ),
+    .prom_din           ( prom_din[3:0] )
+);
+
 jtpopeye_txt u_txt(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .cen                ( cen           ),
+    .pxl_cen            ( pxl_cen       ),
     .cpu_cen            ( cpu_cen       ),
 
-    input      [12:0]   AD,
-    input      [ 7:0]   DD,
-    input      [ 7:0]   H,
-    input      [ 7:0]   V,
-    input               RV, // flip
-    input               CSV,
-    input               MEMWR0,
+    .AD                 ( AD            ),
+    .DD                 ( DD            ),
+    .H                  ( H             ),
+    .V                  ( V             ),
+    .RV                 ( RV            ), // flip
+    .CSV                ( CSV           ),
+    .MEMWRO             ( MEMWRO        ),
 
     // PROM
     .prog_addr          ( prog_addr     ),
@@ -57,6 +112,38 @@ jtpopeye_txt u_txt(
     .TXTV               ( TXTV          )
 );
 
+jtpopeye_buf u_buf(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .cen                ( cen           ),
+
+    input               ROHVS,
+    input               ROHVCK,
+    .RV_n               ( RV_n          ),     // Flip
+
+    .H                  ( H             ),
+    .V                  ( V             ),
+    .H2O                ( H2O           ),
+    .DO                 ( DO            ), // gfx buffer
+
+    .ROVI               ( ROVI          ),
+    .DJ                 ( DJ            )
+);
+
+jtpopeye_bak u_bak(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .cpu_cen            ( cpu_cen       ),
+    .pxl_cen            ( pxl_cen       ),
+
+    .DWRBK_n            ( DWRBK_n       ),
+    .AD                 ( AD            ),
+    .DD                 ( DD            ),
+    .ROVI               ( ROVI          ),
+    .DO                 ( DO[7:0]       ), // gfx buffer
+    .BAKC               ( BAKC          )
+);
+
 jtpopeye_obj u_obj(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -64,43 +151,43 @@ jtpopeye_obj u_obj(
 
     input               ROHVS,
     input               ROHVCK,
-    input               RV_n,
+    .RV_n               ( RV_n          ),     // Flip
     input               INITEO_n,
 
-    input      [ 7:0]   H,
-    input      [17:0]   DJ,
+    .H                  ( H             ),
+    .DJ                 ( DJ            ),
     // SDRAM interface
-    output     [12:0]   obj_addr,
-    input      [31:0]   objrom_data,
+    .obj_addr           ( obj_addr      ),
+    .objrom_data        ( objrom_data   ),
     // pixel data
     .OBJC               ( OBJC          ),
     .OBJV               ( OBJV          )
 );
 
 jtpopeye_colmix u_colmix(
-    input              rst_n,
-    input              clk,
-    input              cen,
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .cen                ( cen           ),
     // PROM programming
-    input   [7:0]      prog_addr,
-    input              prom_4a_we
-    input              prom_5b_we
-    input              prom_5a_we
-    input              prom_3a_we
-    input   [7:0]      prom_din,
+    .prog_addr          ( prog_addr     ),
+    .prom_4a_we         ( prom_4a_we    ),
+    .prom_5b_we         ( prom_5b_we    ),
+    .prom_5a_we         ( prom_5a_we    ),
+    .prom_3a_we         ( prom_3a_we    ),
+    .prom_din           ( prom_din      ),
     // mixing
     input              HBD_n,
-    input              VB_n,
+    .VB_n               ( ~VB           ),
     // video data
     input   [4:0]      bakc,
     input   [5:0]      objc,
-    input   [1:0]      objv,
-    input   [3:0]      txtc,
-    input              txtv,
+    .objv               ( OBJV          ),
+    .txtc               ( TXTC          ),
+    .txtv               ( TXTV          ),
     // output video
-    output  reg [2:0]  red,
-    output  reg [2:0]  green,
-    output  reg [2:0]  blue   // LSB is always zero
+    .red                ( red           ),
+    .green              ( green         ),
+    .blue               ( blue          )   // LSB is always zero
 );
 
 endmodule // jtpopeye_video

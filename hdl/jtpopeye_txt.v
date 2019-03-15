@@ -21,7 +21,7 @@
 module jtpopeye_txt(
     input               rst_n,
     input               clk,
-    input               cen,
+    input               pxl_cen,
     input               cpu_cen,
 
     input      [12:0]   AD,
@@ -30,7 +30,7 @@ module jtpopeye_txt(
     input      [ 7:0]   V,
     input               RV, // flip
     input               CSV,
-    input               MEMWR0,
+    input               MEMWRO,
 
     // PROM
     input   [10:0]      prog_addr,
@@ -46,20 +46,20 @@ wire [3:0] txtc, txtc0;
 wire [10:0] rom_addr;
 reg  [ 9:0] ram_addr;
 wire [ 9:0] scan_addr = { V[7:3], H[7:3] };
-wire [10:0]  cpu_addr;
+wire [10:0]  ADx;
 
 assign rom_addr[2:0] = V[2:0];
 
 // AD is obfuscated
 jtpopeye_video_dec(
     .AD     ( AD[10:0] ),
-    .AD_dec ( cpu_addr )
+    .AD_dec ( ADx      )
 );
 
-wire we = CSV & MEMWR0;
+wire we = CSV & ~MEMWR0_n;
 
 always @(*) begin
-    ram_addr = we ? cpu_addr[9:0];
+    ram_addr = we ? ADx[9:0];
     wev = we & ~AD[10];
     wec = we &  AD[10];
 end
@@ -89,7 +89,7 @@ wire [7:0] txtv;
 
 jtgng_prom #(.aw(11),.dw(8),.simfile("../../../rom/tpp2-v.5n")) u_prom_5n(
     .clk    ( clk               ),
-    .cen    ( cen               ),
+    .cen    ( pxl_cen           ),
     .data   ( prom_din          ),
     .rd_addr( rom_addr          ),
     .wr_addr( prog_addr[14:0]   ),
@@ -99,7 +99,7 @@ jtgng_prom #(.aw(11),.dw(8),.simfile("../../../rom/tpp2-v.5n")) u_prom_5n(
 
 reg [7:0] txtv0;
 
-always @(posedge clk) if(cen) begin
+always @(posedge clk) if(pxl_cen) begin
     if( H[2:0]==3'd7 ) begin // TXTSHIFT
         txtv0 <= txtv;
         txtc0 <= txtc;
