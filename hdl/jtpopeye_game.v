@@ -19,19 +19,16 @@
 `timescale 1ns/1ps
 
 module jtpopeye_game(
-    input           rst,
-    input           clk,        // > 10 MHz
+    input           rst_n,
+    input           clk,        // 20 MHz
     input           clk_rom,    // SDRAM clock
-    output          cen10,      // 10   MHz
-    output          cen5,       //  5   MHz
-    output          cen8,       //  8   MHz
-    output          cen4,       //  4   MHz
-    output          cen2,       //  2   MHz
+    output          pxl2_cen,   // 10.08 MHz, pixel clock
+
     output   [2:0]  red,
     output   [2:0]  green,
     output   [2:0]  blue,
-    output          LHBL,
-    output          LVBL,
+    output          HB,
+    output          VB,
     output          HS,
     output          VS,
     // cabinet I/O
@@ -56,40 +53,26 @@ module jtpopeye_game(
     output  [ 1:0]  prog_mask,
     output          prog_we,
 
-    // DIP Switch A
-    // input           dip_test,
-    // input           dip_pause,
-    // input           dip_upright,
-    // input           dip_credits2p,
-    // input   [3:0]   dip_level, // difficulty level
-    // DIP Switch B
-    // input           dip_demosnd,
-    // input           dip_continue,
-    // input   [2:0]   dip_price2,
-    // input   [2:0]   dip_price1,
-    // input           dip_flip,
+    // DIP Switches
+    input           dip_pause,  // not a DIP on real hardware
+    input           dip_upright,
+    input   [1:0]   dip_level, // difficulty level
+    input   [1:0]   dip_bonus, 
+    input           dip_demosnd,
+    input   [3:0]   dip_price,
+    input   [1:0]   dip_lives,
     // Sound output
     output  [8:0]   snd,
     output          sample,
     // Debug
-    input   [2:0]   gfx_en
+    input   [3:0]   gfx_en
 );
 
-wire          rst_n;
-wire          clk;
-wire          cen;
-wire          cpu_cen;
-wire          pxl_cen;  // TXT pixel clock
-wire          pxl2_cen; // OBJ pixel clock
+wire          H0_cen;   //  2.52 MHz
+wire          cpu_cen, ay_cen;
+wire          pxl_cen;  //  5.04MHz  TXT pixel clock
+wire          pxl2_cen; // 10.08MHz  OBJ pixel clock
 
-wire [ 7:0]   DD;
-    // CPU interface
-wire [12:0]   AD;
-wire          CSBW_n;
-wire          CSV;
-wire          DWRBK_n;
-wire          MEMWRO;
-wire          RV_n;
 // DMA
 wire          ROHVS;
 wire          ROHVCK;
@@ -114,25 +97,35 @@ assign HS = HB;
 assign VS = VB;
 // CPU interface
 wire [ 7:0]   DD;
-wire [12:0]   AD;
+wire [15:0]   AD;
 wire          CSBW_n;
 wire          CSV;
 wire          DWRBK_n;
 wire          MEMWRO, DMCS;
-wire          RV_n;
+wire          RV_n, INITEO;
 // ROM access
 wire          main_cs;
 wire   [14:0] rom_addr;
 wire   [ 7:0] rom_data;
 // DIP switches
-wire   [7:0]  dip_sw2;
-wire   [3:0]  dip_sw1;
+wire   [7:0]  dip_sw2 = { dip_upright, dip_demosnd, dip_bonus, 
+                            dip_level, dip_lives };
+wire   [3:0]  dip_sw1 = dip_price;
+
+jtpopeye_cen u_cen(
+    .clk        ( clk           ),  // 20 MHz
+    .H0_cen     ( H0_cen        ),
+    .cpu_cen    ( cpu_cen       ),
+    .ay_cen     ( ay_cen        ),
+    .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
+    .pxl2_cen   ( pxl2_cen      )   // OBJ pixel clock
+);
 
 jtpopeye_main u_main(
     .rst_n          ( rst_n         ),
     .clk            ( clk           ),
-    .cen4           ( cen4          ),
-    .cen2           ( cen2          ),
+    .cpu_cen        ( cpu_cen       ),
+    .ay_cen         ( ay_cen        ),
     .LVBL           ( LVBL          ),
     // cabinet I/O
     .joystick1      ( joystick1     ),
@@ -141,8 +134,11 @@ jtpopeye_main u_main(
     .coin_input     ( coin_input    ),
     .service        ( service       ),
     // DMA
+    .INITEO         ( INITEO        ),
     .DMCS           ( DMCS          ),
     .MEMWRO         ( MEMWRO        ),
+    .AD             ( AD            ),
+    .DD             ( DD            ),
     // DIP switches
     .dip_sw2        ( dip_sw2       ),
     .dip_sw1        ( dip_sw1       ),
@@ -151,9 +147,7 @@ jtpopeye_main u_main(
     .rom_addr       ( rom_addr      ),
     .rom_data       ( rom_data      ),
 
-    //
     .RV_n           ( RV_n          ),   // flip
-    .cpu_cen        ( cpu_cen       ),
     // Sound output
     .snd            ( snd           )
 );
@@ -161,19 +155,21 @@ jtpopeye_main u_main(
 jtpopeye_video u_video(
     .rst_n      ( rst_n         ),
     .clk        ( clk           ),
+    .H0_cen     ( H0_cen        ),
     .cpu_cen    ( cpu_cen       ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
     .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
 
     // CPU interface
     .DD         ( DD            ),
-    .AD         ( AD            ),
+    .AD         ( AD[12:0]      ),
     .CSBW_n     ( CSBW_n        ),
     .CSV        ( CSV           ),
     .DWRBK_n    ( DWRBK_n       ),
     .MEMWRO     ( MEMWRO        ),
     .RV_n       ( RV_n          ),
     // DMA
+    .INITEO     ( INITEO        ),
     .ROHVS      ( ROHVS         ),
     .ROHVCK     ( ROHVCK        ),
     // SDRAM interface

@@ -46,7 +46,7 @@ end
 // AD is obfuscated
 wire [12:0] ADx;
 
-jtpopeye_video_dec(
+jtpopeye_video_dec u_dec(
     .AD     ( AD[10:0] ),
     .AD_dec ( ADx      )
 );

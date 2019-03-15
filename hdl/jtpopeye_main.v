@@ -21,8 +21,8 @@
 module jtpopeye_main(
     input               rst_n,
     input               clk,
-    input               cen4,
-    input               cen2,
+    input               cpu_cen,
+    input               ay_cen,
     input               LVBL,
     // cabinet I/O
     input   [4:0]       joystick1,
@@ -31,32 +31,35 @@ module jtpopeye_main(
     input               coin_input,
     input               service,
     // DMA
+    input               INITEO,
     input               DMCS,
     output              MEMWRO,
+    output [15:0]       AD,
+    output [ 7:0]       DD,
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
     // ROM access
     output              main_cs,
-    output       [14:0] rom_addr,
-    input        [ 7:0] rom_data,
+    output [14:0]       rom_addr,
+    input  [ 7:0]       rom_data,
     //
     output              RV_n,   // flip
-    output              cpu_cen,
     // Sound output
     output reg [ 8:0]   snd
 );
 
-
-wire [15:0] AD, Ascrambled;
-assign cpu_cen = cen4;
+wire [15:0] Ascrambled;
 wire iorq_n;
-wire wr_n, rd_n;
+wire wr_n, rd_n, mreq_n;
 wire iowr = ~wr_n & ~iorq_n;
+wire iord = ~rd_n & ~iorq_n;
 assign MEMWRO = ~wr_n & ~mreq_n;
 
-wire [7:0] cabinet_input, ram_data, rom_data, sec_data, cpu_dout;
-reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs;
+reg  [7:0] cabinet_input, ay_dout;
+wire [7:0] ram_data, sec_data, cpu_dout;
+assign DD = cpu_dout;
+reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
 wire CSBW_n = ~(CSB | CSB_l);
 
 assign main_cs = rom_cs;
@@ -69,13 +72,18 @@ always @(*) begin
     CSV    = 1'b0;  // TXT CS
     ram_cs = 1'b0;
     rom_cs = 1'b0;
-    case ( AD[15:13] )
-        3'b1_00: ram_cs = (!mreq_n | DMCS) && !AD[11];
-        3'b1_01: CSV = !mreq_n;
-        3'b1_10: CSB = !mreq_n;
-        3'b1_11: sec_cs = 1'b1;
-        default: rom_cs = 1'b1;
-    endcase
+    in_cs  = !iorq_n;
+
+    // I do not use mreq_n because it reduces time for SDRAM reads
+    if( iorq_n ) begin 
+        case ( AD[15:13] )
+            3'b1_00: ram_cs = (!mreq_n | DMCS) && !AD[11];
+            3'b1_01: CSV = !mreq_n;
+            3'b1_10: CSB = !mreq_n;
+            3'b1_11: sec_cs = 1'b1;
+            default: rom_cs = 1'b1;
+        endcase
+    end
 end
 
 always @(posedge clk) if(cpu_cen) begin
@@ -136,11 +144,14 @@ always @(*) begin
     ay_cs = 'b0;
     if( !iorq_n && !rd_n )
         case(AD[1:0])
-            2'd0: ay_cs = 'b1;
+            2'd0: begin
+                ay_cs = 'b1;
+                cabinet_input = ay_dout;
+            end
             2'd1: begin
                 cabinet_input[7]   = coin_input;
                 cabinet_input[6]   = service;
-                cabinet_input[5]   = init_eo;   // ??
+                cabinet_input[5]   = INITEO;   // HB ^ RV
                 cabinet_input[3:2] = start_button;
             end
             2'd2: begin // 2P input
@@ -162,7 +173,7 @@ end
 // CPU data input
 reg [7:0] cpu_din;
 
-always @(*)
+always @(*) begin
     cpu_din = 8'h0;
     case( {rom_cs, ram_cs, in_cs, sec_cs } )
         4'b10_00: cpu_din = rom_data;
@@ -170,7 +181,7 @@ always @(*)
         4'b00_10: cpu_din = cabinet_input;
         4'b00_01: cpu_din = sec_data;
     endcase
-
+end
 
 T80s u_cpu(
     .RESET_n    ( rst_n       ),
@@ -214,16 +225,18 @@ wire bc = (iowr & AD[0]) | ay_cs;
 jt49_bus u_ay( // note that input ports are not multiplexed
     .rst_n  ( rst_n     ),
     .clk    ( clk       ),
-    .clk_en ( cen2      ),
+    .clk_en ( ay_cen    ),
     .bdir   ( iowr      ),
     .bc1    ( bc        ),
     .din    ( cpu_dout  ),
     .sel    ( 1'b0      ),
-    .dout   ( ay0_dout  ),
-    .sound  ( sound0    ),
+    .dout   ( ay_dout   ),
+    .sound  ( snd       ),
     .IOA_out( IOA       ),
     .IOB_in ( dip_data  ),
-    .A(), .B(), .C() // unused outputs
+    // unused outputs
+    .IOB_out(),
+    .A(), .B(), .C()
 );
 
 endmodule // jtpopeye_main

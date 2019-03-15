@@ -21,7 +21,7 @@
 module jtpopeye_buf(
     input               rst_n,
     input               clk,
-    input               cen,
+    input               H0_cen,
 
     input               ROHVS,
     input               ROHVCK,
@@ -65,7 +65,7 @@ end
 
 jtgng_ram #(.aw(6), .dw(18)) u_ram0(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( H0_cen         ),
     .data   ( ram_din        ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
@@ -74,7 +74,7 @@ jtgng_ram #(.aw(6), .dw(18)) u_ram0(
 
 jtgng_ram #(.aw(6), .dw(18)) u_ram1(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( H0_cen         ),
     .data   ( ram_din        ),
     .addr   ( ADR1           ),
     .we     ( we1            ),

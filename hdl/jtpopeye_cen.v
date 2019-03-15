@@ -18,40 +18,27 @@
 
 `timescale 1ns/1ps
 
-module jtpopeye_security(
-    input              clk,
-    input              cen,
-    input      [7:0]   din,
-    output reg [7:0]   dout,
-    input              rd_n,
-    input              wr_n,
-    input              A0
+module jtpopeye_cen(
+    input           clk,        // 20 MHz
+
+    output reg      H0_cen,
+    output reg      cpu_cen,
+    output reg      ay_cen,
+    output reg      pxl_cen,  // TXT pixel clock
+    output reg      pxl2_cen  // OBJ pixel clock
 );
 
-reg  [2:0] shift;
-reg  [7:0] data0, data1;
-reg  [7:0] code;
-reg  [7:0] data0_sh, data1_sh;
+reg [2:0] cnt2=2'd0;
+reg [3:0] cnt10=4'd0;
 
-always @(*) begin
-    data0_sh = data0 << shift;
-    data1_sh = data1 >> (8-shift);
-    code = data0 | data1;
+always @(negedge clk) begin
+    cnt2  <=  cnt2 + 3'd1;
+    cnt10 <= cnt10 == 4'd9 ? 4'd0 : (cnt10+4'd1);
+    pxl2_cen <= cnt2[0];     // 10   MHz
+    pxl_cen  <= cnt2[1];     //  5   MHz
+    H0_cen   <= cnt2[2];     //  2.5 MHz
+    cpu_cen  <= cnt10==4'd0 || cnt10==4'd5;  //  4   MHz
+    ay_cen   <= cnt10==4'd0; //  2   MHz
 end
 
-always @(posedge clk) if( cen ) begin
-    if( !wr_n ) begin
-        if( !A0 )
-            shift <= din[2:0];
-        else begin
-            data0 <= din;
-            data1 <= din;
-        end
-    end
-    if( !rd_n ) begin
-        dout <= A0 ? 8'd0 : code;
-    end
-end
-
-
-endmodule // jtpopeye_security
+endmodule // jtpopeye_cen

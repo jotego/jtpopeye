@@ -21,7 +21,7 @@
 module jtpopeye_video(
     input               rst_n,
     input               clk,
-    input               cen,
+    input               H0_cen,
     input               cpu_cen,
     input               pxl_cen,  // TXT pixel clock
     input               pxl2_cen, // OBJ pixel clock
@@ -35,6 +35,7 @@ module jtpopeye_video(
     input               MEMWRO,
     input               RV_n,
     // DMA
+    output              INITEO,
     input               ROHVS,
     input               ROHVCK,
     // SDRAM interface
@@ -71,12 +72,15 @@ wire [17:0] DJ;
 wire [28:0] DO;
 wire        RV = ~RV_n;
 wire        H2O;
+wire        INITEO_n;
+
+assign INITEO = ~INITEO_n;
 
 jtpopeye_timing u_timing(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
     .pxl_cen            ( pxl_cen       ),
-    .pxl_cen            ( pxl2_cen      ),
+    .pxl2_cen           ( pxl2_cen      ),
 
     .RV_n               ( RV_n          ),     // Flip
     // Counters
@@ -120,7 +124,7 @@ jtpopeye_txt u_txt(
 jtpopeye_buf u_buf(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .cen                ( cen           ),
+    .H0_cen             ( H0_cen        ),
 
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),
@@ -172,7 +176,7 @@ jtpopeye_obj u_obj(
 jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .cen                ( cen           ),
+    .pxl2_cen           ( pxl2_cen      ),
     // PROM programming
     .prog_addr          ( prog_addr     ),
     .prom_4a_we         ( prom_4a_we    ),

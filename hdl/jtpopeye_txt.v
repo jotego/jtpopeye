@@ -52,7 +52,7 @@ wire [10:0]  ADx;
 assign rom_addr[2:0] = V[2:0];
 
 // AD is obfuscated
-jtpopeye_video_dec(
+jtpopeye_video_dec u_dec(
     .AD     ( AD[10:0] ),
     .AD_dec ( ADx      )
 );
@@ -85,7 +85,7 @@ jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
 );
 
 ///////////////////////////
-// Game ROM
+// Character ROM
 
 wire [7:0] txtv;
 
@@ -94,7 +94,7 @@ jtgng_prom #(.aw(11),.dw(8),.simfile("../../../rom/tpp2-v.5n")) u_prom_5n(
     .cen    ( pxl_cen           ),
     .data   ( prom_din          ),
     .rd_addr( rom_addr          ),
-    .wr_addr( prog_addr[14:0]   ),
+    .wr_addr( prog_addr[10:0]   ),
     .we     ( prom_5n_we        ),
     .q      ( txtv              )
 );

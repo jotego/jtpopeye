@@ -21,7 +21,7 @@
 module jtpopeye_colmix(
     input              rst_n,
     input              clk,
-    input              cen,
+    input              pxl2_cen,    // object pixel clock
     // PROM programming
     input   [7:0]      prog_addr,
     input              prom_4a_we,
@@ -57,14 +57,14 @@ assign { txtr, txtg, txtb } = txt_rgb;
 reg txt_cs, obj_cs, bak_cs;
 
 // latch priorities to process on the next clock edge
-always @(posedge clk) if(cen) begin
+always @(posedge clk) if(pxl2_cen) begin
     txt_cs <= !txtv; // txtv low -> text selected
     obj_cs <= |objv & txtv;
     bak_cs <= ~|objv & txtv & VB_n & HBD_n;
 end
 
 // merge the colours!
-always @(posedge clk) if(cen) begin
+always @(posedge clk) if(pxl2_cen) begin
     blue[0] <= 1'b0;
     case( {txt_cs, obj_cs, bak_cs} )
         3'b100: {red, green, blue[2:1]} <= txt_rgb;
@@ -77,7 +77,7 @@ end
 // Background
 jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.3a")) u_prom_4a(
     .clk    ( clk               ),
-    .cen    ( cen               ),
+    .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),
     .rd_addr( bakc              ),
     .wr_addr( prog_addr[4:0]    ),
@@ -91,7 +91,7 @@ wire [7:0] obj_addr = { objc, objv };
 
 jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5b")) u_prom_5b(
     .clk    ( clk               ),
-    .cen    ( cen               ),
+    .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),
     .rd_addr( objc              ),
     .wr_addr( prog_addr[4:0]    ),
@@ -101,7 +101,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5b")) u_prom_5b(
 
 jtgng_prom #(.aw(5),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
-    .cen    ( cen               ),
+    .cen    ( pxl2_cen          ),
     .data   ( prom_din[7:4]     ),
     .rd_addr( objc              ),
     .wr_addr( prog_addr[4:0]    ),
@@ -113,7 +113,7 @@ jtgng_prom #(.aw(5),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
 
 jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.5b")) u_prom_3a(
     .clk    ( clk               ),
-    .cen    ( cen               ),
+    .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),
     .rd_addr( txtc              ),
     .wr_addr( prog_addr[4:0]    ),
