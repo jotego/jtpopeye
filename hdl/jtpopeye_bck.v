@@ -18,7 +18,7 @@
 
 `timescale 1ns/1ps
 
-module jtpopeye_bak(
+module jtpopeye_bck(
     input               rst_n,
     input               clk,
     input               pxl_cen,
@@ -53,10 +53,9 @@ jtpopeye_video_dec(
 
 reg [11:0] ADmux;
 reg [ 7:0] ram_doutl;
-wire [7:0] ram_doutl;
 
 always @(posedge clk) ram_doutl <= ram_doutl;
-wire [7:0] ram_din = !AD12 ?
+wire [7:0] ram_din = !AD[12] ?
     { ram_doutl[7:4], DD[3:0] } : { DD[7:4], ram_doutl[3:0] };
 
 

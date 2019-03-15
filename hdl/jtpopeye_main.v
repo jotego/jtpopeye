@@ -31,21 +31,22 @@ module jtpopeye_main(
     input               coin_input,
     input               service,
     // DMA
-    input               DMCS
+    input               DMCS,
     output              MEMWRO,
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
-    // PROM
-    input   [14:0]      prog_addr,
-    input               prom_main_we,
-    input   [7:0]       prom_din,
+    // ROM access
+    output              main_cs,
+    output       [14:0] rom_addr,
+    input        [ 7:0] rom_data,
     //
     output              RV_n,   // flip
     output              cpu_cen,
     // Sound output
     output reg [ 8:0]   snd
 );
+
 
 wire [15:0] AD, Ascrambled;
 assign cpu_cen = cen4;
@@ -57,6 +58,8 @@ assign MEMWRO = ~wr_n & ~mreq_n;
 wire [7:0] cabinet_input, ram_data, rom_data, sec_data, cpu_dout;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs;
 wire CSBW_n = ~(CSB | CSB_l);
+
+assign main_cs = rom_cs;
 
 ////////////////////////////
 // device selection
@@ -93,15 +96,7 @@ assign AD[15:10] = Ascrambled[15:10]; // 6H
 ///////////////////////////
 // Game ROM
 
-jtgng_prom #(.aw(15),.dw(8),.simfile("../../../rom/1943/bm05.4k.lsb")) u_prom(
-    .clk    ( clk               ),
-    .cen    ( cpu_cen           ),
-    .data   ( prom_din          ),
-    .rd_addr( AD[14:0]          ),
-    .wr_addr( prog_addr[14:0]   ),
-    .we     ( prom_main_we      ),
-    .q      ( rom_data          )
-);
+assign rom_addr = AD[14:0];
 
 ///////////////////////////
 // Game RAM

@@ -27,8 +27,8 @@ module jtpopeye_timing(
     input               RV_n,     // Flip
 
     output  reg [7:0]   V,
-    output      [7:0]   H,
-    output              H2O,
+    output  reg [7:0]   H,
+    output  reg         H2O,
     // blankings
     output reg          HB,
     output reg          HBD_n, // HB - DMA

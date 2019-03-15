@@ -75,10 +75,127 @@ module jtpopeye_game(
     input   [2:0]   gfx_en
 );
 
+wire          rst_n;
+wire          clk;
+wire          cen;
+wire          cpu_cen;
+wire          pxl_cen;  // TXT pixel clock
+wire          pxl2_cen; // OBJ pixel clock
+
+wire [ 7:0]   DD;
+    // CPU interface
+wire [12:0]   AD;
+wire          CSBW_n;
+wire          CSV;
+wire          DWRBK_n;
+wire          MEMWRO;
+wire          RV_n;
+// DMA
+wire          ROHVS;
+wire          ROHVCK;
+// SDRAM interface
+wire [12:0]   obj_addr;
+wire [31:0]   objrom_data;
+// PROM
+wire [10:0]   prog_addr;
+wire [ 7:0]   prom_din;    
+wire          prom_5n_we;
+wire          prom_7j_we;     // timing
+wire          prom_4a_we;
+wire          prom_5b_we;
+wire          prom_5a_we;
+wire          prom_3a_we;   
+    // output video
+wire          HB;         // horizontal blanking
+wire          HBD_n;      // HB - DMA
+wire          VB;         // vertical blanking
+
+assign HS = HB;
+assign VS = VB;
+// CPU interface
+wire [ 7:0]   DD;
+wire [12:0]   AD;
+wire          CSBW_n;
+wire          CSV;
+wire          DWRBK_n;
+wire          MEMWRO, DMCS;
+wire          RV_n;
+// ROM access
+wire          main_cs;
+wire   [14:0] rom_addr;
+wire   [ 7:0] rom_data;
+// DIP switches
+wire   [7:0]  dip_sw2;
+wire   [3:0]  dip_sw1;
+
 jtpopeye_main u_main(
+    .rst_n          ( rst_n         ),
+    .clk            ( clk           ),
+    .cen4           ( cen4          ),
+    .cen2           ( cen2          ),
+    .LVBL           ( LVBL          ),
+    // cabinet I/O
+    .joystick1      ( joystick1     ),
+    .joystick2      ( joystick2     ),
+    .start_button   ( start_button  ),
+    .coin_input     ( coin_input    ),
+    .service        ( service       ),
+    // DMA
+    .DMCS           ( DMCS          ),
+    .MEMWRO         ( MEMWRO        ),
+    // DIP switches
+    .dip_sw2        ( dip_sw2       ),
+    .dip_sw1        ( dip_sw1       ),
+    // ROM access
+    .main_cs        ( main_cs       ),
+    .rom_addr       ( rom_addr      ),
+    .rom_data       ( rom_data      ),
+
+    //
+    .RV_n           ( RV_n          ),   // flip
+    .cpu_cen        ( cpu_cen       ),
+    // Sound output
+    .snd            ( snd           )
 );
 
 jtpopeye_video u_video(
+    .rst_n      ( rst_n         ),
+    .clk        ( clk           ),
+    .cpu_cen    ( cpu_cen       ),
+    .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
+    .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
+
+    // CPU interface
+    .DD         ( DD            ),
+    .AD         ( AD            ),
+    .CSBW_n     ( CSBW_n        ),
+    .CSV        ( CSV           ),
+    .DWRBK_n    ( DWRBK_n       ),
+    .MEMWRO     ( MEMWRO        ),
+    .RV_n       ( RV_n          ),
+    // DMA
+    .ROHVS      ( ROHVS         ),
+    .ROHVCK     ( ROHVCK        ),
+    // SDRAM interface
+    .obj_addr   ( obj_addr      ),
+    .objrom_data( objrom_data   ),    
+    // PROM
+    .prog_addr  ( prog_addr     ),
+    .prom_din   ( prom_din      ),    
+    .prom_5n_we ( prom_5n_we    ),
+    .prom_7j_we ( prom_7j_we    ),     // timing
+    .prom_4a_we ( prom_4a_we    ),
+    .prom_5b_we ( prom_5b_we    ),
+    .prom_5a_we ( prom_5a_we    ),
+    .prom_3a_we ( prom_3a_we    ),   
+    // output video
+    .HB         ( HB            ),     // horizontal blanking
+    .HBD_n      ( HBD_n         ),     // HB - DMA
+    .VB         ( VB            ),     // vertical blanking
+
+    .red        ( red           ),
+    .green      ( green         ),
+    .blue       ( blue          )      // LSB is always zero
 );
 
 endmodule // jtpopeye_game

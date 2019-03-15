@@ -21,7 +21,7 @@
 module jtpopeye_obj(
     input               rst_n,
     input               clk,
-    input               cen,
+    input               pxl2_cen,
 
     input               ROHVS,
     input               ROHVCK,
@@ -45,7 +45,9 @@ reg hflip;
 reg [31:0] objd;
 reg [1:0] offset;
 
-always @(posedge clk) if( cen ) begin
+reg [2:0] objc;
+
+always @(posedge clk) if( pxl2_cen ) begin
     if( &H[2:0]==3'd7 ) begin
         objc   <= DJ[16:14];
         objd   <= objrom_data;

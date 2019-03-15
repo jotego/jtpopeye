@@ -135,7 +135,7 @@ jtpopeye_buf u_buf(
     .DJ                 ( DJ            )
 );
 
-jtpopeye_bak u_bak(
+jtpopeye_bck u_bak(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
     .cpu_cen            ( cpu_cen       ),
@@ -152,7 +152,7 @@ jtpopeye_bak u_bak(
 jtpopeye_obj u_obj(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .cen                ( cen           ),
+    .pxl2_cen           ( pxl2_cen      ),
 
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),

@@ -33,16 +33,17 @@ module jtpopeye_txt(
     input               MEMWRO,
 
     // PROM
-    input   [10:0]      prog_addr,
+    input       [10:0]  prog_addr,
     input               prom_5n_we,
-    input   [7:0]       prom_din,
+    input       [ 7:0]  prom_din,
 
-    output     [ 3:0]   TXTC,
+    output  reg [ 3:0]  TXTC,
     output  reg         TXTV
 );
 
 
-wire [3:0] txtc, txtc0;
+wire [3:0] txtc;
+reg  [3:0] txtc0;
 wire [10:0] rom_addr;
 reg  [ 9:0] ram_addr;
 wire [ 9:0] scan_addr = { V[7:3], H[7:3] };
@@ -56,7 +57,8 @@ jtpopeye_video_dec(
     .AD_dec ( ADx      )
 );
 
-wire we = CSV & ~MEMWR0_n;
+wire we = CSV & MEMWRO;
+reg wev, wec;
 
 always @(*) begin
     ram_addr = we ? ADx[9:0] : { V[7:3], H[7:3] };

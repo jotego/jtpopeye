@@ -24,10 +24,10 @@ module jtpopeye_colmix(
     input              cen,
     // PROM programming
     input   [7:0]      prog_addr,
-    input              prom_4a_we
-    input              prom_5b_we
-    input              prom_5a_we
-    input              prom_3a_we
+    input              prom_4a_we,
+    input              prom_5b_we,
+    input              prom_5a_we,
+    input              prom_3a_we,
     input   [7:0]      prom_din,
     // mixing
     input              HBD_n,
