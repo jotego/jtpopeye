@@ -183,6 +183,7 @@ always @(*) begin
     endcase
 end
 
+`ifndef SIMULATION
 T80s u_cpu(
     .RESET_n    ( rst_n       ),
     .CLK        ( clk         ),
@@ -203,7 +204,30 @@ T80s u_cpu(
     .RFSH_n     ( rfsh_n      ),
     .out0       ( 1'b0        )
 );
-
+`else
+// This CPU is used for simulation
+tv80s #(.Mode(0)) u_cpu (
+    .reset_n( rst_n      ),
+    .clk    ( clk        ),
+    .cen    ( cpu_cen    ),
+    .wait_n ( 1'b1       ),
+    .int_n  ( 1'b1       ),
+    .nmi_n  ( 1'b1       ),
+    .rd_n   ( rd_n       ),
+    .wr_n   ( wr_n       ),
+    .A      ( Ascrambled ),
+    .di     ( cpu_din    ),
+    .dout   ( cpu_dout   ),
+    .iorq_n ( iorq_n     ),
+    .m1_n   ( m1_n       ),
+    .mreq_n ( mreq_n     ),
+    .busrq_n( ~bus_req   ),
+    .rfsh_n ( rfsh_n     ),
+    .busak_n( busak_n    ),
+    // unused
+    .halt_n ()
+);
+`endif
 
 // Dip switches and AY I/O ports
 reg  [7:0] dip_data;

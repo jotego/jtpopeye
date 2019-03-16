@@ -93,18 +93,18 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5b")) u_prom_5b(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),
-    .rd_addr( objc              ),
-    .wr_addr( prog_addr[4:0]    ),
+    .rd_addr( { objc, objv }    ),
+    .wr_addr( prog_addr         ),
     .we     ( prom_5b_we        ),
     .q      ( obj_rgb[3:0]      )
 );
 
-jtgng_prom #(.aw(5),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
+jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[7:4]     ),
-    .rd_addr( objc              ),
-    .wr_addr( prog_addr[4:0]    ),
+    .rd_addr( { objc, objv }    ),
+    .wr_addr( prog_addr         ),
     .we     ( prom_5a_we        ),
     .q      ( obj_rgb[7:4]      )
 );
@@ -115,7 +115,7 @@ jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.5b")) u_prom_3a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),
-    .rd_addr( txtc              ),
+    .rd_addr( { txtc[3], txtc } ),
     .wr_addr( prog_addr[4:0]    ),
     .we     ( prom_3a_we        ),
     .q      ( txt_rgb           )

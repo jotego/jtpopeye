@@ -93,7 +93,7 @@ jtpopeye_timing u_timing(
     .HBD_n              ( HBD_n         ), // HB - DMA
     .VB                 ( VB            ),
     // PROM programming
-    .prog_addr          ( prog_addr     ),
+    .prog_addr          ( prog_addr[7:0]),
     .prom_7j_we         ( prom_7j_we    ),
     .prom_din           ( prom_din[3:0] )
 );
@@ -178,7 +178,7 @@ jtpopeye_colmix u_colmix(
     .clk                ( clk           ),
     .pxl2_cen           ( pxl2_cen      ),
     // PROM programming
-    .prog_addr          ( prog_addr     ),
+    .prog_addr          ( prog_addr[7:0]),
     .prom_4a_we         ( prom_4a_we    ),
     .prom_5b_we         ( prom_5b_we    ),
     .prom_5a_we         ( prom_5a_we    ),

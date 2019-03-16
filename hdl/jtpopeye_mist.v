@@ -68,6 +68,7 @@ localparam CONF_STR = {
 
 
 localparam CONF_STR_LEN = 8+16+6+42+20+18+24+15+30;
+parameter CLK_SPEED=20;
 
 wire          rst, clk_rgb, clk_rom;
 wire          cen12, cen6, cen3, cen1p5;

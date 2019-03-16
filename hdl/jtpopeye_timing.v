@@ -99,9 +99,9 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-v.7j")) u_prom_7j(
     .cen    ( 1'b1              ),
     .data   ( prom_din          ),
     .rd_addr( prom_addr         ),
-    .wr_addr( prog_addr[4:0]    ),
+    .wr_addr( prog_addr         ),
     .we     ( prom_7j_we        ),
-    .q      ( prom_data          )
+    .q      ( prom_data         )
 );
 
 endmodule // jtpopeye_dma
