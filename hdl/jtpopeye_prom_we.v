@@ -29,13 +29,13 @@ module jtpopeye_prom_we(
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
     output reg           prog_we,
-    output reg [ 5:0]    prom_we
+    output reg [ 5:0]    prom_we    // update prom_we0 below if prom_we is edited!
 );
 
 localparam PROM_ADDR = 8192*8+4096;
 
 reg set_strobe, set_done;
-reg [12:0] prom_we0;
+reg [5:0] prom_we0;
 
 always @(posedge clk_rgb) begin
     prom_we <= 'd0;
@@ -49,6 +49,7 @@ end
 
 always @(posedge clk_rom) begin
     prog_we   <= 1'b0;
+    prom_we0  <= 'd0;
     if( set_done ) set_strobe <= 1'b0;
     if ( ioctl_wr ) begin
         prog_data <= ioctl_data;

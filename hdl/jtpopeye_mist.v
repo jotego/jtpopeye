@@ -211,7 +211,7 @@ u_frame(
 
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
-    .clk            ( clk                   ),   // 20 MHz
+    .clk            ( clk_rgb               ),   // 20 MHz
     .clk_rom        ( clk_rom               ),   // SDRAM clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 

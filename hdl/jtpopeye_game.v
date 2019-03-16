@@ -123,7 +123,7 @@ jtpopeye_cen u_cen(
 
 jtpopeye_prom_we u_prom_we(
     .clk_rom        ( clk_rom       ),
-    .clk_rgb        ( clk_          ),
+    .clk_rgb        ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
