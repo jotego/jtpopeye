@@ -13,3 +13,4 @@
 ../../hdl/jtpopeye_obj.v
 ../../hdl/jtpopeye_txt.v
 ../../hdl/jtpopeye_game.v
+../../hdl/jtpopeye_prom_we.v

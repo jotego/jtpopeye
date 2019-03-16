@@ -47,19 +47,20 @@ end
 wire [12:0] ADx;
 
 jtpopeye_video_dec u_dec(
-    .AD     ( AD[10:0] ),
+    .AD     ( AD       ),
     .AD_dec ( ADx      )
 );
 
 reg [11:0] ADmux;
 reg [ 7:0] ram_doutl;
+wire [7:0] ram_dout;
 
-always @(posedge clk) ram_doutl <= ram_doutl;
+always @(posedge clk) ram_doutl <= ram_dout;
 wire [7:0] ram_din = !AD[12] ?
     { ram_doutl[7:4], DD[3:0] } : { DD[7:4], ram_doutl[3:0] };
 
 
-jtgng_ram #(.aw(6), .dw(18)) u_ram1(
+jtgng_ram #(.aw(12), .dw(8)) u_ram1(
     .clk    ( clk            ),
     .cen    ( cen            ),
     .data   ( ram_din        ),

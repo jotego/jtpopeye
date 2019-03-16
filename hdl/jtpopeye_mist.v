@@ -111,7 +111,7 @@ wire          prog_we;
 wire [2:0] red, green, blue;
 
 wire HB, VB, hs, vs;
-wire [15:0] snd;
+wire [9:0] snd;
 
 wire [9:0] game_joystick1, game_joystick2;
 wire [1:0] game_coin, game_start;
@@ -196,7 +196,7 @@ u_frame(
     .dip_flip       ( /* unused */   ),
     .rst_req        ( rst_req        ),
     // Sound
-    .snd            ( snd            ),
+    .snd            ( { snd, 6'd0 }  ),
     .AUDIO_L        ( AUDIO_L        ),
     .AUDIO_R        ( AUDIO_R        ),
     // joystick
@@ -253,7 +253,7 @@ jtpopeye_game u_game(
     .dip_price      ( dip_price             ),
     .dip_lives      ( dip_lives             ),
     // Sound output
-    .snd            ( snd                   ),
+    .snd            ( snd[9:0]              ),
     .sample         ( /* unused  */         ),
     // Debug
     .gfx_en         ( gfx_en                )

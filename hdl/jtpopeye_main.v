@@ -46,7 +46,7 @@ module jtpopeye_main(
     //
     output              RV_n,   // flip
     // Sound output
-    output reg [ 8:0]   snd
+    output reg [ 9:0]   snd
 );
 
 wire [15:0] Ascrambled;

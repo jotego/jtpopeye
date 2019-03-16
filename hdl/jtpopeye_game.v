@@ -62,7 +62,7 @@ module jtpopeye_game(
     input   [3:0]   dip_price,
     input   [1:0]   dip_lives,
     // Sound output
-    output  [8:0]   snd,
+    output  [9:0]   snd,
     output          sample,
     // Debug
     input   [3:0]   gfx_en
@@ -80,14 +80,14 @@ wire          ROHVCK;
 wire [12:0]   obj_addr;
 wire [31:0]   objrom_data;
 // PROM
-wire [10:0]   prog_addr;
-wire [ 7:0]   prom_din;    
-wire          prom_5n_we;
-wire          prom_7j_we;     // timing
-wire          prom_4a_we;
-wire          prom_5b_we;
-wire          prom_5a_we;
-wire          prom_3a_we;   
+wire [ 7:0]   prom_din;  
+wire [ 5:0]   prom_we;  
+wire          prom_7j_we = prom_we[0];     // timing
+wire          prom_5b_we = prom_we[1];
+wire          prom_5a_we = prom_we[2];
+wire          prom_4a_we = prom_we[3];
+wire          prom_3a_we = prom_we[4];   
+wire          prom_5n_we = prom_we[5];      // TXT
     // output video
 wire          HB;         // horizontal blanking
 wire          HBD_n;      // HB - DMA
@@ -119,6 +119,20 @@ jtpopeye_cen u_cen(
     .ay_cen     ( ay_cen        ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
     .pxl2_cen   ( pxl2_cen      )   // OBJ pixel clock
+);
+
+jtpopeye_prom_we u_prom_we(
+    .clk_rom        ( clk_rom       ),
+    .clk_rgb        ( clk_          ),
+    .downloading    ( downloading   ),
+    .ioctl_addr     ( ioctl_addr    ),
+    .ioctl_data     ( ioctl_data    ),
+    .ioctl_wr       ( ioctl_wr      ),
+    .prog_addr      ( prog_addr     ),
+    .prog_data      ( prog_data     ),
+    .prog_mask      ( prog_mask     ), // active low
+    .prog_we        ( prog_we       ),
+    .prom_we        ( prom_we       )
 );
 
 jtpopeye_main u_main(
@@ -176,7 +190,7 @@ jtpopeye_video u_video(
     .obj_addr   ( obj_addr      ),
     .objrom_data( objrom_data   ),    
     // PROM
-    .prog_addr  ( prog_addr     ),
+    .prog_addr  ( prog_addr[10:0]),
     .prom_din   ( prom_din      ),    
     .prom_5n_we ( prom_5n_we    ),
     .prom_7j_we ( prom_7j_we    ),     // timing

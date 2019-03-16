@@ -47,14 +47,14 @@ reg  [3:0] txtc0;
 wire [10:0] rom_addr;
 reg  [ 9:0] ram_addr;
 wire [ 9:0] scan_addr = { V[7:3], H[7:3] };
-wire [10:0]  ADx;
+wire [12:0]  ADx;
 
 assign rom_addr[2:0] = V[2:0];
 
 // AD is obfuscated
 jtpopeye_video_dec u_dec(
-    .AD     ( AD[10:0] ),
-    .AD_dec ( ADx      )
+    .AD     ( AD    ),
+    .AD_dec ( ADx   )
 );
 
 wire we = CSV & MEMWRO;
