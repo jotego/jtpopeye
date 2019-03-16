@@ -43,18 +43,19 @@ parameter  obj_offset = 4*8192/2;
 
 reg [3:0] ready_cnt;
 
+reg [1:0] data_sel;
+wire main_req, obj_req;
+wire [14:0] main_addr_req;
+wire [12:0] obj_addr_req;
+
 always @(posedge clk) if(pxl_cen) begin
     if( loop_rst || downloading )
         sdram_re <= 1'b0;   // start strobing before ready signal
             // because first data must be read before that signal.
     else
-        sdram_re <= ~sdram_re;
+        if(main_req||obj_req) sdram_re <= ~sdram_re;
 end
 
-reg [1:0] data_sel;
-wire main_req, obj_req;
-wire [14:0] main_addr_req;
-wire [12:0] obj_addr_req;
 
 jt1943_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),

@@ -171,12 +171,22 @@ end
 
 ///////////////////////////
 // CPU data input
-reg [7:0] cpu_din;
+reg  [7:0] cpu_din;
+wire [7:0] rom_good = {
+    rom_data[3],
+    rom_data[4],
+    rom_data[2],
+    rom_data[5],
+    rom_data[1],
+    rom_data[6],
+    rom_data[0],
+    rom_data[7]
+};
 
 always @(*) begin
     cpu_din = 8'h0;
     case( {rom_cs, ram_cs, in_cs, sec_cs } )
-        4'b10_00: cpu_din = rom_data;
+        4'b10_00: cpu_din = rom_good;
         4'b01_00: cpu_din = ram_data;
         4'b00_10: cpu_din = cabinet_input;
         4'b00_01: cpu_din = sec_data;
