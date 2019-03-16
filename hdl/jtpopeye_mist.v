@@ -115,7 +115,7 @@ wire [9:0] snd;
 
 wire [9:0] game_joystick1, game_joystick2;
 wire [1:0] game_coin, game_start;
-wire game_rst;
+wire game_rst, rst_n;
 wire [3:0] gfx_en;
 
 // play level
@@ -191,6 +191,7 @@ u_frame(
     .data_read      ( data_read      ),
 //////////// board
     .rst            ( rst            ),
+    .rst_n          ( rst_n          ),
     .game_rst       ( game_rst       ),
     // reset forcing signals:
     .dip_flip       ( /* unused */   ),

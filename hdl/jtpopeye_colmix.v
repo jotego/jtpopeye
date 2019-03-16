@@ -75,7 +75,7 @@ always @(posedge clk) if(pxl2_cen) begin
 end
 
 // Background
-jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.3a")) u_prom_4a(
+jtgng_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.3a")) u_prom_4a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),
@@ -89,7 +89,7 @@ jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.3a")) u_prom_4a(
 
 wire [7:0] obj_addr = { objc, objv };
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5b")) u_prom_5b(
+jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),
@@ -99,7 +99,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5b")) u_prom_5b(
     .q      ( obj_rgb[3:0]      )
 );
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
+jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[7:4]     ),
@@ -111,7 +111,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-c.5a")) u_prom_5a(
 
 // TXT
 
-jtgng_prom #(.aw(5),.dw(8),.simfile("../../../rom/tpp2-c.5b")) u_prom_3a(
+jtgng_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.5b")) u_prom_3a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),

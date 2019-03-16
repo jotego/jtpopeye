@@ -94,7 +94,7 @@ always @(posedge clk)
 
 wire [7:0] prom_addr = { HB, Hcnt[7:1] };
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../../rom/tpp2-v.7j")) u_prom_7j(
+jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-v.7j")) u_prom_7j(
     .clk    ( clk               ),
     .cen    ( 1'b1              ),
     .data   ( prom_din          ),

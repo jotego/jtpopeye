@@ -78,7 +78,7 @@ wire          ROHVS;
 wire          ROHVCK;
 // SDRAM interface
 wire [12:0]   obj_addr;
-wire [31:0]   objrom_data;
+wire [31:0]   obj_data;
 // PROM
 wire [ 7:0]   prom_din;  
 wire [ 5:0]   prom_we;  
@@ -104,9 +104,9 @@ wire          DWRBK_n;
 wire          MEMWRO, DMCS;
 wire          RV_n, INITEO;
 // ROM access
-wire          main_cs;
-wire   [14:0] rom_addr;
-wire   [ 7:0] rom_data;
+wire          main_cs, ready;
+wire   [14:0] main_addr;
+wire   [ 7:0] main_data;
 // DIP switches
 wire   [7:0]  dip_sw2 = { dip_upright, dip_demosnd, dip_bonus, 
                             dip_level, dip_lives };
@@ -135,6 +135,27 @@ jtpopeye_prom_we u_prom_we(
     .prom_we        ( prom_we       )
 );
 
+jtpopeye_rom u_rom(
+    .rst_n      ( rst_n     ),
+    .clk        ( clk       ),
+    .pxl_cen    ( pxl_cen   ), // 10 MHz
+    .LVBL       ( LVBL      ),
+    .sdram_re   ( sdram_re  ), // any edge (rising or falling)
+        // means a read request
+
+    .main_addr  ( main_addr ), // 32 kB, addressed as 8-bit words
+    .obj_addr   ( obj_addr  ), // 32 kB
+
+    .main_dout  ( main_data ),
+    .obj_dout   ( obj_data  ),
+    .ready      ( ready     ),
+    // ROM interface
+    .downloading(downloading),
+    .loop_rst   ( loop_rst  ),
+    .sdram_addr ( sdram_addr),
+    .data_read  ( data_read )
+);
+
 jtpopeye_main u_main(
     .rst_n          ( rst_n         ),
     .clk            ( clk           ),
@@ -158,8 +179,8 @@ jtpopeye_main u_main(
     .dip_sw1        ( dip_sw1       ),
     // ROM access
     .main_cs        ( main_cs       ),
-    .rom_addr       ( rom_addr      ),
-    .rom_data       ( rom_data      ),
+    .rom_addr       ( main_addr     ),
+    .rom_data       ( main_data     ),
 
     .RV_n           ( RV_n          ),   // flip
     // Sound output
@@ -188,7 +209,7 @@ jtpopeye_video u_video(
     .ROHVCK     ( ROHVCK        ),
     // SDRAM interface
     .obj_addr   ( obj_addr      ),
-    .objrom_data( objrom_data   ),    
+    .objrom_data( obj_data      ),    
     // PROM
     .prog_addr  ( prog_addr[10:0]),
     .prom_din   ( prom_din      ),    

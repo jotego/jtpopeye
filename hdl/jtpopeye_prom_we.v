@@ -32,7 +32,7 @@ module jtpopeye_prom_we(
     output reg [ 5:0]    prom_we    // update prom_we0 below if prom_we is edited!
 );
 
-localparam PROM_ADDR = 8192*8+4096;
+localparam PROM_ADDR = 8192*8;
 
 reg set_strobe, set_done;
 reg [5:0] prom_we0;
@@ -53,10 +53,10 @@ always @(posedge clk_rom) begin
     if( set_done ) set_strobe <= 1'b0;
     if ( ioctl_wr ) begin
         prog_data <= ioctl_data;
-        prog_addr <= ioctl_addr;
+        prog_addr <= { 1'b0, ioctl_addr[21:1] };
         if( ioctl_addr < PROM_ADDR ) begin
             prog_we   <= 1'b1;
-            prog_mask <= 2'b00;
+            prog_mask <= {ioctl_addr[0], ~ioctl_addr[0]};
         end
         else begin // PROMs
             prog_mask <= 2'b11;
