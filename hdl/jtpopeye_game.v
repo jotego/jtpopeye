@@ -174,6 +174,8 @@ jtpopeye_main u_main(
     .MEMWRO         ( MEMWRO        ),
     .AD             ( AD            ),
     .DD             ( DD            ),
+    // Video Access
+    .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)
     // DIP switches
     .dip_sw2        ( dip_sw2       ),
     .dip_sw1        ( dip_sw1       ),

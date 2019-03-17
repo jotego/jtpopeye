@@ -33,9 +33,11 @@ module jtpopeye_main(
     // DMA
     input               INITEO,
     input               DMCS,
-    output              MEMWRO,
+    output reg          MEMWRO, // latched
     output [15:0]       AD,
     output [ 7:0]       DD,
+    // video access
+    output reg          CSVl,   // latched
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
@@ -54,7 +56,6 @@ wire iorq_n;
 wire wr_n, rd_n, mreq_n;
 wire iowr = ~wr_n & ~iorq_n;
 wire iord = ~rd_n & ~iorq_n;
-assign MEMWRO = ~wr_n & ~mreq_n;
 
 reg  [7:0] cabinet_input, ay_dout;
 wire [7:0] ram_data, sec_data, cpu_dout;
@@ -63,6 +64,11 @@ reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
 wire CSBW_n = ~(CSB | CSB_l);
 
 assign main_cs = rom_cs;
+
+always @(posedge clk) begin
+    CSVl   <= CSV; // latched outputs, do not cen!
+    MEMWRO <= ~wr_n & ~mreq_n;
+end
 
 ////////////////////////////
 // device selection
@@ -123,7 +129,7 @@ jtgng_ram #(.aw(11)) u_ram(
 ///////////////////////////
 // Security
 
-wire sec_wr_n = !sec_cs && wr_n;
+wire sec_wr_n = !sec_cs || wr_n;
 
 jtpopeye_security u_security(
     .clk    ( clk      ),
@@ -173,14 +179,14 @@ end
 // CPU data input
 reg  [7:0] cpu_din;
 wire [7:0] rom_good = {
-    rom_data[3],
+    rom_data[3], // MSB
     rom_data[4],
     rom_data[2],
     rom_data[5],
     rom_data[1],
     rom_data[6],
     rom_data[0],
-    rom_data[7]
+    rom_data[7]  // LSB
 };
 
 always @(*) begin

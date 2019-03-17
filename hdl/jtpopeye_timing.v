@@ -46,8 +46,17 @@ wire [3:0] prom_data;
 
 // H counter
 reg [8:0] Hcnt;
+reg [8:0] Vcnt;
 wire [7:0] Hnext = Hcnt[7:0] + 8'd1;
 reg preHB=1'b0;
+
+`ifdef SIMULATION
+initial begin
+    Hcnt = 'd0;
+    Vcnt = 'd0;
+    VB   = 'd0;
+end
+`endif
 
 always @(*) begin
     H[2:0] = Hcnt[2:0];
@@ -75,7 +84,6 @@ wire Vup = prom_data[1];
 reg  Vupl;
 wire Vup_edge = Vup && !Vupl;
 
-reg [8:0] Vcnt;
 
 always @(*) begin
     V[7:0] = Vcnt[8:1] ^ RV;

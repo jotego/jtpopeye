@@ -86,14 +86,13 @@ assign LED = ~downloading; // | coin_cnt | rst;
 wire rst_req = status[32'hf];
 wire cheat_invincible = status[32'd10];
 
-wire enable_fm = ~status[8], enable_psg = ~status[7];
-
 wire game_pause;
 `ifdef SIMULATION
     wire dip_pause = 1'b1; // ~status[1];
     initial if(!dip_pause) $display("INFO: DIP pause enabled");
 `else
-wire dip_pause = ~status[1] & ~game_pause;
+reg dip_pause;
+always @(posedge clk_rgb) dip_pause <= ~status[1] & ~game_pause;
 `endif
 
 wire dip_upright = 1'b1;
@@ -117,15 +116,19 @@ wire [9:0] game_joystick1, game_joystick2;
 wire [1:0] game_coin, game_start;
 wire game_rst, rst_n;
 wire [3:0] gfx_en;
+reg en_mixing, coin_input;
 
-// play level
-always @(*)
+// play level. Latch all inputs to game module
+always @(posedge clk_rgb) begin
     case( status[3:2] )
-        2'b00: dip_level = 2'b01; // normal
-        2'b01: dip_level = 2'b00; // easy
-        2'b10: dip_level = 2'b10; // hard
-        2'b11: dip_level = 2'b11; // very hard
+        2'b00: dip_level <= 2'b01; // normal
+        2'b01: dip_level <= 2'b00; // easy
+        2'b10: dip_level <= 2'b10; // hard
+        2'b11: dip_level <= 2'b11; // very hard
     endcase // status[3:2]
+    en_mixing  <= ~status[9];
+    coin_input <= |game_coin;
+end
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .CLK_SPEED(20),
@@ -148,7 +151,7 @@ u_frame(
     .hs             ( hs             ),
     .vs             ( vs             ),
     // VGA
-    .en_mixing      ( ~status[9]     ),
+    .en_mixing      ( en_mixing      ),
     .VGA_R          ( VGA_R          ),
     .VGA_G          ( VGA_G          ),
     .VGA_B          ( VGA_B          ),
@@ -225,7 +228,7 @@ jtpopeye_game u_game(
     .VS             ( VS                    ),
     // cabinet I/O
     .start_button   ( game_start            ),
-    .coin_input     ( |game_coin            ),
+    .coin_input     ( coin_input            ),
     .joystick1      ( game_joystick1[4:0]   ),
     .joystick2      ( game_joystick2[4:0]   ),
 

@@ -41,6 +41,9 @@ end
 
 always @(posedge clk) if( cen ) begin
     if( !wr_n ) begin
+        `ifdef SIMULATION
+        $display("INFO: Write to security device A[%d] = %x", A0, din);
+        `endif
         if( !A0 )
             shift <= din[2:0];
         else begin

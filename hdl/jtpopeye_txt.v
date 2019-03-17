@@ -62,8 +62,8 @@ reg wev, wec;
 
 always @(*) begin
     ram_addr = we ? ADx[9:0] : { V[7:3], H[7:3] };
-    wev = we & ~AD[10];
-    wec = we &  AD[10];
+    wev = we && AD[11:10]==2'b00;
+    wec = we && AD[11:10]==2'b01;
 end
 
 jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
