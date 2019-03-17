@@ -37,7 +37,9 @@ module jtpopeye_main(
     output [15:0]       AD,
     output [ 7:0]       DD,
     // video access
+    output reg          CSBW_n,
     output reg          CSVl,   // latched
+    output reg          DWRBK,
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
@@ -61,13 +63,14 @@ reg  [7:0] cabinet_input, ay_dout;
 wire [7:0] ram_data, sec_data, cpu_dout;
 assign DD = cpu_dout;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
-wire CSBW_n = ~(CSB | CSB_l);
 
 assign main_cs = rom_cs;
 
 always @(posedge clk) begin
     CSVl   <= CSV; // latched outputs, do not cen!
     MEMWRO <= ~wr_n & ~mreq_n;
+    DWRBK  <= CSB & ~wr_n;
+    CSBW_n <= ~(CSB | CSB_l);
 end
 
 ////////////////////////////

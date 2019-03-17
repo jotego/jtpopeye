@@ -26,7 +26,7 @@ module jtpopeye_bck(
 
     // CPU interface
     input               CSBW_n,
-    input               DWRBK_n,
+    input               DWRBK,
 
     input      [12:0]   AD,
     input      [ 8:0]   ROVI,
@@ -54,10 +54,26 @@ jtpopeye_video_dec u_dec(
 reg [11:0] ADmux;
 reg [ 7:0] ram_doutl;
 wire [7:0] ram_dout;
+reg nibble_sel;
 
-always @(posedge clk) ram_doutl <= ram_dout;
+
+always @(posedge clk) if(pxl_cen) begin
+    if( ROH[1:0]==2'b11 )
+        BAKC <= nibble_sel ? ram_dout[3:0] : ram_dout[7:4];
+end
+
+// RAM is programmed in nibbles:
+always @(posedge clk) begin
+    ram_doutl <= ram_dout;
+end
+
 wire [7:0] ram_din = !AD[12] ?
     { ram_doutl[7:4], DD[3:0] } : { DD[7:4], ram_doutl[3:0] };
+
+always @(*) begin
+    ADmux = !CSBW_n ? ADx[11:0] : {ROVl[6:1],ROH[7:2]};
+    nibble_sel = !CSBW_n ? !ADx[12] : ROVl[7];
+end
 
 
 jtgng_ram #(.aw(12), .dw(8)) u_ram1(
@@ -65,7 +81,7 @@ jtgng_ram #(.aw(12), .dw(8)) u_ram1(
     .cen    ( cen            ),
     .data   ( ram_din        ),
     .addr   ( ADmux          ),
-    .we     ( !DWRBK_n       ),
+    .we     ( DWRBK          ),
     .q      ( ram_dout       )
 );
 

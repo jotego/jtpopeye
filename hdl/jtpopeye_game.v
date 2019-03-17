@@ -100,7 +100,7 @@ wire [ 7:0]   DD;
 wire [15:0]   AD;
 wire          CSBW_n;
 wire          CSV;
-wire          DWRBK_n;
+wire          DWRBK;
 wire          MEMWRO, DMCS;
 wire          RV_n, INITEO;
 // ROM access
@@ -175,7 +175,9 @@ jtpopeye_main u_main(
     .AD             ( AD            ),
     .DD             ( DD            ),
     // Video Access
+    .CSBW_n         ( CSBW_n        ),
     .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)
+    .DWRBK          ( DWRBK         ),
     // DIP switches
     .dip_sw2        ( dip_sw2       ),
     .dip_sw1        ( dip_sw1       ),
@@ -202,7 +204,7 @@ jtpopeye_video u_video(
     .AD         ( AD[12:0]      ),
     .CSBW_n     ( CSBW_n        ),
     .CSV        ( CSV           ),
-    .DWRBK_n    ( DWRBK_n       ),
+    .DWRBK      ( DWRBK         ),
     .MEMWRO     ( MEMWRO        ),
     .RV_n       ( RV_n          ),
     // DMA

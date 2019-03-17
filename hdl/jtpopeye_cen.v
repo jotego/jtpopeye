@@ -31,11 +31,12 @@ module jtpopeye_cen(
 reg [2:0] cnt2=2'd0;
 reg [3:0] cnt10=4'd0;
 
+
 always @(negedge clk) begin
+    pxl2_cen <= cnt2[  0]==1'b0;     // 10   MHz
+    pxl_cen  <= cnt2[1:0]==2'b00;     //  5   MHz
     cnt2  <=  cnt2 + 3'd1;
     cnt10 <= cnt10 == 4'd9 ? 4'd0 : (cnt10+4'd1);
-    pxl2_cen <= cnt2[0];     // 10   MHz
-    pxl_cen  <= cnt2[1];     //  5   MHz
     H0_cen   <= cnt2[2];     //  2.5 MHz
     cpu_cen  <= cnt10==4'd0 || cnt10==4'd5;  //  4   MHz
     ay_cen   <= cnt10==4'd0; //  2   MHz

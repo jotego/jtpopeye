@@ -31,7 +31,7 @@ module jtpopeye_video(
     input      [12:0]   AD,
     input               CSBW_n,
     input               CSV,
-    input               DWRBK_n,
+    input               DWRBK,
     input               MEMWRO,
     input               RV_n,
     // DMA
@@ -145,7 +145,8 @@ jtpopeye_bck u_bak(
     .cpu_cen            ( cpu_cen       ),
     .pxl_cen            ( pxl_cen       ),
 
-    .DWRBK_n            ( DWRBK_n       ),
+    .CSBW_n             ( CSBW_n        ),
+    .DWRBK              ( DWRBK         ),
     .AD                 ( AD            ),
     .DD                 ( DD            ),
     .ROVI               ( ROVI          ),
