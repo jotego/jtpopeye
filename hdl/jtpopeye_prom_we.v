@@ -21,6 +21,7 @@
 module jtpopeye_prom_we(
     input                clk_rom,
     input                clk_rgb,
+    input                prom_cen,
     input                downloading,
     input      [21:0]    ioctl_addr,
     input      [ 7:0]    ioctl_data,
@@ -37,7 +38,7 @@ localparam PROM_ADDR = 8192*8;
 reg set_strobe, set_done;
 reg [5:0] prom_we0;
 
-always @(posedge clk_rgb) begin
+always @(posedge clk_rgb) if(prom_cen) begin
     prom_we <= 'd0;
     if( set_strobe ) begin
         prom_we <= prom_we0;
@@ -49,17 +50,18 @@ end
 
 always @(posedge clk_rom) begin
     prog_we   <= 1'b0;
-    prom_we0  <= 'd0;
     if( set_done ) set_strobe <= 1'b0;
     if ( ioctl_wr ) begin
         prog_data <= ioctl_data;
-        prog_addr <= { 1'b0, ioctl_addr[21:1] };
         if( ioctl_addr < PROM_ADDR ) begin
+            prog_addr <= { 1'b0, ioctl_addr[21:1] };
             prog_we   <= 1'b1;
             prog_mask <= {ioctl_addr[0], ~ioctl_addr[0]};
+            prom_we0  <= 'd0;
         end
         else begin // PROMs
             prog_mask <= 2'b11;
+            prog_addr <= ioctl_addr;
             if( !ioctl_addr[12] )
                 prom_we0 <= 6'h20; // 5N TXT
             else begin

@@ -58,7 +58,7 @@ wire [5:0] scan_addr = { H[7:3], H2O };
 wire [5:0] wr_addr   = DO[7:2];
 
 reg [5:0] ADR0, ADR1;
-reg [17:0] DJ0, DJ1;
+wire [17:0] DJ0, DJ1;
 wire line_sel = V[0];
 // wire DJ_sel;
 reg we0, we1;

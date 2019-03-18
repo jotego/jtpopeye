@@ -80,7 +80,6 @@ wire          ROHVCK;
 wire [12:0]   obj_addr;
 wire [31:0]   obj_data;
 // PROM
-wire [ 7:0]   prom_din;  
 wire [ 5:0]   prom_we;  
 wire          prom_7j_we = prom_we[0];     // timing
 wire          prom_5b_we = prom_we[1];
@@ -128,6 +127,7 @@ assign sample = ay_cen;
 jtpopeye_prom_we u_prom_we(
     .clk_rom        ( clk_rom       ),
     .clk_rgb        ( clk           ),
+    .prom_cen       ( pxl2_cen      ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
@@ -226,7 +226,7 @@ jtpopeye_video u_video(
     .objrom_data( obj_data      ),    
     // PROM
     .prog_addr  ( prog_addr[10:0]),
-    .prom_din   ( prom_din      ),    
+    .prom_din   ( prog_data     ),    
     .prom_5n_we ( prom_5n_we    ),
     .prom_7j_we ( prom_7j_we    ),     // timing
     .prom_4a_we ( prom_4a_we    ),
