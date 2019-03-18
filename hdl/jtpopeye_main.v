@@ -23,7 +23,6 @@ module jtpopeye_main(
     input               clk,
     input               cpu_cen,
     input               ay_cen,
-    input               LVBL,
     // cabinet I/O
     input   [4:0]       joystick1,
     input   [4:0]       joystick2,
@@ -36,6 +35,10 @@ module jtpopeye_main(
     output reg          MEMWRO, // latched
     output [15:0]       AD,
     output [ 7:0]       DD,
+    output [ 7:0]       DD_DMA,
+    input  [ 9:0]       AD_DMA,
+    input               dma_cs, // tell main memory to get data out for DMA
+    input               busrq_n,    
     // video access
     output reg          CSBW_n,
     output reg          CSVl,   // latched
@@ -50,18 +53,19 @@ module jtpopeye_main(
     //
     output              RV_n,   // flip
     // Sound output
-    output reg [ 9:0]   snd
+    output     [ 9:0]   snd
 );
 
 wire [15:0] Ascrambled;
 wire iorq_n;
 wire wr_n, rd_n, mreq_n;
 wire iowr = ~wr_n & ~iorq_n;
-wire iord = ~rd_n & ~iorq_n;
+// wire iord = ~rd_n & ~iorq_n;
 
-reg  [7:0] cabinet_input, ay_dout;
-wire [7:0] ram_data, sec_data, cpu_dout;
-assign DD = cpu_dout;
+reg  [7:0] cabinet_input;
+wire [7:0] ram_data, sec_data, cpu_dout, ay_dout;
+assign DD     = cpu_dout;
+assign DD_DMA = ram_data;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
 
 assign main_cs = rom_cs;
@@ -119,12 +123,17 @@ assign rom_addr = AD[14:0];
 // Game RAM
 
 wire RAM_we = ram_cs && !wr_n;
+reg  [10:0] ADmux;
+
+always @(*) begin
+    ADmux = dma_cs ? {1'b1, AD_DMA} : AD[10:0];
+end
 
 jtgng_ram #(.aw(11)) u_ram(
     .clk    ( clk        ),
     .cen    ( cpu_cen    ),
     .data   ( cpu_dout   ),
-    .addr   ( AD[10:0]   ),
+    .addr   ( ADmux      ),
     .we     ( RAM_we     ),
     .q      ( ram_data   )
 );
@@ -199,6 +208,7 @@ always @(*) begin
         4'b01_00: cpu_din = ram_data;
         4'b00_10: cpu_din = cabinet_input;
         4'b00_01: cpu_din = sec_data;
+        default:  cpu_din = 8'hff;
     endcase
 end
 
@@ -218,7 +228,7 @@ T80s u_cpu(
     .M1_n       ( m1_n        ),
     .MREQ_n     ( mreq_n      ),
     .NMI_n      ( 1'b1        ),
-    .BUSRQ_n    ( ~bus_req    ),
+    .BUSRQ_n    ( busrq_n     ),
     .BUSAK_n    ( busak_n     ),
     .RFSH_n     ( rfsh_n      ),
     .out0       ( 1'b0        )
@@ -240,7 +250,7 @@ tv80s #(.Mode(0)) u_cpu (
     .iorq_n ( iorq_n     ),
     .m1_n   ( m1_n       ),
     .mreq_n ( mreq_n     ),
-    .busrq_n( ~bus_req   ),
+    .busrq_n( busrq_n    ),
     .rfsh_n ( rfsh_n     ),
     .busak_n( busak_n    ),
     // unused
@@ -250,13 +260,13 @@ tv80s #(.Mode(0)) u_cpu (
 
 // Dip switches and AY I/O ports
 reg  [7:0] dip_data;
-wire [7:0] IOA;
-wire [2:0] dip_mux = IOA[3:1];
-assign RV_n = ~IOA[0];
+wire [7:0] IOB;
+wire [2:0] dip_mux = IOB[3:1];
+assign RV_n = ~IOB[0];
 
 always @( * ) begin
     dip_data[3:0] = dip_sw1;
-    dip_data[6:5] = 3'b000;
+    dip_data[6:5] = 2'b00;
     dip_data[7] = dip_sw2[dip_mux];
 end
 
@@ -275,10 +285,11 @@ jt49_bus u_ay( // note that input ports are not multiplexed
     .sel    ( 1'b0      ),
     .dout   ( ay_dout   ),
     .sound  ( snd       ),
-    .IOA_out( IOA       ),
-    .IOB_in ( dip_data  ),
+    .IOA_in ( dip_data  ),
+    .IOB_out( IOB       ),
     // unused outputs
-    .IOB_out(),
+    .IOB_in ( 8'h0      ),  // IOB used as output
+    .IOA_out(),             // IOA used as input
     .A(), .B(), .C()
 );
 

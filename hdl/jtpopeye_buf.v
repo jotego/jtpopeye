@@ -18,7 +18,9 @@
 
 `timescale 1ns/1ps
 
-module jtpopeye_buf(
+// TPP2-VIDEO SCHEMATIC 1/3
+
+module jtpopeye_buf(    
     input               rst_n,
     input               clk,
     input               H0_cen,
@@ -29,6 +31,7 @@ module jtpopeye_buf(
 
     input      [ 7:0]   H,
     input      [ 7:0]   V,
+    input               HB,
     input               H2O,
     input      [28:0]   DO,
 
@@ -57,10 +60,18 @@ wire [5:0] wr_addr   = DO[7:2];
 reg [5:0] ADR0, ADR1;
 reg [17:0] DJ0, DJ1;
 wire line_sel = V[0];
+// wire DJ_sel;
+reg we0, we1;
+reg [1:0] we_v0;
 
 always @(*) begin
     ADR0 = !line_sel ? scan_addr : wr_addr;
     ADR1 =  line_sel ? scan_addr : wr_addr;
+    // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
+    we_v0[0] = ~H[0];   // active-low logic on schematics
+    we_v0[1] = H[0] & H[1] & ~HB; // active-low logic on schematics
+    we0      = we_v0[ V[0]];
+    we1      = we_v0[~V[0]];
 end
 
 jtgng_ram #(.aw(6), .dw(18)) u_ram0(

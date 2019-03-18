@@ -22,7 +22,6 @@ module jtpopeye_rom(
     input               rst_n,
     input               clk,
     input               pxl_cen, // 10 MHz
-    input               LVBL,
     output  reg         sdram_re, // any edge (rising or falling)
         // means a read request
 
@@ -39,7 +38,7 @@ module jtpopeye_rom(
     input       [31:0]  data_read
 );
 
-parameter  obj_offset = 4*8192/2;
+parameter  obj_offset = 22'd16384;
 
 reg [3:0] ready_cnt;
 
@@ -83,6 +82,7 @@ jt1943_romrq #(.AW(13),.DW(32)) u_obj(
     .we       ( data_sel[1]     )
 );
 
+/*
 `ifdef SIMULATION
 real busy_cnt=0, total_cnt=0;
 always @(posedge clk) begin
@@ -93,6 +93,7 @@ always @(posedge LVBL) begin
     $display("INFO: frame ROM stats: %.0f %%", 100.0*busy_cnt/total_cnt);
 end
 `endif
+*/
 
 always @(posedge clk)
 if( loop_rst || downloading ) begin

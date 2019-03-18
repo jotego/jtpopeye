@@ -1,7 +1,11 @@
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_mist.v      ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_game.v      ]
 # Main CPU
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_main.v      ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_security.v  ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_dma.v       ]
+# Clocking
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_cen.v       ]
 # Video 
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_video.v     ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_video_dec.v ]
@@ -12,3 +16,10 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_buf.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_bck.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_prom_we.v   ]
+# RAM
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/ram/jtgng_ram.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/ram/jtgng_prom.v       ]
+# SDRAM
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_rom.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jtgng_sdram.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/sdram/jt1943_romrq.v       ]

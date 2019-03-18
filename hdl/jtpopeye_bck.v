@@ -40,7 +40,7 @@ reg [8:1] ROVl;
 
 always @(posedge clk) if(pxl_cen) begin
     ROVl <= ROVI[8:1];
-    ROH  <= DO;
+    ROH  <= DO[7:0];
 end
 
 // AD is obfuscated
@@ -78,7 +78,7 @@ end
 
 jtgng_ram #(.aw(12), .dw(8)) u_ram1(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( pxl_cen        ),
     .data   ( ram_din        ),
     .addr   ( ADmux          ),
     .we     ( DWRBK          ),

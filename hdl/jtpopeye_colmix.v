@@ -44,15 +44,7 @@ module jtpopeye_colmix(
     output  reg [2:0]  blue   // LSB is always zero
 );
 
-wire [2:0] bakr, objr, txtr;
-wire [2:0] bakg, objg, txtg;
-wire [1:0] bakb, objb, txtb;
-
 wire [7:0] bak_rgb, obj_rgb, txt_rgb;
-
-assign { bakr, bakg, bakb } = bak_rgb;
-assign { objr, objg, objb } = obj_rgb;
-assign { txtr, txtg, txtb } = txt_rgb;
 
 reg txt_cs, obj_cs, bak_cs;
 
@@ -93,7 +85,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),
-    .rd_addr( { objc, objv }    ),
+    .rd_addr( obj_addr          ),
     .wr_addr( prog_addr         ),
     .we     ( prom_5b_we        ),
     .q      ( obj_rgb[3:0]      )
@@ -103,7 +95,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[7:4]     ),
-    .rd_addr( { objc, objv }    ),
+    .rd_addr( obj_addr          ),
     .wr_addr( prog_addr         ),
     .we     ( prom_5a_we        ),
     .q      ( obj_rgb[7:4]      )

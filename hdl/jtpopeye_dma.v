@@ -26,12 +26,12 @@ module jtpopeye_dma(
     input               VB,
     input      [1:0]    H,
     input               HBD_n,
-    input      [7:0]    main_data,
+    input      [7:0]    DD_DMA,
 
-    output reg [7:0]    AD_DMA,
+    output reg [9:0]    AD_DMA,
     output              dma_cs, // tell main memory to get data out for DMA
     output reg          busrq_n,
-    output     [28:0]   gfx_data
+    output     [28:0]   DO
 );
 
 reg [10:0] DM;
@@ -52,6 +52,8 @@ always @(*) begin
     AD_DMA[8] = DM[5];
     AD_DMA[9] = DM[6];
     AD_DMA[5] = DM[7];
+    AD_DMA[0] = DM[8];
+    AD_DMA[1] = DM[9];
 end
 
 always @(posedge clk) if(cen) begin
@@ -81,38 +83,38 @@ end
 jtgng_ram #(.aw(8), .dw(8)) u_ram0(
     .clk    ( clk            ),
     .cen    ( cen            ),
-    .data   ( main_data      ),
+    .data   ( DD_DMA             ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[0]        ),
-    .q      ( gfx_data[7:0]  )
+    .q      ( DO[7:0]        )
 );
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram1(
     .clk    ( clk            ),
     .cen    ( cen            ),
-    .data   ( main_data      ),
+    .data   ( DD_DMA             ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[1]        ),
-    .q      ( gfx_data[15:8] )
+    .q      ( DO[15:8]       )
 );
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram2(
     .clk    ( clk            ),
     .cen    ( cen            ),
-    .data   ( main_data      ),
+    .data   ( DD_DMA             ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[2]        ),
-    .q      ( gfx_data[23:16])
+    .q      ( DO[23:16]      )
 );
 
 
 jtgng_ram #(.aw(8), .dw(5)) u_ram3(
     .clk    ( clk            ),
     .cen    ( cen            ),
-    .data   ( main_data[4:0] ),
+    .data   ( DD_DMA[4:0]        ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[3]        ),
-    .q      ( gfx_data[28:24])
+    .q      ( DO[28:24]      )
 );
 
 endmodule // jtpopeye_dma

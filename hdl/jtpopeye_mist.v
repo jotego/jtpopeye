@@ -86,7 +86,7 @@ assign LED = ~downloading; // | coin_cnt | rst;
 wire rst_req = status[32'hf];
 wire cheat_invincible = status[32'd10];
 
-wire game_pause;
+wire game_pause, game_service;
 `ifdef SIMULATION
     wire dip_pause = 1'b1; // ~status[1];
     initial if(!dip_pause) $display("INFO: DIP pause enabled");
@@ -138,7 +138,7 @@ u_frame(
     .clk_rgb        ( clk_rgb        ),
     .clk_rom        ( clk_rom        ),
     .cen12          ( cen12          ),
-    .pxl_cen        ( pxl_cen        ),
+    .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
     // Base video
     .osd_rotate     ( 2'b00          ),
@@ -209,6 +209,7 @@ u_frame(
     .game_coin      ( game_coin      ),
     .game_start     ( game_start     ),
     .game_pause     ( game_pause     ),
+    .game_service   ( game_service   ),
     // Debug
     .gfx_en         ( gfx_en         )
 );
@@ -231,6 +232,7 @@ jtpopeye_game u_game(
     .coin_input     ( coin_input            ),
     .joystick1      ( game_joystick1[4:0]   ),
     .joystick2      ( game_joystick2[4:0]   ),
+    .service        ( game_service          ),
 
     // SDRAM interface
     .downloading    ( downloading           ),

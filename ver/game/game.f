@@ -1,6 +1,7 @@
 ../../modules/jtframe/hdl/ram/jtgng_prom.v
 ../../modules/jtframe/hdl/ram/jtgng_ram.v
 ../../modules/jtframe/hdl/sdram/jt1943_romrq.v
+../../modules/jtframe/hdl/clocking/jtframe_pll20.v
 ../../hdl/jtpopeye_rom.v
 ../../hdl/jtpopeye_security.v
 ../../hdl/jtpopeye_timing.v

@@ -35,9 +35,13 @@ module jtpopeye_video(
     input               MEMWRO,
     input               RV_n,
     // DMA
+    input      [ 7:0]   DD_DMA,
     output              INITEO,
     input               ROHVS,
     input               ROHVCK,
+    output     [9:0]    AD_DMA,
+    output              dma_cs, // tell main memory to get data out for DMA
+    output              busrq_n,
     // SDRAM interface
     output     [12:0]   obj_addr,
     input      [31:0]   objrom_data,    
@@ -98,6 +102,22 @@ jtpopeye_timing u_timing(
     .prom_din           ( prom_din[3:0] )
 );
 
+jtpopeye_dma u_dma(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .cen                ( pxl2_cen      ),
+
+    .VB                 ( VB            ),
+    .H                  ( H[1:0]        ),
+    .HBD_n              ( HBD_n         ), // HB - DMA
+    .DD_DMA             ( DD_DMA        ),
+
+    .AD_DMA             ( AD_DMA        ),
+    .dma_cs             ( dma_cs        ),
+    .busrq_n            ( busrq_n       ),
+    .DO                 ( DO            )
+);
+
 jtpopeye_txt u_txt(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -132,6 +152,7 @@ jtpopeye_buf u_buf(
 
     .H                  ( H             ),
     .V                  ( V             ),
+    .HB                 ( HB            ),
     .H2O                ( H2O           ),
     .DO                 ( DO            ), // gfx buffer
 
@@ -166,6 +187,7 @@ jtpopeye_obj u_obj(
 
     .H                  ( H             ),
     .DJ                 ( DJ            ),
+    .DO                 ( DO            ),
     // SDRAM interface
     .obj_addr           ( obj_addr      ),
     .objrom_data        ( objrom_data   ),

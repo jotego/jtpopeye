@@ -22,13 +22,13 @@ module jtpopeye_game(
     input           rst_n,
     input           clk,        // 20 MHz
     input           clk_rom,    // SDRAM clock
-    output          pxl2_cen,   // 10.08 MHz, pixel clock
+    output          pxl2_cen,   // 10.08MHz  OBJ pixel clock
 
     output   [2:0]  red,
     output   [2:0]  green,
     output   [2:0]  blue,
-    output          HB,
-    output          VB,
+    output          HB,         // horizontal blanking
+    output          VB,         // vertical blanking
     output          HS,
     output          VS,
     // cabinet I/O
@@ -36,6 +36,7 @@ module jtpopeye_game(
     input           coin_input,
     input   [ 4:0]  joystick1,
     input   [ 4:0]  joystick2,
+    input           service,
 
     // SDRAM interface
     input           downloading,
@@ -71,7 +72,6 @@ module jtpopeye_game(
 wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
 wire          pxl_cen;  //  5.04MHz  TXT pixel clock
-wire          pxl2_cen; // 10.08MHz  OBJ pixel clock
 
 // DMA
 wire          ROHVS;
@@ -89,14 +89,16 @@ wire          prom_4a_we = prom_we[3];
 wire          prom_3a_we = prom_we[4];   
 wire          prom_5n_we = prom_we[5];      // TXT
     // output video
-wire          HB;         // horizontal blanking
 wire          HBD_n;      // HB - DMA
-wire          VB;         // vertical blanking
+wire [9:0]    AD_DMA;
+wire          dma_cs;     // tell main memory to get data out for DMA
+wire          busrq_n;
+
 
 assign HS = HB;
 assign VS = VB;
 // CPU interface
-wire [ 7:0]   DD;
+wire [ 7:0]   DD, DD_DMA;
 wire [15:0]   AD;
 wire          CSBW_n;
 wire          CSV;
@@ -121,6 +123,8 @@ jtpopeye_cen u_cen(
     .pxl2_cen   ( pxl2_cen      )   // OBJ pixel clock
 );
 
+assign sample = ay_cen;
+
 jtpopeye_prom_we u_prom_we(
     .clk_rom        ( clk_rom       ),
     .clk_rgb        ( clk           ),
@@ -139,7 +143,6 @@ jtpopeye_rom u_rom(
     .rst_n      ( rst_n     ),
     .clk        ( clk       ),
     .pxl_cen    ( pxl_cen   ), // 10 MHz
-    .LVBL       ( LVBL      ),
     .sdram_re   ( sdram_re  ), // any edge (rising or falling)
         // means a read request
 
@@ -161,7 +164,6 @@ jtpopeye_main u_main(
     .clk            ( clk           ),
     .cpu_cen        ( cpu_cen       ),
     .ay_cen         ( ay_cen        ),
-    .LVBL           ( LVBL          ),
     // cabinet I/O
     .joystick1      ( joystick1     ),
     .joystick2      ( joystick2     ),
@@ -174,6 +176,10 @@ jtpopeye_main u_main(
     .MEMWRO         ( MEMWRO        ),
     .AD             ( AD            ),
     .DD             ( DD            ),
+    .DD_DMA         ( DD_DMA        ),
+    .AD_DMA         ( AD_DMA        ),
+    .dma_cs         ( dma_cs        ),
+    .busrq_n        ( busrq_n       ),
     // Video Access
     .CSBW_n         ( CSBW_n        ),
     .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)
@@ -208,9 +214,13 @@ jtpopeye_video u_video(
     .MEMWRO     ( MEMWRO        ),
     .RV_n       ( RV_n          ),
     // DMA
+    .DD_DMA     ( DD_DMA        ),
     .INITEO     ( INITEO        ),
     .ROHVS      ( ROHVS         ),
     .ROHVCK     ( ROHVCK        ),
+    .AD_DMA     ( AD_DMA        ),
+    .dma_cs     ( dma_cs        ),
+    .busrq_n    ( busrq_n       ),
     // SDRAM interface
     .obj_addr   ( obj_addr      ),
     .objrom_data( obj_data      ),    
