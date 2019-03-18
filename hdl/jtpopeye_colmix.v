@@ -94,11 +94,11 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
 jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
-    .data   ( prom_din[7:4]     ),
+    .data   ( prom_din[3:0]     ),  // data in the file is in the LSB's
     .rd_addr( obj_addr          ),
     .wr_addr( prog_addr         ),
     .we     ( prom_5a_we        ),
-    .q      ( obj_rgb[7:4]      )
+    .q      ( obj_rgb[7:4]      )  // But in the system, it is in the MSB's
 );
 
 // TXT

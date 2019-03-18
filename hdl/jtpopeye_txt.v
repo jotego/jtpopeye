@@ -89,7 +89,9 @@ jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
 
 wire [7:0] txtv;
 
-jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n")) u_prom_5n(
+jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
+    .check_start(12'h800)
+) u_prom_5n(
     .clk    ( clk               ),
     .cen    ( pxl_cen           ),
     .data   ( prom_din          ),

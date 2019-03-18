@@ -127,7 +127,6 @@ assign sample = ay_cen;
 jtpopeye_prom_we u_prom_we(
     .clk_rom        ( clk_rom       ),
     .clk_rgb        ( clk           ),
-    .prom_cen       ( pxl2_cen      ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),
     .ioctl_data     ( ioctl_data    ),
