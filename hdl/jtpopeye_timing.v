@@ -47,7 +47,7 @@ wire [3:0] prom_data;
 // H counter
 reg [8:0] Hcnt;
 reg [8:0] Vcnt;
-wire [7:0] Hnext = Hcnt[7:0] + 8'd1;
+wire [8:0] Hnext = Hcnt[8:0] + 9'd1;
 reg preHB=1'b0;
 
 `ifdef SIMULATION
@@ -67,12 +67,12 @@ end
 reg HBlatch;
 
 always @(posedge clk )
-    if(pxl2_cen) begin
-        if( !Hnext[7] ) begin
-            Hcnt[7:0] <= Hnext;
-        end else begin
+    if(pxl_cen) begin   // 20.16/4 MHz
+        if( !Hcnt[8] ) begin
+            Hcnt <= Hnext;
+        end else begin // 
             preHB <= ~preHB;
-            Hcnt[7:0] <= { preHB, preHB, 6'd0 };
+            Hcnt <= { 1'b0, preHB, preHB, 6'd0 };
             HB <= preHB;
         end
         if( &Hcnt[2:0] ) HBlatch <= HB;
