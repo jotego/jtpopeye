@@ -147,6 +147,7 @@ wire sec_wr_n = !sec_cs || wr_n;
 jtpopeye_security u_security(
     .clk    ( clk      ),
     .cen    ( cpu_cen  ),
+    .rst_n  ( rst_n    ),
     .din    ( cpu_dout ),
     .dout   ( sec_data ),
     .rd_n   ( rd_n     ),

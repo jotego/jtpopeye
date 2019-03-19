@@ -21,6 +21,7 @@
 module jtpopeye_security(
     input              clk,
     input              cen,
+    input              rst_n,
     input      [7:0]   din,
     output reg [7:0]   dout,
     input              rd_n,
@@ -39,22 +40,26 @@ always @(*) begin
     code = data0 | data1;
 end
 
-always @(posedge clk) if( cen ) begin
-    if( !wr_n ) begin
-        `ifdef SIMULATION
-        $display("INFO: Write to security device A[%d] = %x", A0, din);
-        `endif
-        if( !A0 )
-            shift <= din[2:0];
-        else begin
-            data0 <= din;
-            data1 <= din;
+always @(posedge clk or negedge rst_n)
+    if( !rst_n ) begin 
+        data0 <= 8'd0;
+        data1 <= 8'd0;
+    end else if( cen ) begin
+        if( !wr_n ) begin
+            `ifdef SIMULATION
+            $display("INFO: Write to security device A[%d] = %x", A0, din);
+            `endif
+            if( !A0 )
+                shift <= din[2:0];
+            else begin
+                data0 <= data1;
+                data1 <= din;
+            end
+        end
+        if( !rd_n ) begin
+            dout <= A0 ? 8'd0 : code;
         end
     end
-    if( !rd_n ) begin
-        dout <= A0 ? 8'd0 : code;
-    end
-end
 
 
 endmodule // jtpopeye_security
