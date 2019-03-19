@@ -31,14 +31,14 @@ module jtpopeye_main(
     input               service,
     // DMA
     input               INITEO,
-    input               DMCS,
     output reg          MEMWRO, // latched
     output [15:0]       AD,
     output [ 7:0]       DD,
     output [ 7:0]       DD_DMA,
     input  [ 9:0]       AD_DMA,
     input               dma_cs, // tell main memory to get data out for DMA
-    input               busrq_n,    
+    input               busrq_n,
+    output              busak_n,
     // video access
     output reg          CSBW_n,
     output reg          CSVl,   // latched
@@ -88,9 +88,9 @@ always @(*) begin
     in_cs  = !iorq_n;
 
     // I do not use mreq_n because it reduces time for SDRAM reads
-    if( iorq_n ) begin 
+    if( iorq_n ) begin
         case ( AD[15:13] )
-            3'b1_00: ram_cs = (!mreq_n | DMCS) && !AD[11];
+            3'b1_00: ram_cs = !mreq_n && !AD[11];
             3'b1_01: CSV = !mreq_n;
             3'b1_10: CSB = !mreq_n;
             3'b1_11: sec_cs = 1'b1;

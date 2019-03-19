@@ -13,7 +13,7 @@ module mist_dump(
         $display("DUMP enabled");
         $dumpfile("test.lxt");
     end
-    `ifdef LOADROMxxx
+    `ifdef LOADROM
     always @(negedge led) if( $time > 20000 ) begin // led = downloading signal
         $display("DUMP starts");
         $dumpvars(0,mist_test);
@@ -25,7 +25,7 @@ module mist_dump(
         `ifdef DEEPDUMP
             $dumpvars(0,mist_test);
         `else
-            $dumpvars(1,mist_test.UUT.u_game.u_main);
+            $dumpvars(0,mist_test.UUT.u_game);
         `endif
         $dumpon;
     end

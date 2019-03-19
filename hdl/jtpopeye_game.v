@@ -73,9 +73,6 @@ wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
 wire          pxl_cen;  //  5.04MHz  TXT pixel clock
 
-// DMA
-wire          ROHVS;
-wire          ROHVCK;
 // SDRAM interface
 wire [12:0]   obj_addr;
 wire [31:0]   obj_data;
@@ -91,7 +88,7 @@ wire          prom_5n_we = prom_we[5];      // TXT
 wire          HBD_n;      // HB - DMA
 wire [9:0]    AD_DMA;
 wire          dma_cs;     // tell main memory to get data out for DMA
-wire          busrq_n;
+wire          busrq_n, busak_n;
 
 
 assign HS = HB;
@@ -102,7 +99,7 @@ wire [15:0]   AD;
 wire          CSBW_n;
 wire          CSV;
 wire          DWRBK;
-wire          MEMWRO, DMCS;
+wire          MEMWRO;
 wire          RV_n, INITEO;
 // ROM access
 wire          main_cs, ready;
@@ -171,7 +168,6 @@ jtpopeye_main u_main(
     .service        ( service       ),
     // DMA
     .INITEO         ( INITEO        ),
-    .DMCS           ( DMCS          ),
     .MEMWRO         ( MEMWRO        ),
     .AD             ( AD            ),
     .DD             ( DD            ),
@@ -179,6 +175,7 @@ jtpopeye_main u_main(
     .AD_DMA         ( AD_DMA        ),
     .dma_cs         ( dma_cs        ),
     .busrq_n        ( busrq_n       ),
+    .busak_n        ( busak_n       ),
     // Video Access
     .CSBW_n         ( CSBW_n        ),
     .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)
@@ -215,11 +212,10 @@ jtpopeye_video u_video(
     // DMA
     .DD_DMA     ( DD_DMA        ),
     .INITEO     ( INITEO        ),
-    .ROHVS      ( ROHVS         ),
-    .ROHVCK     ( ROHVCK        ),
     .AD_DMA     ( AD_DMA        ),
     .dma_cs     ( dma_cs        ),
     .busrq_n    ( busrq_n       ),
+    .busak_n    ( busak_n       ),
     // SDRAM interface
     .obj_addr   ( obj_addr      ),
     .objrom_data( obj_data      ),    

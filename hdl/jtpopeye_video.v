@@ -37,11 +37,10 @@ module jtpopeye_video(
     // DMA
     input      [ 7:0]   DD_DMA,
     output              INITEO,
-    input               ROHVS,
-    input               ROHVCK,
     output     [9:0]    AD_DMA,
     output              dma_cs, // tell main memory to get data out for DMA
     output              busrq_n,
+    output              busak_n,
     // SDRAM interface
     output     [12:0]   obj_addr,
     input      [31:0]   objrom_data,    
@@ -63,6 +62,10 @@ module jtpopeye_video(
     output      [2:0]   green,
     output      [2:0]   blue        // LSB is always zero
 );
+
+// DMA
+wire          ROHVS;
+wire          ROHVCK;
 
 wire [3:0] TXTC;
 wire [4:0] BAKC;
@@ -115,6 +118,9 @@ jtpopeye_dma u_dma(
     .AD_DMA             ( AD_DMA        ),
     .dma_cs             ( dma_cs        ),
     .busrq_n            ( busrq_n       ),
+    .busak_n            ( busak_n       ),
+    .ROHVS              ( ROHVS         ),
+    .ROHVCK             ( ROHVCK        ),
     .DO                 ( DO            )
 );
 
