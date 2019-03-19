@@ -180,6 +180,7 @@ jtpopeye_main u_main(
     .CSBW_n         ( CSBW_n        ),
     .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)
     .DWRBK          ( DWRBK         ),
+    .VB             ( VB            ),
     // DIP switches
     .dip_sw2        ( dip_sw2       ),
     .dip_sw1        ( dip_sw1       ),

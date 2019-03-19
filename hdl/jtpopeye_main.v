@@ -43,6 +43,7 @@ module jtpopeye_main(
     output reg          CSBW_n,
     output reg          CSVl,   // latched
     output reg          DWRBK,
+    input               VB,
     // DIP switches
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
@@ -212,6 +213,21 @@ always @(*) begin
     endcase
 end
 
+///////////////////////////////7
+// NMI generation
+reg nmi_n, VBl;
+
+always @(posedge clk or negedge rst_n)
+    if(!rst_n) begin
+        nmi_n <= 1'b1;
+    end else if(cpu_cen) begin
+        VBl <= VB;
+        if( !AD[9] )
+            nmi_n <= 1'b1; // clear NMI
+        else if( VB && !VBl ) nmi_n <= 1'b0; // set NMI
+    end
+
+
 `ifndef SIMULATION
 T80s u_cpu(
     .RESET_n    ( rst_n       ),
@@ -227,7 +243,7 @@ T80s u_cpu(
     .IORQ_n     ( iorq_n      ),
     .M1_n       ( m1_n        ),
     .MREQ_n     ( mreq_n      ),
-    .NMI_n      ( 1'b1        ),
+    .NMI_n      ( nmi_n       ),
     .BUSRQ_n    ( busrq_n     ),
     .BUSAK_n    ( busak_n     ),
     .RFSH_n     ( rfsh_n      ),
@@ -241,7 +257,7 @@ tv80s #(.Mode(0)) u_cpu (
     .cen    ( cpu_cen    ),
     .wait_n ( 1'b1       ),
     .int_n  ( 1'b1       ),
-    .nmi_n  ( 1'b1       ),
+    .nmi_n  ( nmi_n      ),
     .rd_n   ( rd_n       ),
     .wr_n   ( wr_n       ),
     .A      ( Ascrambled ),
