@@ -160,7 +160,6 @@ jtpopeye_security u_security(
 reg ay_cs;
 
 always @(*) begin
-    cabinet_input = 8'hff;
     ay_cs = 'b0;
     if( !iorq_n && !rd_n )
         case(AD[1:0])
@@ -172,19 +171,18 @@ always @(*) begin
                 cabinet_input[7]   = coin_input;
                 cabinet_input[6]   = service;
                 cabinet_input[5]   = INITEO;   // HB ^ RV
+                cabinet_input[4]   = 1'b1;
                 cabinet_input[3:2] = start_button;
+                cabinet_input[1:0] = 2'b11;
             end
             2'd2: begin // 2P input
-                cabinet_input[1:0] = joystick2[1:0]; // 2P left, right
-                cabinet_input[2]   = joystick2[3]; // 2P up
-                cabinet_input[3]   = joystick2[2]; // 2P down
-                cabinet_input[4]   = joystick2[4]; // 2P punch
+                cabinet_input[7:5] = ~3'b0;
+                cabinet_input[4:0] = joystick2[4:0]; // 2P
             end
             2'd3: begin // 1P input
-                cabinet_input[1:0] = joystick1[1:0]; // 1P left, right
-                cabinet_input[2]   = joystick1[3]; // 1P up
-                cabinet_input[3]   = joystick1[2]; // 1P down
-                cabinet_input[4]   = joystick1[4]; // 1P punch
+                cabinet_input[7:5] = ~3'b0;
+                cabinet_input[4:0] = joystick1[4:0]; // 2P
+
             end
         endcase
 end
