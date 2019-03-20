@@ -90,7 +90,7 @@ jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
 wire [7:0] txtv;
 
 jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
-    .check_start(12'h800)
+    .offset(12'h800)
 ) u_prom_5n(
     .clk    ( clk               ),
     .cen    ( pxl_cen           ),
@@ -109,7 +109,7 @@ always @(posedge clk) if(pxl_cen) begin
         txtc0 <= txtc;
     end
     else txtv0 <= RV ? { txtv0[6:0], 1'b0 } : { 1'b0, txtv0[7:1] };
-    TXTV <= RV ? txtv0[7] : txtv0[0];
+    TXTV <= ~(RV ? txtv0[7] : txtv0[0]);
     TXTC <= txtc0;
 end
 

@@ -132,7 +132,8 @@ end
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .CLK_SPEED(20),
-    .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0))
+    .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
+    )
 u_frame(
     .CLOCK_27       ( CLOCK_27       ),
     .clk_rgb        ( clk_rgb        ),
@@ -148,8 +149,8 @@ u_frame(
     .game_b         ( { blue, blue[2] }   ),
     .LHBL           ( ~HB            ),
     .LVBL           ( ~VB            ),
-    .hs             ( hs             ),
-    .vs             ( vs             ),
+    .hs             ( HB             ),
+    .vs             ( VB             ),
     // VGA
     .en_mixing      ( en_mixing      ),
     .VGA_R          ( VGA_R          ),

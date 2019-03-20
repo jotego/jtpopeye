@@ -69,7 +69,8 @@ assign DD     = cpu_dout;
 assign DD_DMA = ram_data;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
 
-assign main_cs = rom_cs;
+// assign main_cs = ~mreq_n & ~rd_n;    // activate ROM readings unless I/O is requested
+assign main_cs = 1'b1;
 
 always @(posedge clk) begin
     CSVl   <= CSV; // latched outputs, do not cen!
@@ -88,37 +89,56 @@ always @(*) begin
     rom_cs = 1'b0;
     in_cs  = !iorq_n;
 
-    // I do not use mreq_n because it reduces time for SDRAM reads
-    if( iorq_n ) begin
-        case ( AD[15:13] )
-            3'b1_00: ram_cs = !mreq_n && !AD[11];
-            3'b1_01: CSV = !mreq_n;
-            3'b1_10: CSB = !mreq_n;
-            3'b1_11: sec_cs = 1'b1;
-            default: rom_cs = 1'b1;
-        endcase
-    end
+    case ( AD[15:13] )
+        3'b1_00: ram_cs = !AD[11];
+        3'b1_01: CSV = 1'b1;        // TXT. 0xA???
+        3'b1_10: CSB = 1'b1;        // Background. 0xC???
+        3'b1_11: sec_cs = 1'b1;
+        default: rom_cs = 1'b1;
+    endcase
 end
 
 always @(posedge clk) if(cpu_cen) begin
     CSB_l <= CSB;
 end
 
+`ifndef TESTROM
 // Address obfuscation
 assign AD[2:0]   = ~Ascrambled[2:0]; // 6E
 assign AD[ 3]    = ~Ascrambled[4];
 assign AD[ 4]    = ~Ascrambled[5];
 assign AD[ 5]    = ~Ascrambled[9];
-assign AD[ 6]    = Ascrambled[3];  // 6F
-assign AD[ 7]    = Ascrambled[6];
-assign AD[ 8]    = Ascrambled[7];
-assign AD[ 9]    = Ascrambled[8];
-assign AD[15:10] = Ascrambled[15:10]; // 6H
+assign AD[ 6]    =  Ascrambled[3];  // 6F
+assign AD[ 7]    =  Ascrambled[6];
+assign AD[ 8]    =  Ascrambled[7];
+assign AD[ 9]    =  Ascrambled[8];
+assign AD[15:10] =  Ascrambled[15:10]; // 6H
+`else 
+assign AD = Ascrambled;
+`endif
 
 ///////////////////////////
 // Game ROM
+wire [7:0] rom_good;
 
-assign rom_addr = AD[14:0];
+`ifndef TESTROM
+    // Original ROM contents are scrambled, fix it:
+    assign rom_addr = AD[14:0];
+    assign rom_good = {
+        rom_data[3], // MSB
+        rom_data[4],
+        rom_data[2],
+        rom_data[5],
+        rom_data[1],
+        rom_data[6],
+        rom_data[0],
+        rom_data[7]  // LSB
+    };
+`else
+    // plain content for test ROMs
+    assign rom_addr = Ascrambled[14:0];
+    assign rom_good = rom_data;
+`endif
 
 ///////////////////////////
 // Game RAM
@@ -160,59 +180,48 @@ jtpopeye_security u_security(
 reg ay_cs;
 
 always @(*) begin
-    ay_cs = 'b0;
-    if( !iorq_n && !rd_n )
-        case(AD[1:0])
-            2'd0: begin
-                ay_cs = 'b1;
-                cabinet_input = ay_dout;
-            end
-            2'd1: begin
-                cabinet_input[7]   = coin_input;
-                cabinet_input[6]   = service;
-                cabinet_input[5]   = INITEO;   // HB ^ RV
-                cabinet_input[4]   = 1'b1;
-                cabinet_input[3:2] = start_button;
-                cabinet_input[1:0] = 2'b11;
-            end
-            2'd2: begin // 2P input
-                cabinet_input[7:5] = ~3'b0;
-                cabinet_input[4:0] = joystick2[4:0]; // 2P
-            end
-            2'd3: begin // 1P input
-                cabinet_input[7:5] = ~3'b0;
-                cabinet_input[4:0] = joystick1[4:0]; // 2P
-
-            end
-        endcase
+    case(AD[1:0])
+        2'd0: begin
+            ay_cs = !iorq_n && !rd_n;
+            cabinet_input = ay_dout;
+        end
+        2'd1: begin
+            cabinet_input[7]   = coin_input;
+            cabinet_input[6]   = service;
+            cabinet_input[5]   = INITEO;   // HB ^ RV
+            cabinet_input[4]   = 1'b1;
+            cabinet_input[3:2] = start_button;
+            cabinet_input[1:0] = 2'b11;
+        end
+        2'd2: begin // 2P input
+            cabinet_input[7:5] = ~3'b0;
+            cabinet_input[4:0] = joystick2[4:0]; // 2P
+        end
+        2'd3: begin // 1P input
+            cabinet_input[7:5] = ~3'b0;
+            cabinet_input[4:0] = joystick1[4:0]; // 2P
+        end
+    endcase
 end
 
 ///////////////////////////
 // CPU data input
 reg  [7:0] cpu_din;
-wire [7:0] rom_good = {
-    rom_data[3], // MSB
-    rom_data[4],
-    rom_data[2],
-    rom_data[5],
-    rom_data[1],
-    rom_data[6],
-    rom_data[0],
-    rom_data[7]  // LSB
-};
 
 always @(*) begin
     cpu_din = 8'h0;
-    case( {rom_cs, ram_cs, in_cs, sec_cs } )
-        4'b10_00: cpu_din = rom_good;
-        4'b01_00: cpu_din = ram_data;
-        4'b00_10: cpu_din = cabinet_input;
-        4'b00_01: cpu_din = sec_data;
-        default:  cpu_din = 8'hff;
+    case( {mreq_n, iorq_n} )    
+        2'b01:
+            case( {rom_cs, ram_cs, sec_cs } )
+                4'b10_0: cpu_din = rom_good;
+                4'b01_0: cpu_din = ram_data;
+                4'b00_1: cpu_din = sec_data;
+            endcase    
+        2'b10: cpu_din = cabinet_input;     
     endcase
 end
 
-///////////////////////////////7
+////////////////////////////////
 // NMI generation
 reg nmi_n, VBl;
 
