@@ -43,7 +43,7 @@ module jtpopeye_timing(
 
 wire RV = ~RV_n;
 wire [3:0] prom_data;
-
+assign INITEO_n = ~(RV ^ HB );
 // H counter
 reg [8:0] Hcnt;
 reg [8:0] Vcnt;
