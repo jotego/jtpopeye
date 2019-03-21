@@ -80,6 +80,7 @@ wire [28:0] DO;
 wire        RV = ~RV_n;
 wire        H2O;
 wire        INITEO_n;
+wire        DM10;
 
 assign INITEO = ~INITEO_n;
 
@@ -99,6 +100,11 @@ jtpopeye_timing u_timing(
     .HB                 ( HB            ),
     .HBD_n              ( HBD_n         ), // HB - DMA
     .VB                 ( VB            ),
+    // Interleaving
+    .ROHVS              ( ROHVS         ),
+    .ROHVCK             ( ROHVCK        ),
+    .busak              ( ~busak_n      ),
+    .DM10               ( DM10          ),
     // PROM programming
     .prog_addr          ( prog_addr[7:0]),
     .prom_7j_we         ( prom_7j_we    ),
@@ -114,13 +120,12 @@ jtpopeye_dma u_dma(
     .H                  ( H[1:0]        ),
     .HBD_n              ( HBD_n         ), // HB - DMA
     .DD_DMA             ( DD_DMA        ),
+    .DM10               ( DM10          ),
 
     .AD_DMA             ( AD_DMA        ),
     .dma_cs             ( dma_cs        ),
     .busrq_n            ( busrq_n       ),
     .busak_n            ( busak_n       ),
-    .ROHVS              ( ROHVS         ),
-    .ROHVCK             ( ROHVCK        ),
     .DO                 ( DO            )
 );
 

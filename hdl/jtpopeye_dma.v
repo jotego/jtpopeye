@@ -28,12 +28,11 @@ module jtpopeye_dma(
     input               HBD_n,
     input      [7:0]    DD_DMA,
     input               busak_n,
+    output              DM10,
 
     output reg [9:0]    AD_DMA,
     output reg          dma_cs, // tell main memory to get data out for DMA
     output reg          busrq_n,
-    output reg          ROHVS,
-    output reg          ROHVCK,
     output     [28:0]   DO
 );
 
@@ -45,6 +44,7 @@ wire H0_negedge = !H[0] && Hl[0];
 reg VBl;
 wire VB_posedge = VB && !VBl;
 
+assign DM10 = DM[10];
 // Address bus is obfuscated
 always @(*) begin
     AD_DMA[2] = DM[0];
@@ -74,15 +74,9 @@ always @(posedge clk or negedge rst_n)
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         busrq_n <= 1'b1;
-        ROHVS  <= 1'b0;
-        ROHVCK <= 1'b0;
     end else if(cen) begin
         if( VB_posedge ) busrq_n <= 1'b0;
         if( DM[10]     ) busrq_n <= 1'b1; // DMA done
-        // This has something to do with rotating the screen
-        ROHVS  <= 1'b0;
-        ROHVCK <= 1'b0;
-        //ROHVS <= !HBD_n || !busak_n;
     end
 
 reg [3:0] DMCS;

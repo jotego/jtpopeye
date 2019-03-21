@@ -34,6 +34,11 @@ module jtpopeye_timing(
     output reg          HBD_n, // HB - DMA
     output reg          VB,
     output              INITEO_n,
+    // Interlacing
+    output reg          ROHVS,
+    output reg          ROHVCK,
+    input               DM10,
+    input               busak,
     // PROM programming
     input   [7:0]       prog_addr,
     input               prom_7j_we,
@@ -97,6 +102,19 @@ always @(posedge clk)
             if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
         end
     end
+
+// Interleaving
+
+jtpopeye_roh_model u_model(
+    .VB_n   ( ~VB    ),
+    .AI_n   ( ~H[0]  ),
+    .BI_n   ( ~H[1]  ),
+    .DM10   ( DM10   ),
+    .busak  ( busak  ),
+    .HBD_n  ( HBD_n  ),
+    .ROHVS  ( ROHVS  ),
+    .ROHVCK ( ROHVCK )
+);
 
 // V blanking
 
