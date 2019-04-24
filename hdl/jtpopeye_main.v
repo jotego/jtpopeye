@@ -39,6 +39,9 @@ module jtpopeye_main(
     input               dma_cs, // tell main memory to get data out for DMA
     input               busrq_n,
     output              busak_n,
+    // serial wires
+    input               uart_rx,
+    output              uart_tx, // serial signal to transmit. High when idle    
     // video access
     output reg          CSBW_n,
     output reg          CSVl,   // latched
@@ -68,6 +71,15 @@ wire [7:0] ram_data, sec_data, cpu_dout, ay_dout;
 assign DD     = cpu_dout;
 assign DD_DMA = ram_data;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
+wire uart_cs = !iorq_n && AD[7:4]==4'hf;
+
+// UART
+wire [7:0] uart_rx_data;
+wire       uart_rx_done, uart_rx_error;
+wire       uart_tx_done, uart_tx_busy;
+
+reg        uart_tx_wr;
+reg [7:0]  uart_tx_data;
 
 // assign main_cs = ~mreq_n & ~rd_n;    // activate ROM readings unless I/O is requested
 assign main_cs = 1'b1;
@@ -93,7 +105,7 @@ always @(*) begin
         3'b1_00: ram_cs = !AD[11];
         3'b1_01: CSV = 1'b1;        // TXT. 0xA???
         3'b1_10: CSB = 1'b1;        // Background. 0xC???
-        3'b1_11: sec_cs = 1'b1;
+        3'b1_11: sec_cs = 1'b1;     // Security at E000/1
         default: rom_cs = 1'b1;
     endcase
 end
@@ -207,19 +219,41 @@ end
 ///////////////////////////
 // CPU data input
 reg  [7:0] cpu_din;
+reg        clr_uart;
+reg        uart_rx_new; // signals that a new byte is ready to be read
 
 always @(*) begin
-    cpu_din = 8'h0;
-    case( {mreq_n, iorq_n} )    
-        2'b01:
-            case( {rom_cs, ram_cs, sec_cs } )
-                4'b10_0: cpu_din = rom_good;
-                4'b01_0: cpu_din = ram_data;
-                4'b00_1: cpu_din = sec_data;
+    cpu_din  = 8'h0;
+    clr_uart = 1'b0;
+    case( {mreq_n, iorq_n} ) 
+        2'b01:  // Memory request
+            case( { rom_cs, ram_cs, sec_cs } )
+                3'b10_0: cpu_din = rom_good;
+                3'b01_0: cpu_din = ram_data;
+                3'b00_1: cpu_din = sec_data;
             endcase    
-        2'b10: cpu_din = cabinet_input;     
+        2'b10: // I/O request
+            if( uart_cs ) begin
+                casez( AD[1:0] )
+                    2'b00: cpu_din = { 7'd0, uart_rx_new  }; // Rx status
+                    2'b01: cpu_din = { 7'd0, uart_tx_busy }; // Tx status
+                    2'b1?: begin
+                        cpu_din = uart_rx_data;
+                        clr_uart = !rd_n;
+                    end                        
+                endcase
+            end
+            else cpu_din = cabinet_input;     
     endcase
 end
+
+always @(posedge clk or negedge rst_n)
+    if( !rst_n ) begin
+        uart_rx_new <= 1'b0;
+    end else begin
+        if( uart_rx_done ) uart_rx_new <= 1'b1;
+        if( clr_uart     ) uart_rx_new <= 1'b0;
+    end
 
 ////////////////////////////////
 // NMI generation
@@ -315,6 +349,42 @@ jt49_bus u_ay( // note that input ports are not multiplexed
     .IOB_in ( 8'h0      ),  // IOB used as output
     .IOA_out(),             // IOA used as input
     .A(), .B(), .C()
+);
+
+//////////////////////////////////////////////
+// UART
+// This was not present on the original arcade
+// this is used for having fun with TinyBASIC
+
+always @(posedge clk or negedge rst_n ) 
+    if( !rst_n ) begin
+        uart_tx_data = 8'd0;
+        uart_tx_wr   = 1'b0;
+    end else if(cpu_cen) begin
+        if( uart_cs  && !wr_n) begin
+            uart_tx_data <= cpu_dout;
+            uart_tx_wr   <= 1'b1;
+        end else begin
+            uart_tx_wr   <= 1'b0;
+        end
+    end
+
+jtframe_uart u_uart(
+    .rst_n      ( rst_n         ),
+    .clk        ( clk           ),
+    .cen        ( cpu_cen       ),
+    // serial wires
+    .uart_rx    ( uart_rx       ),
+    .uart_tx    ( uart_tx       ), // serial signal to transmit. High when idle
+    // Rx interface 
+    .rx_data    ( uart_rx_data  ),
+    .rx_done    ( uart_rx_done  ),
+    .rx_error   ( uart_rx_error ),
+    // Tx interface
+    .tx_done    ( uart_tx_done  ),
+    .tx_data    ( uart_tx_data  ),
+    .tx_busy    ( uart_tx_busy  ),
+    .tx_wr      ( uart_tx_wr    )  // write strobe
 );
 
 endmodule // jtpopeye_main

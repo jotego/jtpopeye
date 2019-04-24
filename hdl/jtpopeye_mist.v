@@ -37,7 +37,10 @@ module jtpopeye_mist(
     output [1:0]    SDRAM_BA,       // SDRAM Bank Address
     output          SDRAM_CLK,      // SDRAM Clock
     output          SDRAM_CKE,      // SDRAM Clock Enable
-   // SPI interface to arm io controller
+    // UART
+    input           UART_RX,
+    output          UART_TX,
+    // SPI interface to arm io controller
     output          SPI_DO,
     input           SPI_DI,
     input           SPI_SCK,
@@ -241,6 +244,10 @@ jtpopeye_game u_game(
     .sdram_re       ( sdram_re              ),
     .sdram_addr     ( sdram_addr            ),
     .data_read      ( data_read             ),
+
+    // UART
+    .uart_rx        ( UART_RX               ),
+    .uart_tx        ( UART_TX               ),
 
     // ROM LOAD
     .ioctl_addr     ( ioctl_addr            ),

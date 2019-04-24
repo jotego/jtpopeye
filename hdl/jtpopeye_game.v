@@ -38,6 +38,10 @@ module jtpopeye_game(
     input   [ 4:0]  joystick2,
     input           service,
 
+    // UART
+    input           uart_rx,
+    output          uart_tx,
+
     // SDRAM interface
     input           downloading,
     input           loop_rst,
@@ -176,6 +180,9 @@ jtpopeye_main u_main(
     .dma_cs         ( dma_cs        ),
     .busrq_n        ( busrq_n       ),
     .busak_n        ( busak_n       ),
+    // UART
+    .uart_rx        ( uart_rx       ),
+    .uart_tx        ( uart_tx       ),
     // Video Access
     .CSBW_n         ( CSBW_n        ),
     .CSVl           ( CSV           ), // CSVl is CSV latched (1-clock delay, no cen)

@@ -1,3 +1,4 @@
+../../modules/jtframe/hdl/jtframe_uart.v
 ../../modules/jtframe/hdl/ram/jtgng_prom.v
 ../../modules/jtframe/hdl/ram/jtgng_ram.v
 ../../modules/jtframe/hdl/sdram/jt1943_romrq.v
