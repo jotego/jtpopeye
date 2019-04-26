@@ -113,6 +113,7 @@ wire   [ 7:0] main_data;
 wire   [7:0]  dip_sw2 = { dip_upright, dip_demosnd, dip_bonus, 
                             dip_level, dip_lives };
 wire   [3:0]  dip_sw1 = dip_price;
+wire          encrypted;    // is this an encrypted ROM?
 
 jtpopeye_cen u_cen(
     .clk        ( clk           ),  // 20 MHz
@@ -136,7 +137,8 @@ jtpopeye_prom_we u_prom_we(
     .prog_data      ( prog_data     ),
     .prog_mask      ( prog_mask     ), // active low
     .prog_we        ( prog_we       ),
-    .prom_we        ( prom_we       )
+    .prom_we        ( prom_we       ),
+    .encrypted      ( encrypted     )
 );
 
 jtpopeye_rom u_rom(
@@ -159,11 +161,20 @@ jtpopeye_rom u_rom(
     .data_read  ( data_read )
 );
 
+reg [1:0] main_rst_n=2'b0;
+always @(negedge clk) begin
+    if( !ready || !rst_n )
+        main_rst_n <= 2'b0;
+    else
+        main_rst_n <= { main_rst_n[0], 1'b1 };
+end
+
 jtpopeye_main u_main(
-    .rst_n          ( rst_n         ),
+    .rst_n          ( main_rst_n[1] ),
     .clk            ( clk           ),
     .cpu_cen        ( cpu_cen       ),
     .ay_cen         ( ay_cen        ),
+    .encrypted      ( encrypted     ),
     // cabinet I/O
     .joystick1      ( joystick1     ),
     .joystick2      ( joystick2     ),

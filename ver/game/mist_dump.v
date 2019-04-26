@@ -41,7 +41,7 @@ module mist_dump(
         `ifdef DEEPDUMP
             $shm_probe(mist_test,"AS");
         `else
-            $shm_probe(UUT,"AS");
+            $shm_probe(UUT.u_game.u_main,"A");
         `endif
     end
 `endif

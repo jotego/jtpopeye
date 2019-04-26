@@ -23,6 +23,7 @@ module jtpopeye_main(
     input               clk,
     input               cpu_cen,
     input               ay_cen,
+    input               encrypted,
     // cabinet I/O
     input   [4:0]       joystick1,
     input   [4:0]       joystick2,
@@ -32,10 +33,10 @@ module jtpopeye_main(
     // DMA
     input               INITEO,
     output reg          MEMWRO, // latched
-    output [15:0]       AD,
-    output [ 7:0]       DD,
-    output [ 7:0]       DD_DMA,
-    input  [ 9:0]       AD_DMA,
+    output reg [15:0]   AD,
+    output     [ 7:0]   DD,
+    output     [ 7:0]   DD_DMA,
+    input      [ 9:0]   AD_DMA,
     input               dma_cs, // tell main memory to get data out for DMA
     input               busrq_n,
     output              busak_n,
@@ -52,7 +53,7 @@ module jtpopeye_main(
     input   [3:0]       dip_sw1,
     // ROM access
     output              main_cs,
-    output [14:0]       rom_addr,
+    output reg [14:0]   rom_addr,
     input  [ 7:0]       rom_data,
     //
     output              RV_n,   // flip
@@ -101,42 +102,39 @@ always @(*) begin
     rom_cs = 1'b0;
     in_cs  = !iorq_n;
 
-    case ( AD[15:13] )
-        3'b1_00: ram_cs = !AD[11];
-        3'b1_01: CSV = 1'b1;        // TXT. 0xA???
-        3'b1_10: CSB = 1'b1;        // Background. 0xC???
-        3'b1_11: sec_cs = 1'b1;     // Security at E000/1
-        default: rom_cs = 1'b1;
-    endcase
+    if( !mreq_n ) begin
+        case ( AD[15:13] )
+            3'b1_00: ram_cs = !AD[11];
+            3'b1_01: CSV = 1'b1;        // TXT. 0xA???
+            3'b1_10: CSB = 1'b1;        // Background. 0xC???
+            3'b1_11: sec_cs = 1'b1;     // Security at E000/1
+            default: rom_cs = 1'b1;
+        endcase
+    end
 end
 
 always @(posedge clk) if(cpu_cen) begin
     CSB_l <= CSB;
 end
 
-`ifndef TESTROM
-// Address obfuscation
-assign AD[2:0]   = ~Ascrambled[2:0]; // 6E
-assign AD[ 3]    = ~Ascrambled[4];
-assign AD[ 4]    = ~Ascrambled[5];
-assign AD[ 5]    = ~Ascrambled[9];
-assign AD[ 6]    =  Ascrambled[3];  // 6F
-assign AD[ 7]    =  Ascrambled[6];
-assign AD[ 8]    =  Ascrambled[7];
-assign AD[ 9]    =  Ascrambled[8];
-assign AD[15:10] =  Ascrambled[15:10]; // 6H
-`else 
-assign AD = Ascrambled;
-`endif
-
 ///////////////////////////
 // Game ROM
-wire [7:0] rom_good;
+reg [7:0] rom_good;
 
-`ifndef TESTROM
+always @(*) if(encrypted) begin
+    // Address obfuscation
+    AD[2:0]   = ~Ascrambled[2:0]; // 6E
+    AD[ 3]    = ~Ascrambled[4];
+    AD[ 4]    = ~Ascrambled[5];
+    AD[ 5]    = ~Ascrambled[9];
+    AD[ 6]    =  Ascrambled[3];  // 6F
+    AD[ 7]    =  Ascrambled[6];
+    AD[ 8]    =  Ascrambled[7];
+    AD[ 9]    =  Ascrambled[8];
+    AD[15:10] =  Ascrambled[15:10]; // 6H
     // Original ROM contents are scrambled, fix it:
-    assign rom_addr = AD[14:0];
-    assign rom_good = {
+    rom_addr = AD[14:0];
+    rom_good = {
         rom_data[3], // MSB
         rom_data[4],
         rom_data[2],
@@ -146,11 +144,13 @@ wire [7:0] rom_good;
         rom_data[0],
         rom_data[7]  // LSB
     };
-`else
-    // plain content for test ROMs
-    assign rom_addr = Ascrambled[14:0];
-    assign rom_good = rom_data;
-`endif
+end else begin
+    AD       = Ascrambled;
+    rom_addr = Ascrambled[14:0];
+    rom_good = rom_data;
+end
+
+
 
 ///////////////////////////
 // Game RAM
@@ -369,7 +369,8 @@ always @(posedge clk or negedge rst_n )
         end
     end
 
-jtframe_uart u_uart(
+jtframe_uart #(.CLK_DIVIDER(5'd3),.UART_DIVIDER(5'd23)) // 57600 bps
+u_uart(
     .rst_n      ( rst_n         ),
     .clk        ( clk           ),
     .cen        ( cpu_cen       ),

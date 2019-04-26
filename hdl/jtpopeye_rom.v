@@ -40,7 +40,7 @@ module jtpopeye_rom(
 
 parameter  obj_offset = 22'd16384;
 
-reg [3:0] ready_cnt;
+reg [7:0] ready_cnt;
 
 reg [1:0] data_sel;
 wire main_req, obj_req;
@@ -56,7 +56,7 @@ always @(posedge clk) if(pxl_cen) begin
 end
 
 
-jt1943_romrq #(.AW(15),.INVERT_A0(1)) u_main(
+jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
     .cen      ( pxl_cen         ),
@@ -69,7 +69,7 @@ jt1943_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .we       ( data_sel[0]     )
 );
 
-jt1943_romrq #(.AW(13),.DW(32)) u_obj(
+jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
     .cen      ( pxl_cen         ),

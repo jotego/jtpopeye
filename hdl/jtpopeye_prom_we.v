@@ -29,7 +29,9 @@ module jtpopeye_prom_we(
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
     output reg           prog_we,
-    output reg [ 5:0]    prom_we    // update prom_we0 below if prom_we is edited!
+    output reg [ 5:0]    prom_we,   // update prom_we0 below if prom_we is edited!
+    // signal whether the CPU data is encrypted or not
+    output reg           encrypted
 );
 
 localparam PROM_ADDR = 8192*8;
@@ -76,5 +78,31 @@ always @(posedge clk_rom) begin
         end
     end
 end
+
+`ifndef TESTROM
+reg [3:0] encrypt_test=4'hf;
+reg check;
+reg last_downloading;
+
+always @(posedge clk_rom) begin
+    last_downloading <= downloading;
+    if( !last_downloading && downloading ) check<=1'b1;
+    if( check && ioctl_wr ) begin
+        case( ioctl_addr[1:0] )
+            2'b00: encrypt_test[0] = ioctl_data==8'he4;
+            2'b01: encrypt_test[1] = ioctl_data==8'h64;
+            2'b10: encrypt_test[2] = ioctl_data==8'ha5;
+            2'b11: begin
+                encrypt_test[3] = ioctl_data==8'h46;
+                check <= 1'b0;
+            end
+        endcase
+    end
+    encrypted <= &encrypt_test;
+end
+`else
+// For simulations with test roms and no loading:
+always @(*) encrypted = 1'b0;
+`endif
 
 endmodule // jt1492_promprog
