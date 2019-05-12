@@ -21,9 +21,6 @@
 module jtpopeye_rom(
     input               rst_n,
     input               clk,
-    input               pxl_cen, // 10 MHz
-    output  reg         sdram_re, // any edge (rising or falling)
-        // means a read request
 
     input       [14:0]  main_addr, // 32 kB, addressed as 8-bit words
     input       [12:0]  obj_addr,  // 32 kB
@@ -31,30 +28,27 @@ module jtpopeye_rom(
     output      [ 7:0]  main_dout,
     output      [31:0]  obj_dout,
     output  reg         ready,
-    // ROM interface
+    // SDRAM controller interface
     input               downloading,
+    input               data_rdy,
+    input               sdram_ack,
     input               loop_rst,
+    output  reg         sdram_req,
+    output  reg         refresh_en,
     output  reg [21:0]  sdram_addr,
     input       [31:0]  data_read
 );
 
 parameter  obj_offset = 22'd16384;
 
-reg [7:0] ready_cnt;
+reg [3:0] ready_cnt;
 
 reg [1:0] data_sel;
 wire main_req, obj_req;
 wire [14:0] main_addr_req;
 wire [12:0] obj_addr_req;
 
-always @(posedge clk) if(pxl_cen) begin
-    if( loop_rst || downloading )
-        sdram_re <= 1'b0;   // start strobing before ready signal
-            // because first data must be read before that signal.
-    else
-        if(main_req||obj_req) sdram_re <= ~sdram_re;
-end
-
+assign refresh_en = 1'b1;
 
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
@@ -82,37 +76,37 @@ jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .we       ( data_sel[1]     )
 );
 
-/*
-`ifdef SIMULATION
-real busy_cnt=0, total_cnt=0;
-always @(posedge clk) begin
-    total_cnt <= total_cnt + 1;
-    if( |data_sel ) busy_cnt <= busy_cnt+1;
-end
-always @(posedge LVBL) begin
-    $display("INFO: frame ROM stats: %.0f %%", 100.0*busy_cnt/total_cnt);
-end
-`endif
-*/
+reg [1:0] pre_sel;
 
 always @(posedge clk)
 if( loop_rst || downloading ) begin
-    sdram_addr <= 'b0;
+    sdram_addr <= 22'd0;
     ready_cnt <=  4'd0;
     ready     <=  1'b0;
-end else if(pxl_cen) begin
+    sdram_req <=  1'b0;
+    pre_sel   <=  2'd0;
+end else begin
     {ready, ready_cnt}  <= {ready_cnt, 1'b1};
-    case( 1'b1 )
-        main_req: begin
-            sdram_addr <= { 8'd0, main_addr_req[14:1] };
-            data_sel   <= 'b1;
-        end
-        obj_req: begin
-            sdram_addr <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
-            data_sel   <= 'b10;
-        end
-        default: data_sel <= 'b0;
-    endcase
+    if( data_rdy ) begin
+        data_sel <= pre_sel;
+        pre_sel  <= 2'd0;
+    end else data_sel <= 2'd0;
+    if( sdram_ack ) sdram_req <= 1'b0;
+    // accept a new request
+    if( pre_sel==2'd0 ) begin
+        sdram_req <= main_req | obj_req;
+        case( 1'b1 )
+            obj_req: begin
+                sdram_addr <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
+                pre_sel   <= 'b10;
+            end
+            main_req: begin
+                sdram_addr <= { 8'd0, main_addr_req[14:1] };
+                pre_sel   <= 'b1;
+            end
+            default: pre_sel <= 'b0;
+        endcase
+    end
 end
 
 endmodule // jtgng_rom

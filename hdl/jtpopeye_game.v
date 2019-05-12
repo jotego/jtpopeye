@@ -45,9 +45,12 @@ module jtpopeye_game(
     // SDRAM interface
     input           downloading,
     input           loop_rst,
-    output          sdram_re,
+    output          sdram_req,
     output  [21:0]  sdram_addr,
     input   [31:0]  data_read,
+    input           data_rdy,
+    input           sdram_ack,
+    output          refresh_en,
 
     // ROM LOAD
     input   [21:0]  ioctl_addr,
@@ -144,9 +147,6 @@ jtpopeye_prom_we u_prom_we(
 jtpopeye_rom u_rom(
     .rst_n      ( rst_n     ),
     .clk        ( clk       ),
-    .pxl_cen    ( pxl2_cen  ), // SDRAM clk/8
-    .sdram_re   ( sdram_re  ), // any edge (rising or falling)
-        // means a read request
 
     .main_addr  ( main_addr ), // 32 kB, addressed as 8-bit words
     .obj_addr   ( obj_addr  ), // 32 kB
@@ -154,11 +154,15 @@ jtpopeye_rom u_rom(
     .main_dout  ( main_data ),
     .obj_dout   ( obj_data  ),
     .ready      ( ready     ),
-    // ROM interface
-    .downloading(downloading),
-    .loop_rst   ( loop_rst  ),
-    .sdram_addr ( sdram_addr),
-    .data_read  ( data_read )
+    // SDRAM interface
+    .downloading ( downloading   ),
+    .data_rdy    ( data_rdy      ),
+    .sdram_req   ( sdram_req     ),
+    .sdram_ack   ( sdram_ack     ),
+    .loop_rst    ( loop_rst      ),
+    .sdram_addr  ( sdram_addr    ),
+    .data_read   ( data_read     ),
+    .refresh_en  ( refresh_en    )
 );
 
 reg [1:0] main_rst_n=2'b0;

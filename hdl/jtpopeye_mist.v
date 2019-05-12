@@ -71,14 +71,10 @@ localparam CONF_STR = {
 
 
 localparam CONF_STR_LEN = 8+16+6+42+20+18+24+15+30;
-parameter CLK_SPEED=20;
+localparam CLK_SPEED=40;
 
-wire          rst, clk_rgb, clk_rom;
-wire          cen12, cen6, cen3, cen1p5;
+wire          rst, clk_sys, clk_rom;
 wire [31:0]   status, joystick1, joystick2;
-wire [21:0]   sdram_addr;
-wire [31:0]   data_read;
-wire          loop_rst, autorefresh, sdram_re;
 wire          downloading;
 wire [21:0]   ioctl_addr;
 wire [ 7:0]   ioctl_data;
@@ -95,7 +91,7 @@ wire game_pause, game_service;
     initial if(!dip_pause) $display("INFO: DIP pause enabled");
 `else
 reg dip_pause;
-always @(posedge clk_rgb) dip_pause <= ~status[1] & ~game_pause;
+always @(posedge clk_sys) dip_pause <= ~status[1] & ~game_pause;
 `endif
 
 wire dip_upright = 1'b1;
@@ -121,8 +117,17 @@ wire game_rst, rst_n;
 wire [3:0] gfx_en;
 reg en_mixing, coin_input;
 
+// ROM access from game
+wire        loop_rst;
+wire [21:0] sdram_addr;
+wire        sdram_req;
+wire        sdram_ack;
+wire [31:0] data_read;
+wire        data_rdy;
+wire        refresh_en;
+
 // play level. Latch all inputs to game module
-always @(posedge clk_rgb) begin
+always @(posedge clk_sys) begin
     case( status[3:2] )
         2'b00: dip_level <= 2'b01; // normal
         2'b01: dip_level <= 2'b00; // easy
@@ -133,23 +138,26 @@ always @(posedge clk_rgb) begin
     coin_input <= |game_coin;
 end
 
+wire [3:0]
+    r4 = { red, red[2] },
+    g4 = { green, green[2] },
+    b4 = { blue, blue[2] };
+
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
-    .CLK_SPEED(20),
     .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
     )
 u_frame(
     .CLOCK_27       ( CLOCK_27       ),
-    .clk_rgb        ( clk_rgb        ),
+    .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_rom        ),
-    .cen12          ( cen12          ),
     .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
     // Base video
     .osd_rotate     ( 2'b00          ),
     // convert from 3-bit colour to 4-bit colour
-    .game_r         ( { red, red[2] }     ),
-    .game_g         ( { green, green[2] } ),
-    .game_b         ( { blue, blue[2] }   ),
+    .game_r         ( r4             ),
+    .game_g         ( g4             ),
+    .game_b         ( b4             ),
     .LHBL           ( ~HB            ),
     .LVBL           ( ~VB            ),
     .hs             ( HB             ),
@@ -192,10 +200,12 @@ u_frame(
     .downloading    ( downloading    ),
     // ROM access from game
     .loop_rst       ( loop_rst       ),
-    .autorefresh    ( autorefresh    ),
     .sdram_addr     ( sdram_addr     ),
-    .sdram_re       ( sdram_re       ),
+    .sdram_req      ( sdram_req      ),
+    .sdram_ack      ( sdram_ack      ),
     .data_read      ( data_read      ),
+    .data_rdy       ( data_rdy       ),
+    .refresh_en     ( refresh_en     ),
 //////////// board
     .rst            ( rst            ),
     .rst_n          ( rst_n          ),
@@ -220,7 +230,7 @@ u_frame(
 
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
-    .clk            ( clk_rgb               ),   // 20 MHz
+    .clk            ( clk_sys               ),   // 20 MHz
     .clk_rom        ( clk_rom               ),   // SDRAM clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
@@ -238,12 +248,14 @@ jtpopeye_game u_game(
     .joystick2      ( game_joystick2[4:0]   ),
     .service        ( game_service          ),
 
-    // SDRAM interface
-    .downloading    ( downloading           ),
-    .loop_rst       ( loop_rst              ),
-    .sdram_re       ( sdram_re              ),
-    .sdram_addr     ( sdram_addr            ),
-    .data_read      ( data_read             ),
+    // ROM access from game
+    .loop_rst       ( loop_rst       ),
+    .sdram_addr     ( sdram_addr     ),
+    .sdram_req      ( sdram_req      ),
+    .sdram_ack      ( sdram_ack      ),
+    .data_read      ( data_read      ),
+    .data_rdy       ( data_rdy       ),
+    .refresh_en     ( refresh_en     ),
 
     // UART
     .uart_rx        ( UART_RX               ),
@@ -262,7 +274,7 @@ jtpopeye_game u_game(
     .dip_pause      ( game_pause            ),  // not a DIP on real hardware
     .dip_upright    ( dip_upright           ),
     .dip_level      ( dip_level             ),  // difficulty level
-    .dip_bonus      ( dip_bonus             ), 
+    .dip_bonus      ( dip_bonus             ),
     .dip_demosnd    ( dip_demosnd           ),
     .dip_price      ( dip_price             ),
     .dip_lives      ( dip_lives             ),
