@@ -6,6 +6,8 @@ fi
 
 cd modules/jtframe
 git commit -a -m "$msg" $*
+git push
 cd ../..
 git add modules/jtframe
 git commit -a -m "$msg"
+git push
