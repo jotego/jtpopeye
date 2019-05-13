@@ -117,6 +117,7 @@ wire   [7:0]  dip_sw2 = { dip_upright, dip_demosnd, dip_bonus,
                             dip_level, dip_lives };
 wire   [3:0]  dip_sw1 = dip_price;
 wire          encrypted;    // is this an encrypted ROM?
+wire          main_ok;
 
 jtpopeye_cen u_cen(
     .clk        ( clk           ),  // 20 MHz
@@ -145,15 +146,17 @@ jtpopeye_prom_we u_prom_we(
 );
 
 jtpopeye_rom u_rom(
-    .rst_n      ( rst_n     ),
-    .clk        ( clk       ),
+    .rst_n       ( rst_n         ),
+    .clk         ( clk           ),
 
-    .main_addr  ( main_addr ), // 32 kB, addressed as 8-bit words
-    .obj_addr   ( obj_addr  ), // 32 kB
+    .main_addr   ( main_addr     ), // 32 kB, addressed as 8-bit words
+    .obj_addr    ( obj_addr      ), // 32 kB
 
-    .main_dout  ( main_data ),
-    .obj_dout   ( obj_data  ),
-    .ready      ( ready     ),
+    .main_dout   ( main_data     ),
+    .main_cs     ( main_cs       ),
+    .main_ok     ( main_ok       ),
+    .obj_dout    ( obj_data      ),
+    .ready       ( ready         ),
     // SDRAM interface
     .downloading ( downloading   ),
     .data_rdy    ( data_rdy      ),
@@ -207,9 +210,10 @@ jtpopeye_main u_main(
     .dip_sw2        ( dip_sw2       ),
     .dip_sw1        ( dip_sw1       ),
     // ROM access
-    .main_cs        ( main_cs       ),
+    .rom_cs         ( main_cs       ),
     .rom_addr       ( main_addr     ),
     .rom_data       ( main_data     ),
+    .rom_ok         ( main_ok       ),
 
     .RV_n           ( RV_n          ),   // flip
     // Sound output

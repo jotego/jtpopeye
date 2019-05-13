@@ -66,6 +66,11 @@ always @(*) begin
     wec = we && AD[11:10]==2'b01;
 end
 
+// block-id in rom_addr MSB
+// ram_addr: scans the screen
+// H[7:3] -> 32 tiles, 8-pixel wide
+// V[7:3] -> 32 tiles, 8-pixel height
+// Screen size 32x32x8x8 = 256x256
 jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
@@ -75,6 +80,7 @@ jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
     .q      ( rom_addr[10:3] )
 );
 
+// Colour, same data for 8 pixels
 jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),

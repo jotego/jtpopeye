@@ -27,6 +27,8 @@ module jtpopeye_rom(
 
     output      [ 7:0]  main_dout,
     output      [31:0]  obj_dout,
+    input               main_cs,
+    output              main_ok,
     output  reg         ready,
     // SDRAM controller interface
     input               downloading,
@@ -55,11 +57,11 @@ jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .clk      ( clk             ),
     .cen      ( 1'b1            ),
     .addr     ( main_addr       ),
-    .addr_ok  ( 1'b1            ), 
+    .addr_ok  ( main_cs         ), 
     .addr_req ( main_addr_req   ),
     .din      ( data_read       ),
     .din_ok   ( data_rdy        ),
-    .data_ok  (                 ),
+    .data_ok  ( main_ok         ),
     .dout     ( main_dout       ),
     .req      ( main_req        ),
     .we       ( data_sel[0]     )

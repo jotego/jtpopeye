@@ -102,7 +102,7 @@ always @(posedge clk_rom) begin
 end
 `else
 // For simulations with test roms and no loading:
-always @(*) encrypted = 1'b0;
+initial encrypted = 1'b0;
 `endif
 
 endmodule // jt1492_promprog

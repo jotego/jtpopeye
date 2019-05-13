@@ -52,9 +52,10 @@ module jtpopeye_main(
     input   [7:0]       dip_sw2,
     input   [3:0]       dip_sw1,
     // ROM access
-    output              main_cs,
+    output reg          rom_cs,
     output reg [14:0]   rom_addr,
     input  [ 7:0]       rom_data,
+    input               rom_ok,
     //
     output              RV_n,   // flip
     // Sound output
@@ -71,7 +72,7 @@ reg  [7:0] cabinet_input;
 wire [7:0] ram_data, sec_data, cpu_dout, ay_dout;
 assign DD     = cpu_dout;
 assign DD_DMA = ram_data;
-reg sec_cs, CSB, CSB_l, CSV, ram_cs, rom_cs, in_cs;
+reg sec_cs, CSB, CSB_l, CSV, ram_cs, in_cs;
 wire uart_cs = !iorq_n && AD[7:4]==4'hf;
 
 // UART
@@ -81,9 +82,6 @@ wire       uart_tx_done, uart_tx_busy;
 
 reg        uart_tx_wr;
 reg [7:0]  uart_tx_data;
-
-// assign main_cs = ~mreq_n & ~rd_n;    // activate ROM readings unless I/O is requested
-assign main_cs = 1'b1;
 
 always @(posedge clk) begin
     CSVl   <= CSV; // latched outputs, do not cen!
@@ -269,13 +267,45 @@ always @(posedge clk or negedge rst_n)
         else if( VB && !VBl ) nmi_n <= 1'b0; // set NMI
     end
 
+/////////////////////////////////
+// wait_n signal. This is used to avoid issues when
+// waiting for data from SDRAM. Real hardware had wait_n stuck at 1
+// SDRAM access is fast and wait_n should rarely go low but it
+// is there for robustness
+
+reg  wait_n;
+reg  last_rom_cs, rom_free, rom_clr;
+wire rom_cs_posedge = !last_rom_cs && rom_cs;
+
+always @(*) begin
+    rom_clr  = !rom_free  || ( rom_ok && rom_free );
+end
+
+always @(posedge clk or negedge rst_n)
+    if( !rst_n ) begin
+        wait_n   <= 1'b1;
+        rom_free <= 1'b0;
+    end else begin
+        last_rom_cs <= rom_cs;
+        if( rom_cs_posedge ) begin
+            // The PCB has a slow down mechanism for the main CPU
+            // it loses one clock cycle at the beginning of every machine cycle
+            if( rom_cs_posedge ) rom_free  <= 1'b1;
+            wait_n <= 1'b0;
+        end
+        else begin
+            wait_n    <= rom_clr;
+            rom_free  <= !rom_clr;
+        end
+    end
+
 
 `ifndef SIMULATION
 T80s u_cpu(
     .RESET_n    ( rst_n       ),
     .CLK        ( clk         ),
     .CEN        ( cpu_cen     ),
-    .WAIT_n     ( 1'b1        ),
+    .WAIT_n     ( wait_n      ),
     .INT_n      ( 1'b1        ),
     .RD_n       ( rd_n        ),
     .WR_n       ( wr_n        ),
@@ -297,7 +327,7 @@ tv80s #(.Mode(0)) u_cpu (
     .reset_n( rst_n      ),
     .clk    ( clk        ),
     .cen    ( cpu_cen    ),
-    .wait_n ( 1'b1       ),
+    .wait_n ( wait_n     ),
     .int_n  ( 1'b1       ),
     .nmi_n  ( nmi_n      ),
     .rd_n   ( rd_n       ),
