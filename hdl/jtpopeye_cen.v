@@ -19,27 +19,29 @@
 `timescale 1ns/1ps
 
 module jtpopeye_cen(
-    input           clk,        // 20 MHz
+    input           clk,        // 40 MHz
 
-    output reg      H0_cen,
-    output reg      cpu_cen,
-    output reg      ay_cen,
-    output reg      pxl_cen,  // TXT pixel clock
-    output reg      pxl2_cen  // OBJ pixel clock
+    output reg      H0_cen,   // 2.5 MHz <> 400ns
+    output reg      cpu_cen,  // 4 MHz <> 250ns
+    output reg      ay_cen,   // 2 MHz <> 500ns
+    output reg      pxl_cen,  // TXT pixel clock.  5 MHz <> 200ns
+    output reg      pxl2_cen  // OBJ pixel clock. 10 MHz <> 100ns
 );
 
-reg [2:0] cnt2=2'd0;
-reg [3:0] cnt10=4'd0;
+reg [3:0] cnt2='d0;
+reg [4:0] cnt20='d0;
 
 
 always @(negedge clk) begin
-    pxl2_cen <= cnt2[  0]==1'b0;     // 10   MHz
-    pxl_cen  <= cnt2[1:0]==2'b00;     //  5   MHz
-    cnt2  <=  cnt2 + 3'd1;
-    cnt10 <= cnt10 == 4'd9 ? 4'd0 : (cnt10+4'd1);
-    H0_cen   <= cnt2[2];     //  2.5 MHz
-    cpu_cen  <= cnt10==4'd0 || cnt10==4'd5;  //  4   MHz
-    ay_cen   <= cnt10==4'd0; //  2   MHz
+    cnt2  <= cnt2 + 4'd1;
+    cnt20 <= cnt20 == 5'd19 ? 5'd0 : (cnt20+5'd1);
+    
+    pxl2_cen <= cnt2[1:0]==2'b00;     // 10   MHz
+    pxl_cen  <= cnt2[2:0]==3'b000;    //  5   MHz
+    H0_cen   <= cnt2[3:0]==4'b1000;   //  2.5 MHz
+
+    cpu_cen  <= cnt20==5'd0 || cnt20==5'd10;  //  4   MHz
+    ay_cen   <= cnt20==5'd0;  //  2   MHz
 end
 
 endmodule // jtpopeye_cen

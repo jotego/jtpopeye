@@ -143,6 +143,15 @@ wire [3:0]
     g4 = { green, green[2] },
     b4 = { blue, blue[2] };
 
+pll_game_mist u_pll_game_mist(
+    .inclk0 ( CLOCK_27[0] ),
+    .c1     ( clk_rom     ), // 40 MHz
+    .c2     ( SDRAM_CLK   ),
+    .locked ( pll_locked  )
+);
+
+assign clk_sys = clk_rom;
+
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
     )
@@ -150,8 +159,10 @@ u_frame(
     .CLOCK_27       ( CLOCK_27       ),
     .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_rom        ),
+    .clk_vga        ( 1'b0           ),
     .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
+    .pll_locked     ( pll_locked     ),
     // Base video
     .osd_rotate     ( 2'b00          ),
     // convert from 3-bit colour to 4-bit colour
@@ -230,7 +241,7 @@ u_frame(
 
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
-    .clk            ( clk_sys               ),   // 20 MHz
+    .clk            ( clk_sys               ),   // 40 MHz
     .clk_rom        ( clk_rom               ),   // SDRAM clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
@@ -258,31 +269,32 @@ jtpopeye_game u_game(
     .refresh_en     ( refresh_en     ),
 
     // UART
-    .uart_rx        ( UART_RX               ),
-    .uart_tx        ( UART_TX               ),
+    .uart_rx        ( UART_RX        ),
+    .uart_tx        ( UART_TX        ),
 
     // ROM LOAD
-    .ioctl_addr     ( ioctl_addr            ),
-    .ioctl_data     ( ioctl_data            ),
-    .ioctl_wr       ( ioctl_wr              ),
-    .prog_addr      ( prog_addr             ),
-    .prog_data      ( prog_data             ),
-    .prog_mask      ( prog_mask             ),
-    .prog_we        ( prog_we               ),
+    .downloading    ( downloading    ),
+    .ioctl_addr     ( ioctl_addr     ),
+    .ioctl_data     ( ioctl_data     ),
+    .ioctl_wr       ( ioctl_wr       ),
+    .prog_addr      ( prog_addr      ),
+    .prog_data      ( prog_data      ),
+    .prog_mask      ( prog_mask      ),
+    .prog_we        ( prog_we        ),
 
     // DIP Switches
-    .dip_pause      ( game_pause            ),  // not a DIP on real hardware
-    .dip_upright    ( dip_upright           ),
-    .dip_level      ( dip_level             ),  // difficulty level
-    .dip_bonus      ( dip_bonus             ),
-    .dip_demosnd    ( dip_demosnd           ),
-    .dip_price      ( dip_price             ),
-    .dip_lives      ( dip_lives             ),
+    .dip_pause      ( game_pause     ),  // not a DIP on real hardware
+    .dip_upright    ( dip_upright    ),
+    .dip_level      ( dip_level      ),  // difficulty level
+    .dip_bonus      ( dip_bonus      ),
+    .dip_demosnd    ( dip_demosnd    ),
+    .dip_price      ( dip_price      ),
+    .dip_lives      ( dip_lives      ),
     // Sound output
-    .snd            ( snd[9:0]              ),
-    .sample         ( /* unused  */         ),
+    .snd            ( snd[9:0]       ),
+    .sample         ( /* unused  */  ),
     // Debug
-    .gfx_en         ( gfx_en                )
+    .gfx_en         ( gfx_en         )
 );
 
 endmodule // jtpopeye_mist

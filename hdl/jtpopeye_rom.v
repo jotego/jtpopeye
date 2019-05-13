@@ -53,11 +53,13 @@ assign refresh_en = 1'b1;
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
-    .cen      ( pxl_cen         ),
+    .cen      ( 1'b1            ),
     .addr     ( main_addr       ),
     .addr_ok  ( 1'b1            ), 
     .addr_req ( main_addr_req   ),
     .din      ( data_read       ),
+    .din_ok   ( data_rdy        ),
+    .data_ok  (                 ),
     .dout     ( main_dout       ),
     .req      ( main_req        ),
     .we       ( data_sel[0]     )
@@ -66,17 +68,22 @@ jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
 jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
-    .cen      ( pxl_cen         ),
+    .cen      ( 1'b1            ),
     .addr     ( obj_addr        ),
     .addr_ok  ( 1'b1            ),
     .addr_req ( obj_addr_req    ),
     .din      ( data_read       ),
+    .din_ok   ( data_rdy        ),
+    .data_ok  (                 ),
     .dout     ( obj_dout        ),
     .req      ( obj_req         ),
     .we       ( data_sel[1]     )
 );
 
-reg [1:0] pre_sel;
+// Requests are valid for comparison only if they are not
+// being already attended. data_sel is high for the request
+// in course
+wire [1:0] valid_req = { obj_req, main_req } & ~data_sel;
 
 always @(posedge clk)
 if( loop_rst || downloading ) begin
@@ -84,27 +91,24 @@ if( loop_rst || downloading ) begin
     ready_cnt <=  4'd0;
     ready     <=  1'b0;
     sdram_req <=  1'b0;
-    pre_sel   <=  2'd0;
+    data_sel  <=  2'd0;
 end else begin
     {ready, ready_cnt}  <= {ready_cnt, 1'b1};
-    if( data_rdy ) begin
-        data_sel <= pre_sel;
-        pre_sel  <= 2'd0;
-    end else data_sel <= 2'd0;
     if( sdram_ack ) sdram_req <= 1'b0;
     // accept a new request
-    if( pre_sel==2'd0 ) begin
-        sdram_req <= main_req | obj_req;
+    if( data_sel==2'd0 || data_rdy ) begin
+        sdram_req <= |valid_req;
+        data_sel <= 2'b0;
         case( 1'b1 )
-            obj_req: begin
-                sdram_addr <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
-                pre_sel   <= 'b10;
+            valid_req[1]: begin
+                sdram_addr  <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
+                data_sel[1] <= 1'b1;
             end
-            main_req: begin
+            valid_req[0]: begin
                 sdram_addr <= { 8'd0, main_addr_req[14:1] };
-                pre_sel   <= 'b1;
+                data_sel[0] <= 1'b1;
             end
-            default: pre_sel <= 'b0;
+            default: data_sel <= 'b0;
         endcase
     end
 end
