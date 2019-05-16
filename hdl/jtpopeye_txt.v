@@ -42,8 +42,7 @@ module jtpopeye_txt(
 );
 
 
-wire [3:0] txtc;
-reg  [3:0] txtc0;
+reg  [3:0] txtc, txtc0;
 wire [10:0] rom_addr;
 reg  [ 9:0] ram_addr;
 wire [ 9:0] scan_addr = { V[7:3], H[7:3] };
@@ -60,10 +59,12 @@ jtpopeye_video_dec u_dec(
 wire we = CSV & MEMWRO;
 reg wev, wec;
 
-always @(*) begin
-    ram_addr = we ? ADx[9:0] : { V[7:3], H[7:3] };
-    wev = we && AD[11:10]==2'b00;
-    wec = we && AD[11:10]==2'b01;
+reg [7:0] din;
+always @(posedge clk) begin
+    ram_addr <= CSV ? ADx[9:0] : { V[7:3], H[7:3] };
+    wev      <= we && AD[11:10]==2'b00;
+    wec      <= we && AD[11:10]==2'b01; // colour
+    din      <= DD;
 end
 
 // block-id in rom_addr MSB
@@ -74,20 +75,25 @@ end
 jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
-    .data   ( DD             ),
+    .data   ( din            ),
     .addr   ( ram_addr       ),
     .we     ( wev            ),
     .q      ( rom_addr[10:3] )
 );
 
+wire [3:0] pre_txtc;
+always @(posedge clk) if(pxl_cen) begin
+    txtc <= pre_txtc;
+end
+
 // Colour, same data for 8 pixels
 jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
-    .data   ( DD[3:0]        ),
+    .data   ( din[3:0]       ),
     .addr   ( ram_addr       ),
     .we     ( wec            ),
-    .q      ( txtc           )
+    .q      ( pre_txtc       )
 );
 
 ///////////////////////////

@@ -55,7 +55,6 @@ assign refresh_en = 1'b1;
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
-    .cen      ( 1'b1            ),
     .addr     ( main_addr       ),
     .addr_ok  ( main_cs         ), 
     .addr_req ( main_addr_req   ),
@@ -70,7 +69,6 @@ jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
 jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
-    .cen      ( 1'b1            ),
     .addr     ( obj_addr        ),
     .addr_ok  ( 1'b1            ),
     .addr_req ( obj_addr_req    ),
