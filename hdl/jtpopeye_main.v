@@ -104,7 +104,8 @@ always @(*) begin
         case ( AD[15:13] )
             3'b1_00: ram_cs = !AD[11];  // RAM: from 0x8000 to 0x87FF
             3'b1_01: CSV = 1'b1;        // TXT. 0xA???
-            3'b1_10: CSB = 1'b1;        // Background. 0xC???
+            3'b1_10: CSB = 1'b1;        // Background. 0xC000-0xCFFF lower nibbles
+                                        // 0xD000-0xDFFF upper nibbles
             3'b1_11: sec_cs = 1'b1;     // Security at E000/1
             default: rom_cs = 1'b1;
         endcase

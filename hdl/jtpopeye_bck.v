@@ -51,8 +51,7 @@ jtpopeye_video_dec u_dec(
     .AD_dec ( ADx      )
 );
 
-reg [11:0] ADmux;
-reg [ 7:0] ram_doutl;
+reg [11:0] ram_addr;
 wire [7:0] ram_dout;
 reg nibble_sel;
 
@@ -62,26 +61,46 @@ always @(posedge clk) if(pxl_cen) begin
         BAKC <= nibble_sel ? ram_dout[3:0] : ram_dout[7:4];
 end
 
-// RAM is programmed in nibbles:
-always @(posedge clk) begin
-    ram_doutl <= ram_dout;
+reg [7:0] ram_din;
+reg       ram_we;
+
+always @(posedge clk or negedge rst_n) begin: ram_ports
+    reg DWRBK_last, next_write;
+    reg [2:0] st;
+    if( !rst_n ) begin
+        ram_we     <= 1'b0;
+        next_write <= 1'b0;
+        DWRBK_last <= 1'b0;
+        st         <= 3'b1;
+    end else begin
+        // advance state
+        if( (DWRBK && !DWRBK_last) || !st[0] )
+            st <= { st[1:0], st[2] };
+        DWRBK_last <= DWRBK;
+        case( 1'b1 )
+            st[0]: begin
+                    // set RAM address for reading
+                    ram_we     <= 1'b0;
+                    ram_addr   <= !CSBW_n ? ADx[11:0] : {ROVl[6:1],ROH[7:2]};
+                    nibble_sel <= !CSBW_n ? !ADx[12] : ROVl[7];
+                end 
+            st[1]:; // wait for data input
+            st[2]: begin // write the requested nibble
+                    ram_we     <= 1'b1;
+                    next_write <= 1'b0;
+                    ram_din    <= nibble_sel ?
+                        { ram_dout[7:4], DD[3:0] } : { DD[3:0], ram_dout[3:0] };
+                end
+        endcase
+    end
 end
-
-wire [7:0] ram_din = !AD[12] ?
-    { ram_doutl[7:4], DD[3:0] } : { DD[7:4], ram_doutl[3:0] };
-
-always @(*) begin
-    ADmux = !CSBW_n ? ADx[11:0] : {ROVl[6:1],ROH[7:2]};
-    nibble_sel = !CSBW_n ? !ADx[12] : ROVl[7];
-end
-
 
 jtgng_ram #(.aw(12), .dw(8)) u_ram1(
     .clk    ( clk            ),
-    .cen    ( pxl_cen        ),
+    .cen    ( 1'b1           ),
     .data   ( ram_din        ),
-    .addr   ( ADmux          ),
-    .we     ( DWRBK          ),
+    .addr   ( ram_addr       ),
+    .we     ( ram_we         ),
     .q      ( ram_dout       )
 );
 

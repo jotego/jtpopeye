@@ -1,13 +1,13 @@
     DI
     ; Init stack
-    LD IX,0x8800    ; RAM end
+    LD IX,$8800    ; RAM end
     LD SP,IX
-    LD IX,0xA000
+    LD IX,$A000
 
     CALL CLR_SCREEN
     LD A,0
-    LD IX,0xC000
-    LD IY,0xD000
+    LD IX,$C000     ; lower nibbles
+    LD IY,$D000     ; upper nibbles
     LD C,8
 EXT_LOOP:
     LD B,0
@@ -25,26 +25,26 @@ END_LOOP:
     JP END_LOOP
 
 ;**************************************
-;** Clear text memory with 0xFF
+;** Clear text memory with $FF
 CLR_SCREEN:
-    LD IX,0xA000
-    LD A,0xFF
-    LD B,0x80
-    CALL COPY_ROW   ; 0x80
-    LD B,0x80
-    CALL COPY_ROW   ; 0x100
-    LD B,0x80
-    CALL COPY_ROW   ; 0x180
-    LD B,0x80
-    CALL COPY_ROW   ; 0x200
-    LD B,0x80
-    CALL COPY_ROW   ; 0x280
-    LD B,0x80
-    CALL COPY_ROW   ; 0x300
-    LD B,0x80
-    CALL COPY_ROW   ; 0x380
-    LD B,0x80
-    CALL COPY_ROW   ; 0x400
+    LD IX,$A000
+    LD A,$FF
+    LD B,$80
+    CALL COPY_ROW   ; $80
+    LD B,$80
+    CALL COPY_ROW   ; $100
+    LD B,$80
+    CALL COPY_ROW   ; $180
+    LD B,$80
+    CALL COPY_ROW   ; $200
+    LD B,$80
+    CALL COPY_ROW   ; $280
+    LD B,$80
+    CALL COPY_ROW   ; $300
+    LD B,$80
+    CALL COPY_ROW   ; $380
+    LD B,$80
+    CALL COPY_ROW   ; $400
     RET
 
 COPY_ROW:
