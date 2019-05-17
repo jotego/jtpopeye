@@ -105,4 +105,15 @@ end
 initial encrypted = 1'b0;
 `endif
 
+`ifdef SIMULATION
+always @(negedge downloading) if( prog_addr )  // avoid displaying a message
+    // at time 0
+begin
+    if( encrypted )
+        $display("Finished downloading an ENCRYPTED ROM");
+    else
+        $display("Finished downloading a NON-ENCRYPTED ROM");
+end
+`endif
+
 endmodule // jt1492_promprog

@@ -39,6 +39,7 @@ module jtpopeye_timing(
     output reg          ROHVCK,
     input               DM10,
     input               busak,
+    output              MR_n,
     // PROM programming
     input   [7:0]       prog_addr,
     input               prom_7j_we,
@@ -113,7 +114,8 @@ jtpopeye_roh_model u_model(
     .busak  ( busak  ),
     .HBD_n  ( HBD_n  ),
     .ROHVS  ( ROHVS  ),
-    .ROHVCK ( ROHVCK )
+    .ROHVCK ( ROHVCK ),
+    .MR_n   ( MR_n   )
 );
 
 // V blanking

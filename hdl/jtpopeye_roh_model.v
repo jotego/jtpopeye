@@ -16,6 +16,8 @@
     Version: 1.0
     Date: 12-3-2019 */
 
+// Sheet 1 of 3, CPU
+
 module jtpopeye_roh_model(
     input       VB_n,
     input       AI_n,
@@ -24,25 +26,27 @@ module jtpopeye_roh_model(
     input       DM10,
     input       busak,
     output      ROHVS,
-    output      ROHVCK
+    output      ROHVCK,
+    output      MR_n
 );
 
 reg busrq_n, busak_d;
 
 // LS74, 1L
 always @( posedge ~VB_n or negedge ~DM10 )
-    if( !DM10 )
+    if( DM10 )
         busrq_n <= 1'b1;
     else
         busrq_n <= 1'b0;
 
-// LS74, 2D
+// LS74, 2D (1st FF)
 reg H1l;
 
 always @( posedge ~AI_n )
     H1l <= ~BI_n;
 
-always @( posedge AI_n )
+// LS74, 2D (second FF)
+always @( posedge BI_n )
     busak_d <= busak;
 
 // LS74, 1C
@@ -65,5 +69,6 @@ always @( posedge ~AI_n )
 
 assign ROHVS  = ~ff_1c1 | ~ff_1c1_din;
 assign ROHVCK = ~( ~ff_1c1 & ~BI_n );
+assign MR_n   = ff_1c0_din;
 
 endmodule

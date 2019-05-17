@@ -29,6 +29,7 @@ module jtpopeye_dma(
     input      [7:0]    DD_DMA,
     input               busak_n,
     output              DM10,
+    input               MR_n,
 
     output reg [9:0]    AD_DMA,
     output reg          dma_cs, // tell main memory to get data out for DMA
@@ -67,7 +68,7 @@ always @(posedge clk or negedge rst_n)
         VBl <= VB;
         if( VB_posedge ) 
             DM <= 11'd0;
-        else if( H0_negedge ) DM <= DM+11'd1;
+        else if( H[1:0]==2'b10 || busak_n ) DM <= DM+11'd1;
     end
 
 
