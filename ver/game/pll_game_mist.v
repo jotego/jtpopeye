@@ -18,16 +18,16 @@
 
 module pll_game_mist(
     input        inclk0, // 27 MHz
-    output reg  c1,     // 40 MHz
-    output      c2,     // 40 MHz delayed
+    output reg  c0,     // 40 MHz
+    output      c1,     // 40 MHz delayed
     output      locked
 );
 
 assign locked = 1;
 
 initial begin
-    c1 = 1'b0;
-    forever #12.5 c1 = ~c1;
+    c0 = 1'b0;
+    forever #12.5 c0 = ~c0;
 end
 
 `ifndef SDRAM_DELAY
@@ -37,6 +37,6 @@ end
 real sdram_delay = `SDRAM_DELAY;
 initial $display("INFO: SDRAM_CLK delay set to %f ns",sdram_delay);
 
-assign #sdram_delay c2=c1;
+assign #sdram_delay c1=c0;
 
 endmodule // pll_game_mist

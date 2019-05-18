@@ -147,8 +147,8 @@ wire [3:0]
 
 pll_game_mist u_pll_game_mist(
     .inclk0 ( CLOCK_27[0] ),
-    .c1     ( clk_rom     ), // 40 MHz
-    .c2     ( SDRAM_CLK   ),
+    .c0     ( clk_rom     ), // 40 MHz
+    .c1     ( SDRAM_CLK   ),
     .locked ( pll_locked  )
 );
 

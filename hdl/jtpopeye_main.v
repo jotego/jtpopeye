@@ -42,7 +42,7 @@ module jtpopeye_main(
     output              busak_n,
     // serial wires
     input               uart_rx,
-    output              uart_tx, // serial signal to transmit. High when idle    
+    output              uart_tx, // serial signal to transmit. High when idle
     // video access
     output reg          CSBW_n,
     output reg          CSVl,   // latched
@@ -72,7 +72,7 @@ reg  [7:0] cabinet_input;
 wire [7:0] ram_data, sec_data, cpu_dout, ay_dout;
 assign DD     = cpu_dout;
 assign DD_DMA = ram_data;
-reg sec_cs, CSB, CSB_l, CSV, ram_cs, in_cs;
+reg sec_cs, CSB, CSB_l, CSV, ram_cs;
 wire uart_cs = !iorq_n && AD[7:4]==4'hf;
 
 // UART
@@ -98,7 +98,6 @@ always @(*) begin
     CSV    = 1'b0;  // TXT CS
     ram_cs = 1'b0;
     rom_cs = 1'b0;
-    in_cs  = !iorq_n;
 
     if( !mreq_n ) begin
         case ( AD[15:13] )
@@ -224,13 +223,13 @@ reg        uart_rx_new; // signals that a new byte is ready to be read
 always @(*) begin
     cpu_din  = 8'h0;
     clr_uart = 1'b0;
-    case( {mreq_n, iorq_n} ) 
+    case( {mreq_n, iorq_n} )
         2'b01:  // Memory request
             case( { rom_cs, ram_cs, sec_cs } )
                 3'b10_0: cpu_din = rom_good;
                 3'b01_0: cpu_din = ram_data;
                 3'b00_1: cpu_din = sec_data;
-            endcase    
+            endcase
         2'b10: // I/O request
             if( uart_cs ) begin
                 casez( AD[1:0] )
@@ -239,10 +238,11 @@ always @(*) begin
                     2'b1?: begin
                         cpu_din = uart_rx_data;
                         clr_uart = !rd_n;
-                    end                        
+                    end
                 endcase
             end
-            else cpu_din = cabinet_input;     
+            else cpu_din = cabinet_input;
+        default:;
     endcase
 end
 
@@ -386,7 +386,7 @@ jt49_bus u_ay( // note that input ports are not multiplexed
 // This was not present on the original arcade
 // this is used for having fun with TinyBASIC
 
-always @(posedge clk or negedge rst_n ) 
+always @(posedge clk or negedge rst_n )
     if( !rst_n ) begin
         uart_tx_data = 8'd0;
         uart_tx_wr   = 1'b0;
@@ -407,7 +407,7 @@ u_uart(
     // serial wires
     .uart_rx    ( uart_rx       ),
     .uart_tx    ( uart_tx       ), // serial signal to transmit. High when idle
-    // Rx interface 
+    // Rx interface
     .rx_data    ( uart_rx_data  ),
     .rx_done    ( uart_rx_done  ),
     .rx_error   ( uart_rx_error ),

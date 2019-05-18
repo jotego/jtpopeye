@@ -39,7 +39,6 @@ module jtpopeye_dma(
 
 reg [10:0] DM;
 
-reg [1:0] Hl;
 // wire H0_negedge = !H[0] && Hl[0];
 
 reg VBl;
@@ -64,7 +63,6 @@ always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         DM = 'd0;
     end else if(cen) begin
-        Hl <= H;
         VBl <= VB;
         if( VB_posedge ) 
             DM <= 11'd0;
