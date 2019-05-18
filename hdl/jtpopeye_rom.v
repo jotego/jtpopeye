@@ -36,7 +36,7 @@ module jtpopeye_rom(
     input               sdram_ack,
     input               loop_rst,
     output  reg         sdram_req,
-    output  reg         refresh_en,
+    output              refresh_en,
     output  reg [21:0]  sdram_addr,
     input       [31:0]  data_read
 );
@@ -50,7 +50,7 @@ wire main_req, obj_req;
 wire [14:0] main_addr_req;
 wire [12:0] obj_addr_req;
 
-assign refresh_en = 1'b1;
+assign refresh_en = main_cs && main_ok;
 
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),

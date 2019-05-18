@@ -108,7 +108,7 @@ wire          prog_we;
 
 wire [2:0] red, green, blue;
 
-wire HB, VB, hs, vs;
+wire HB, VB, HS, VS;
 wire [9:0] snd;
 
 wire [9:0] game_joystick1, game_joystick2;
@@ -125,6 +125,8 @@ wire        sdram_ack;
 wire [31:0] data_read;
 wire        data_rdy;
 wire        refresh_en;
+wire        pll_locked;
+wire        pxl2_cen;
 
 // play level. Latch all inputs to game module
 always @(posedge clk_sys) begin

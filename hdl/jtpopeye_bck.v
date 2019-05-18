@@ -65,11 +65,10 @@ reg [7:0] ram_din;
 reg       ram_we;
 
 always @(posedge clk or negedge rst_n) begin: ram_ports
-    reg DWRBK_last, next_write;
+    reg DWRBK_last;
     reg [2:0] st;
     if( !rst_n ) begin
         ram_we     <= 1'b0;
-        next_write <= 1'b0;
         DWRBK_last <= 1'b0;
         st         <= 3'b1;
     end else begin
@@ -87,10 +86,10 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
             st[1]:; // wait for data input
             st[2]: begin // write the requested nibble
                     ram_we     <= 1'b1;
-                    next_write <= 1'b0;
                     ram_din    <= nibble_sel ?
                         { ram_dout[7:4], DD[3:0] } : { DD[3:0], ram_dout[3:0] };
                 end
+            default:;
         endcase
     end
 end

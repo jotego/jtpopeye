@@ -300,7 +300,6 @@ always @(posedge clk or negedge rst_n)
         end
     end
 
-
 `ifndef SIMULATION
 T80s u_cpu(
     .RESET_n    ( rst_n       ),
@@ -314,12 +313,12 @@ T80s u_cpu(
     .DI         ( cpu_din     ),
     .DO         ( cpu_dout    ),
     .IORQ_n     ( iorq_n      ),
-    .M1_n       ( m1_n        ),
+    .M1_n       (             ),
     .MREQ_n     ( mreq_n      ),
     .NMI_n      ( nmi_n       ),
     .BUSRQ_n    ( busrq_n     ),
     .BUSAK_n    ( busak_n     ),
-    .RFSH_n     ( rfsh_n      ),
+    .RFSH_n     (             ),
     .out0       ( 1'b0        )
 );
 `else
@@ -337,10 +336,10 @@ tv80s #(.Mode(0)) u_cpu (
     .di     ( cpu_din    ),
     .dout   ( cpu_dout   ),
     .iorq_n ( iorq_n     ),
-    .m1_n   ( m1_n       ),
+    .m1_n   (            ),
     .mreq_n ( mreq_n     ),
     .busrq_n( busrq_n    ),
-    .rfsh_n ( rfsh_n     ),
+    .rfsh_n (            ),
     .busak_n( busak_n    ),
     // unused
     .halt_n ()

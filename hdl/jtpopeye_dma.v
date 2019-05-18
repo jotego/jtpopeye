@@ -40,7 +40,7 @@ module jtpopeye_dma(
 reg [10:0] DM;
 
 reg [1:0] Hl;
-wire H0_negedge = !H[0] && Hl[0];
+// wire H0_negedge = !H[0] && Hl[0];
 
 reg VBl;
 wire VB_posedge = VB && !VBl;
