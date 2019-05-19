@@ -190,6 +190,7 @@ jtpopeye_security u_security(
 reg ay_cs;
 
 always @(*) begin
+    ay_cs = 1'b0;
     case(AD[1:0])
         2'd0: begin
             ay_cs = !iorq_n && !rd_n;
@@ -229,6 +230,7 @@ always @(*) begin
                 3'b10_0: cpu_din = rom_good;
                 3'b01_0: cpu_din = ram_data;
                 3'b00_1: cpu_din = sec_data;
+                default:;
             endcase
         2'b10: // I/O request
             if( uart_cs ) begin
@@ -239,6 +241,7 @@ always @(*) begin
                         cpu_din = uart_rx_data;
                         clr_uart = !rd_n;
                     end
+                    default:;
                 endcase
             end
             else cpu_din = cabinet_input;

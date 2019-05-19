@@ -35,8 +35,8 @@ module jtpopeye_timing(
     output reg          VB,
     output              INITEO_n,
     // Interlacing
-    output reg          ROHVS,
-    output reg          ROHVCK,
+    output              ROHVS,
+    output              ROHVCK,
     input               DM10,
     input               busak,
     output              MR_n,

@@ -74,6 +74,7 @@ always @(*) begin
     we1      = we_v0[~V[0]];
 end
 
+// 1M and 3M memories in schematic
 jtgng_ram #(.aw(6), .dw(18)) u_ram0(
     .clk    ( clk            ),
     .cen    ( H0_cen         ),
@@ -83,6 +84,7 @@ jtgng_ram #(.aw(6), .dw(18)) u_ram0(
     .q      ( DJ0            )
 );
 
+// 1P and 3P memories in schematic
 jtgng_ram #(.aw(6), .dw(18)) u_ram1(
     .clk    ( clk            ),
     .cen    ( H0_cen         ),

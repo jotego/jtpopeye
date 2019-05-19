@@ -35,9 +35,9 @@ reg  [7:0] code;
 reg  [7:0] data0_sh, data1_sh;
 
 always @(*) begin
-    data0_sh = data0 << shift;
-    data1_sh = data1 >> (8-shift);
-    code = data0 | data1;
+    data0_sh = data0 >> (8-shift);
+    data1_sh = data1 << shift;
+    code = data0_sh | data1_sh;
 end
 
 always @(posedge clk or negedge rst_n)
