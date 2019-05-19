@@ -4,7 +4,7 @@
 
     DI
     ; Init stack
-    LD IX,0x8800    ; RAM end
+    LD IX,0x8F00    ; RAM end
     LD SP,IX
     LD IX,0xa000    ; text memory
 

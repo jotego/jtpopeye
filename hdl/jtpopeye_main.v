@@ -101,7 +101,7 @@ always @(*) begin
 
     if( !mreq_n ) begin
         case ( AD[15:13] )
-            3'b1_00: ram_cs = !AD[11];  // RAM: from 0x8000 to 0x87FF
+            3'b1_00: ram_cs = AD[11];   // RAM: from 0x8800 to 0x8FFF
             3'b1_01: CSV = 1'b1;        // TXT. 0xA???
             3'b1_10: CSB = 1'b1;        // Background. 0xC000-0xCFFF lower nibbles
                                         // 0xD000-0xDFFF upper nibbles
@@ -172,8 +172,6 @@ jtgng_ram #(.aw(11)) u_ram(
 ///////////////////////////
 // Security
 
-wire sec_wr_n = !sec_cs || wr_n;
-
 jtpopeye_security u_security(
     .clk    ( clk      ),
     .cen    ( cpu_cen  ),
@@ -181,7 +179,8 @@ jtpopeye_security u_security(
     .din    ( cpu_dout ),
     .dout   ( sec_data ),
     .rd_n   ( rd_n     ),
-    .wr_n   ( sec_wr_n ),
+    .wr_n   ( wr_n     ),
+    .cs     ( sec_cs   ),
     .A0     ( AD[0]    )
 );
 

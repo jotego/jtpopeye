@@ -1,6 +1,6 @@
     DI
     ; Init stack
-    LD IX,$8800    ; RAM end
+    LD IX,$8F00    ; RAM end
     LD SP,IX
     LD IX,$A000
 
