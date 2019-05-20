@@ -149,7 +149,7 @@ wire [3:0]
     g4 = { green, green[2] },
     b4 = { blue, blue[2] };
 
-pll_game_mist u_pll_game_mist(
+pll_game_mist u_pll_game(
     .inclk0 ( CLOCK_27[0] ),
     .c1     ( clk_rom     ), // 40 MHz
     .c2     ( SDRAM_CLK   ),
