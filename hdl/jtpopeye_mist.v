@@ -53,6 +53,10 @@ module jtpopeye_mist(
     output          AUDIO_R,
     // user LED
     output          LED
+    `ifdef SIMULATION
+    ,output         sim_pxl_cen,
+    output          sim_pxl_clk
+    `endif
 );
 
 localparam CONF_STR = {
@@ -153,6 +157,11 @@ pll_game_mist u_pll_game_mist(
 );
 
 assign clk_sys = clk_rom;
+
+`ifdef SIMULATION
+assign sim_pxl_cen = pxl2_cen;
+assign sim_pxl_clk = clk_sys;
+`endif
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
