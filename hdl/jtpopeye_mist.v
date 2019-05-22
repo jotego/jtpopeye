@@ -170,7 +170,7 @@ u_frame(
     .CLOCK_27       ( CLOCK_27       ),
     .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_rom        ),
-    .clk_vga        ( 1'b0           ),
+    .clk_vga        ( clk_sys        ),
     .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
     .pll_locked     ( pll_locked     ),
@@ -184,8 +184,13 @@ u_frame(
     .LVBL           ( ~VB            ),
     .hs             ( HB             ),
     .vs             ( VB             ),
+    // VGA video (without OSD)
+    .vga_r          ( { r4, r4[3:2] } ),
+    .vga_g          ( { g4, g4[3:2] } ),
+    .vga_b          ( { b4, b4[3:2] } ),
+    .vga_hsync      ( HS             ),
+    .vga_vsync      ( VS             ), 
     // VGA
-    .en_mixing      ( en_mixing      ),
     .VGA_R          ( VGA_R          ),
     .VGA_G          ( VGA_G          ),
     .VGA_B          ( VGA_B          ),
