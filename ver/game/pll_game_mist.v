@@ -16,10 +16,12 @@
     Version: 1.0
     Date: 12-3-2019 */
 
+`timescale 1ns/1ps
+
 module pll_game_mist(
     input        inclk0, // 27 MHz
-    output reg  c1,     // 40 MHz
-    output      c2,     // 40 MHz delayed
+    output reg  c1,     // 40.32 MHz
+    output      c2,     // 40.32 MHz delayed
     output      locked
 );
 
@@ -27,7 +29,7 @@ assign locked = 1;
 
 initial begin
     c1 = 1'b0;
-    forever #12.5 c1 = ~c1;
+    forever #12.4 c1 = ~c1;
 end
 
 `ifndef SDRAM_DELAY

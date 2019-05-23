@@ -107,6 +107,7 @@ always @(posedge clk)
 // Interleaving
 
 jtpopeye_roh u_roh(
+    .clk    ( clk    ),
     .VB_n   ( ~VB    ),
     .AI_n   ( ~H[0]  ),
     .BI_n   ( ~H[1]  ),
@@ -117,7 +118,7 @@ jtpopeye_roh u_roh(
     .ROHVCK ( ROHVCK ),
     .MR_n   ( MR_n   )
 );
-
+/*
 `ifdef SIMULATION
 jtpopeye_roh_model u_roh_model(
     .VB_n   ( ~VB    ),
@@ -131,7 +132,7 @@ jtpopeye_roh_model u_roh_model(
     .MR_n   (        )
 );
 `endif
-
+*/
 // V blanking
 
 wire [7:0] prom_addr = { HB, Hcnt[7:1] };

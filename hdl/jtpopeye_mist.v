@@ -55,7 +55,9 @@ module jtpopeye_mist(
     output          LED
     `ifdef SIMULATION
     ,output         sim_pxl_cen,
-    output          sim_pxl_clk
+    output          sim_pxl_clk,
+    output          sim_vs,
+    output          sim_hs
     `endif
 );
 
@@ -160,6 +162,8 @@ assign clk_sys = clk_rom;
 `ifdef SIMULATION
 assign sim_pxl_cen = pxl2_cen;
 assign sim_pxl_clk = clk_sys;
+assign sim_vs = VS;
+assign sim_hs = HS;
 `endif
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
