@@ -52,13 +52,11 @@ wire [3:0] prom_data;
 assign INITEO_n = ~(RV ^ HB );
 // H counter
 reg [8:0] Hcnt;
-reg [8:0] Vcnt;
+reg [9:0] Vcnt;
 wire [8:0] Hnext = Hcnt[8:0] + 9'd1;
-reg preHB=1'b0;
 
 `ifdef SIMULATION
 initial begin
-    Hcnt = 'd0;
     Vcnt = 'd0;
     VB   = 'd0;
 end
@@ -72,14 +70,18 @@ end
 
 reg HBlatch;
 
-always @(posedge clk )
+always @(posedge clk or negedge rst_n)
+    if(!rst_n) begin
+        Hcnt <= 'd0;        
+        HB   <= 1'b0;
+    end else
     if(pxl_cen) begin   // 20.16/4 MHz
         if( !Hcnt[8] ) begin
-            Hcnt <= Hnext;
+            Hcnt[8:0] <= Hnext[8:0];
         end else begin // 
-            preHB <= ~preHB;
-            Hcnt <= { 1'b0, preHB, preHB, 6'd0 };
-            HB <= preHB;
+            Hcnt[8:6] <= HB ? 3'd0 : 3'b11;
+            Hcnt[5:0] <= 6'd0;
+            HB <= ~HB;
         end
         if( &Hcnt[2:0] ) HBlatch <= HB;
         HBD_n <= ~(HBlatch & HB);
@@ -95,11 +97,11 @@ always @(*) begin
     V[7:0] = Vcnt[8:1] ^ RV;
 end
 
-always @(posedge clk)
+always @(posedge clk) 
     if( pxl2_cen ) begin
         Vupl <= Vup;
         if( Vup_edge ) begin
-            Vcnt <= Vcnt+9'd1;
+            Vcnt <= (Vcnt[9]&&Vcnt[0]) ? 10'd0 : Vcnt+10'd1;
             if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
         end
     end
