@@ -8,4 +8,5 @@ set_global_assignment -name QIP_FILE ../modules/jtframe/hdl/clocking/jtframe_pll
 set_global_assignment -name QIP_FILE ../modules/jt49/hdl/jt49.qip
 set_global_assignment -name QIP_FILE ../modules/t80/T80.qip
 
+set_global_assignment -name VERILOG_MACRO "NOSCANDOUBLER=1"
 source ../modules/jtframe/hdl/mist/mist_pins.tcl

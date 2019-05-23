@@ -106,7 +106,7 @@ always @(posedge clk)
 
 // Interleaving
 
-jtpopeye_roh_model u_model(
+jtpopeye_roh u_roh(
     .VB_n   ( ~VB    ),
     .AI_n   ( ~H[0]  ),
     .BI_n   ( ~H[1]  ),
@@ -117,6 +117,20 @@ jtpopeye_roh_model u_model(
     .ROHVCK ( ROHVCK ),
     .MR_n   ( MR_n   )
 );
+
+`ifdef SIMULATION
+jtpopeye_roh_model u_roh_model(
+    .VB_n   ( ~VB    ),
+    .AI_n   ( ~H[0]  ),
+    .BI_n   ( ~H[1]  ),
+    .DM10   ( DM10   ),
+    .busak  ( busak  ),
+    .HBD_n  ( HBD_n  ),
+    .ROHVS  (        ),
+    .ROHVCK (        ),
+    .MR_n   (        )
+);
+`endif
 
 // V blanking
 

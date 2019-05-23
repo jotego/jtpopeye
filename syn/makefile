@@ -26,6 +26,9 @@ ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf
 
 all: smart.log $(PROJECT).asm.rpt $(PROJECT).sta.rpt
 
+prog: smart.log $(PROJECT).sta.rpt
+	program.sh
+
 clean:
 	rm -rf *.rpt *.chg smart.log *.htm *.eqn *.pin *.sof *.pof db incremental_db *jdi *fit.* *summary
 	rm -f $(PROJECT).qsf *.qws *.qpf *.smsg

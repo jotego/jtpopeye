@@ -87,7 +87,6 @@ wire          coin_cnt;
 
 assign LED = ~downloading; // | coin_cnt | rst;
 wire rst_req = status[32'hf];
-wire cheat_invincible = status[32'd10];
 
 wire game_pause, game_service;
 `ifdef SIMULATION
