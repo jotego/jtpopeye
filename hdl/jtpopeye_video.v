@@ -195,26 +195,29 @@ jtpopeye_bck u_bak(
     .BAKC               ( BAKC          )
 );
 
-jtpopeye_obj u_obj(
-    .rst_n              ( rst_n         ),
-    .clk                ( clk           ),
-    .pxl2_cen           ( pxl2_cen      ),
+// jtpopeye_obj u_obj(
+//     .rst_n              ( rst_n         ),
+//     .clk                ( clk           ),
+//     .pxl2_cen           ( pxl2_cen      ),
+// 
+//     .ROHVS              ( ROHVS         ),
+//     .ROHVCK             ( ROHVCK        ),
+//     .RV_n               ( RV_n          ),     // Flip
+//     .INITEO_n           ( INITEO_n      ),
+// 
+//     .H                  ( H             ),
+//     .DJ                 ( DJ            ),
+//     .DO                 ( DO            ),
+//     // SDRAM interface
+//     .obj_addr           ( obj_addr      ),
+//     .objrom_data        ( objrom_data   ),
+//     // pixel data
+//     .OBJC               ( OBJC          ),
+//     .OBJV               ( OBJV          )
+// );
 
-    .ROHVS              ( ROHVS         ),
-    .ROHVCK             ( ROHVCK        ),
-    .RV_n               ( RV_n          ),     // Flip
-    .INITEO_n           ( INITEO_n      ),
-
-    .H                  ( H             ),
-    .DJ                 ( DJ            ),
-    .DO                 ( DO            ),
-    // SDRAM interface
-    .obj_addr           ( obj_addr      ),
-    .objrom_data        ( objrom_data   ),
-    // pixel data
-    .OBJC               ( OBJC          ),
-    .OBJV               ( OBJV          )
-);
+assign OBJV = 'd0;
+assign OBJC = 'd0;
 
 jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),

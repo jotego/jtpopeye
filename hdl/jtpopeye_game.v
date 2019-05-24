@@ -21,7 +21,6 @@
 module jtpopeye_game(
     input           rst_n,
     input           clk,        // 20 MHz
-    input           clk_rom,    // SDRAM clock
     output          pxl2_cen,   // 10.08MHz  OBJ pixel clock
 
     output   [2:0]  red,
@@ -129,7 +128,7 @@ jtpopeye_cen u_cen(
 assign sample = ay_cen;
 
 jtpopeye_prom_we u_prom_we(
-    .clk_rom        ( clk_rom       ),
+    .clk_rom        ( clk           ),
     .clk_rgb        ( clk           ),
     .downloading    ( downloading   ),
     .ioctl_addr     ( ioctl_addr    ),

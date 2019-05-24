@@ -26,7 +26,7 @@ ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf
 
 all: smart.log $(PROJECT).asm.rpt $(PROJECT).sta.rpt
 
-prog: smart.log $(PROJECT).sta.rpt
+prog: smart.log $(PROJECT).asm.rpt
 	program.sh
 
 clean:

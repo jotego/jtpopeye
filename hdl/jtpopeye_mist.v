@@ -87,7 +87,7 @@ wire [ 7:0]   ioctl_data;
 wire          ioctl_wr;
 wire          coin_cnt;
 
-assign LED = ~downloading; // | coin_cnt | rst;
+assign LED = !downloading || !pll_locked; // | coin_cnt | rst;
 wire rst_req = status[32'hf];
 
 wire game_pause, game_service;
@@ -259,7 +259,6 @@ u_frame(
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
     .clk            ( clk_sys               ),   // 40 MHz
-    .clk_rom        ( clk_sys               ),   // SDRAM clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
     .red            ( red                   ),
