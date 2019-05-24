@@ -31,6 +31,7 @@ module jtpopeye_game(
     output          VB,         // vertical blanking
     output          HS,
     output          VS,
+    output          SY_n,      // original composite sync signal
     // cabinet I/O
     input   [ 1:0]  start_button,
     input           coin_input,
@@ -79,7 +80,6 @@ module jtpopeye_game(
 wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
 wire          pxl_cen;  //  5.04MHz  TXT pixel clock
-
 // SDRAM interface
 wire [12:0]   obj_addr;
 wire [31:0]   obj_data;
@@ -98,8 +98,6 @@ wire          dma_cs;     // tell main memory to get data out for DMA
 wire          busrq_n, busak_n;
 
 
-assign HS = HB;
-assign VS = VB;
 // CPU interface
 wire [ 7:0]   DD, DD_DMA;
 wire [15:0]   AD;
@@ -259,6 +257,9 @@ jtpopeye_video u_video(
     .HB         ( HB            ),     // horizontal blanking
     .HBD_n      ( HBD_n         ),     // HB - DMA
     .VB         ( VB            ),     // vertical blanking
+    .HS         ( HS            ),
+    .VS         ( VS            ),
+    .SY_n       ( SY_n          ),
 
     .red        ( red           ),
     .green      ( green         ),

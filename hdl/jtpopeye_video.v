@@ -57,6 +57,9 @@ module jtpopeye_video(
     output              HB,         // horizontal blanking
     output              HBD_n,      // HB - DMA
     output              VB,         // vertical blanking
+    output              SY_n,
+    output              HS,
+    output              VS,
 
     output      [2:0]   red,
     output      [2:0]   green,
@@ -101,12 +104,15 @@ jtpopeye_timing u_timing(
     .HB                 ( HB            ),
     .HBD_n              ( HBD_n         ), // HB - DMA
     .VB                 ( VB            ),
-    // Interleaving
+    .HS                 ( HS            ),
+    .VS                 ( VS            ),
+    // Interleaced signals
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),
     .busak              ( ~busak_n      ),
     .DM10               ( DM10          ),
     .MR_n               ( MR_n          ),
+    .SY_n               ( SY_n          ),      // composite sync
     // PROM programming
     .prog_addr          ( prog_addr[7:0]),
     .prom_7j_we         ( prom_7j_we    ),

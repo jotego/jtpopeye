@@ -113,7 +113,7 @@ wire          prog_we;
 
 wire [2:0] red, green, blue;
 
-wire HB, VB, HS, VS;
+wire HB, VB, HS, VS, SY_n;
 wire [9:0] snd;
 
 wire [9:0] game_joystick1, game_joystick2;
@@ -183,8 +183,8 @@ u_frame(
     .game_b         ( b4             ),
     .LHBL           ( ~HB            ),
     .LVBL           ( ~VB            ),
-    .hs             ( HB             ),
-    .vs             ( VB             ),
+    .hs             ( HS             ),
+    .vs             ( VS             ),
     // VGA video (without OSD)
     .vga_r          ( { r4, r4[3:2] } ),
     .vga_g          ( { g4, g4[3:2] } ),
@@ -269,6 +269,7 @@ jtpopeye_game u_game(
     .VB             ( VB                    ),
     .HS             ( HS                    ),
     .VS             ( VS                    ),
+    .SY_n           ( SY_n                  ),
     // cabinet I/O
     .start_button   ( game_start            ),
     .coin_input     ( coin_input            ),

@@ -34,6 +34,10 @@ module jtpopeye_timing(
     output reg          HBD_n, // HB - DMA
     output reg          VB,
     output              INITEO_n,
+    output reg          SY_n,       // composite sync
+    // HS and VS were not present in the original board
+    output reg          HS,
+    output reg          VS,
     // Interlacing
     output              ROHVS,
     output              ROHVCK,
@@ -135,8 +139,36 @@ jtpopeye_roh_model u_roh_model(
 );
 `endif
 */
-// V blanking
 
+// Composite sync
+reg pre_SY_n;
+reg VB_sampled; // output of FF 6B#9
+
+always @(*) begin : csync
+    reg nand_7b_6, nand_5b_11, nand_7b_8, nand_5b_8;
+    nand_7b_6  = ~( ~Vcnt[3] & Vcnt[4] & Vcnt[5] & VB );
+    nand_5b_11 = ~( ~nand_7b_6 & prom_data[0] );
+    nand_7b_8  = ~( nand_7b_6 & VB_sampled & prom_data[1] );
+    nand_5b_8  = ~( ~VB_sampled & prom_data[2] );
+    pre_SY_n = ~(~nand_5b_11 | ~nand_7b_8 | ~nand_5b_8);
+end
+
+always @(posedge clk) begin : latching
+    reg last_vcnt3;
+    SY_n <= pre_SY_n;
+    last_vcnt3 <= Vcnt[3];
+    if ( Vcnt[3] && ! last_vcnt3 ) VB_sampled <= VB & &Vcnt[8:6];
+    if( VB ) begin
+        if( Vcnt[5:4]==2'b11 ) VS <= ~Vcnt[3];
+    end else VS <= 1'b0;
+    if( HB ) begin
+        if( Hcnt[5:0]==6'b010_110 ) HS <= 1'b1;
+        if( Hcnt[5:0]==6'b100_110 ) HS <= 1'b0;
+    end else HS <= 1'b0;
+end
+
+
+// Timing PROM
 wire [7:0] prom_addr = { HB, Hcnt[7:1] };
 
 jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-v.7j")) u_prom_7j(
