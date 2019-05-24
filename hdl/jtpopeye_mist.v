@@ -79,7 +79,7 @@ localparam CONF_STR = {
 localparam CONF_STR_LEN = 8+16+6+42+20+18+24+15+30;
 localparam CLK_SPEED=40;
 
-wire          rst, clk_sys, clk_rom;
+wire          rst, clk_sys;
 wire [31:0]   status, joystick1, joystick2;
 wire          downloading;
 wire [21:0]   ioctl_addr;
@@ -152,12 +152,10 @@ wire [3:0]
 
 pll_game_mist u_pll_game(
     .inclk0 ( CLOCK_27[0] ),
-    .c1     ( clk_rom     ), // 40 MHz
+    .c1     ( clk_sys     ), // 40 MHz
     .c2     ( SDRAM_CLK   ),
     .locked ( pll_locked  )
 );
-
-assign clk_sys = clk_rom;
 
 `ifdef SIMULATION
 assign sim_pxl_cen = pxl2_cen;
@@ -172,7 +170,7 @@ jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
 u_frame(
     .CLOCK_27       ( CLOCK_27       ),
     .clk_sys        ( clk_sys        ),
-    .clk_rom        ( clk_rom        ),
+    .clk_rom        ( clk_sys        ),
     .clk_vga        ( clk_sys        ),
     .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
@@ -261,7 +259,7 @@ u_frame(
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
     .clk            ( clk_sys               ),   // 40 MHz
-    .clk_rom        ( clk_rom               ),   // SDRAM clock
+    .clk_rom        ( clk_sys               ),   // SDRAM clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
     .red            ( red                   ),
