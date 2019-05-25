@@ -64,7 +64,7 @@ module jtpopeye_mist(
 localparam CONF_STR = {
     //   00000000011111111112222222222333333333344444444445
     //   12345678901234567890123456789012345678901234567890
-        "JTPOPEYE;;", //8
+        "JTPOPEYE;;", // 10
         "O1,Pause,OFF,ON;", // 16
         "F,rom;", // 6
         "O23,Difficulty,Normal,Easy,Hard,Very hard;", // 42
@@ -76,8 +76,7 @@ localparam CONF_STR = {
 };
 
 
-localparam CONF_STR_LEN = 8+16+6+42+20+18+24+15+30;
-localparam CLK_SPEED=40;
+localparam CONF_STR_LEN = 10+16+6+42+20+18+24+15+30;
 
 wire          rst, clk_sys;
 wire [31:0]   status, joystick1, joystick2;
@@ -87,7 +86,6 @@ wire [ 7:0]   ioctl_data;
 wire          ioctl_wr;
 wire          coin_cnt;
 
-assign LED = !downloading || !pll_locked; // | coin_cnt | rst;
 wire rst_req = status[32'hf];
 
 wire game_pause, game_service;
@@ -168,7 +166,6 @@ jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
     )
 u_frame(
-    .CLOCK_27       ( CLOCK_27       ),
     .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_sys        ),
     .clk_vga        ( clk_sys        ),
@@ -253,6 +250,7 @@ u_frame(
     .game_pause     ( game_pause     ),
     .game_service   ( game_service   ),
     // Debug
+    .LED            ( LED            ),
     .gfx_en         ( gfx_en         )
 );
 
