@@ -63,7 +63,7 @@ module jtpopeye_video(
 
     output      [2:0]   red,
     output      [2:0]   green,
-    output      [2:0]   blue        // LSB is always zero
+    output      [1:0]   blue
 );
 
 // DMA
@@ -242,7 +242,7 @@ jtpopeye_colmix u_colmix(
     // output video
     .red                ( red           ),
     .green              ( green         ),
-    .blue               ( blue          )   // LSB is always zero
+    .blue               ( blue          )
 );
 
 endmodule // jtpopeye_video

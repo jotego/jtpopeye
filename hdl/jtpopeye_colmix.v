@@ -41,7 +41,7 @@ module jtpopeye_colmix(
     // output video
     output  reg [2:0]  red,
     output  reg [2:0]  green,
-    output  reg [2:0]  blue   // LSB is always zero
+    output  reg [1:0]  blue
 );
 
 wire [7:0] bak_rgb, obj_rgb, txt_rgb;
@@ -57,14 +57,13 @@ end
 
 // merge the colours!
 always @(posedge clk) if(pxl2_cen) begin
-    blue[0] <= 1'b0;
-    if( !VB_n ) { red, green, blue[2:1] } <= 8'd0;
+    if( !VB_n ) { red, green, blue } <= 8'd0;
     else
     case( {txt_cs, obj_cs, bak_cs} )
-        3'b100: {red, green, blue[2:1]} <= txt_rgb;
-        3'b010: {red, green, blue[2:1]} <= obj_rgb;
-        3'b001: {red, green, blue[2:1]} <= bak_rgb;
-        default: {red, green, blue[2:1]} <= 8'd0;
+        3'b100: {red, green, blue} <= txt_rgb;
+        3'b010: {red, green, blue} <= obj_rgb;
+        3'b001: {red, green, blue} <= bak_rgb;
+        default:{red, green, blue} <= 8'd0;
     endcase
 end
 

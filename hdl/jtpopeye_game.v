@@ -21,11 +21,12 @@
 module jtpopeye_game(
     input           rst_n,
     input           clk,        // 20 MHz
+    output          pxl_cen,    //  5.04MHz  TXT pixel clock
     output          pxl2_cen,   // 10.08MHz  OBJ pixel clock
 
     output   [2:0]  red,
     output   [2:0]  green,
-    output   [2:0]  blue,
+    output   [1:0]  blue,
     output          HB,         // horizontal blanking
     output          VB,         // vertical blanking
     output          HS,
@@ -78,7 +79,6 @@ module jtpopeye_game(
 
 wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
-wire          pxl_cen;  //  5.04MHz  TXT pixel clock
 // SDRAM interface
 wire [12:0]   obj_addr;
 wire [31:0]   obj_data;

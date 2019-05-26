@@ -109,7 +109,8 @@ wire [ 7:0]   prog_data;
 wire [ 1:0]   prog_mask;
 wire          prog_we;
 
-wire [2:0] red, green, blue;
+wire [2:0] red, green;
+wire [1:0] blue;
 
 wire HB, VB, HS, VS, SY_n;
 wire [9:0] snd;
@@ -146,7 +147,7 @@ end
 wire [3:0]
     r4 = { red, red[2] },
     g4 = { green, green[2] },
-    b4 = { blue, blue[2] };
+    b4 = { blue, blue };
 
 pll_game_mist u_pll_game(
     .inclk0 ( CLOCK_27[0] ),
@@ -162,6 +163,20 @@ assign sim_vs = VS;
 assign sim_hs = HS;
 `endif
 
+wire [7:0] rgbx2;
+wire [5:0] redx2   = { rgbx2[7:5], rgbx2[7:5] };
+wire [5:0] greenx2 = { rgbx2[4:2], rgbx2[4:2] };
+wire [5:0] bluex2  = {3{rgbx2[1:0]}};
+
+jtframe_scan2x #(.DW(8), .HLEN(322)) u_scan2x(
+    .rst_n      ( rst_n     ),
+    .clk        ( clk_sys   ),
+    .base_cen   ( pxl_cen   ),
+    .basex2_cen ( pxl2_cen  ),
+    .base_pxl   ( {red, green, blue } ),
+    .x2_pxl     ( rgbx2     )
+);
+
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
     .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
     )
@@ -169,7 +184,6 @@ u_frame(
     .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_sys        ),
     .clk_vga        ( clk_sys        ),
-    .pxl_cen        ( pxl2_cen       ),
     .status         ( status         ),
     .pll_locked     ( pll_locked     ),
     // Base video
@@ -183,9 +197,9 @@ u_frame(
     .hs             ( HS             ),
     .vs             ( VS             ),
     // VGA video (without OSD)
-    .vga_r          ( { r4, r4[3:2] } ),
-    .vga_g          ( { g4, g4[3:2] } ),
-    .vga_b          ( { b4, b4[3:2] } ),
+    .vga_r          ( redx2          ),
+    .vga_g          ( greenx2        ),
+    .vga_b          ( bluex2         ),
     .vga_hsync      ( HS             ),
     .vga_vsync      ( VS             ), 
     // VGA
@@ -257,6 +271,7 @@ u_frame(
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
     .clk            ( clk_sys               ),   // 40 MHz
+    .pxl_cen        ( pxl_cen               ),   //  5.04 MHz, pixel clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
     .red            ( red                   ),
