@@ -38,6 +38,10 @@ module jtpopeye_dma(
 );
 
 reg [10:0] DM;
+`ifdef SIMULATION
+wire [7:0] ROH  = DO[7:0];
+wire [7:0] ROVI = DO[15:8];
+`endif
 
 // wire H0_negedge = !H[0] && Hl[0];
 

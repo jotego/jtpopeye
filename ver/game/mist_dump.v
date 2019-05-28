@@ -20,7 +20,11 @@ module mist_dump(
         $dumpon;
     end
     `else
+    `ifndef VIDEO_START
     initial begin
+    `else
+    always @(negedge VGA_VS) if( frame_cnt==`VIDEO_START ) begin
+    `endif
         $display("DUMP starts");
         `ifdef DEEPDUMP
             $dumpvars(0,mist_test);

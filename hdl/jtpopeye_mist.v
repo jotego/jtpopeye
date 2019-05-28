@@ -168,13 +168,17 @@ wire [5:0] redx2   = { rgbx2[7:5], rgbx2[7:5] };
 wire [5:0] greenx2 = { rgbx2[4:2], rgbx2[4:2] };
 wire [5:0] bluex2  = {3{rgbx2[1:0]}};
 
+wire HSx2;
+
 jtframe_scan2x #(.DW(8), .HLEN(322)) u_scan2x(
     .rst_n      ( rst_n     ),
     .clk        ( clk_sys   ),
     .base_cen   ( pxl_cen   ),
     .basex2_cen ( pxl2_cen  ),
     .base_pxl   ( {red, green, blue } ),
-    .x2_pxl     ( rgbx2     )
+    .x2_pxl     ( rgbx2     ),
+    .HS         ( HS        ),
+    .x2_HS      ( HSx2      )
 );
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
@@ -200,7 +204,7 @@ u_frame(
     .vga_r          ( redx2          ),
     .vga_g          ( greenx2        ),
     .vga_b          ( bluex2         ),
-    .vga_hsync      ( HS             ),
+    .vga_hsync      ( HSx2           ),
     .vga_vsync      ( VS             ), 
     // VGA
     .VGA_R          ( VGA_R          ),

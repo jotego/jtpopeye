@@ -277,28 +277,19 @@ always @(posedge clk or negedge rst_n)
 // is there for robustness
 
 reg  wait_n;
-reg  last_rom_cs, rom_free, rom_clr;
+reg  last_rom_cs;
 wire rom_cs_posedge = !last_rom_cs && rom_cs;
-
-always @(*) begin
-    rom_clr  = !rom_free  || ( rom_ok && rom_free );
-end
 
 always @(posedge clk or negedge rst_n)
     if( !rst_n ) begin
         wait_n   <= 1'b1;
-        rom_free <= 1'b0;
     end else begin
         last_rom_cs <= rom_cs;
         if( rom_cs_posedge ) begin
-            // The PCB has a slow down mechanism for the main CPU
-            // it loses one clock cycle at the beginning of every machine cycle
-            if( rom_cs_posedge ) rom_free  <= 1'b1;
             wait_n <= 1'b0;
         end
         else begin
-            wait_n    <= rom_clr;
-            rom_free  <= !rom_clr;
+            if(rom_ok) wait_n <= 1'b1;
         end
     end
 
