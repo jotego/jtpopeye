@@ -157,7 +157,7 @@ always @(posedge clk) begin : latching
     reg last_vcnt3;
     SY_n <= pre_SY_n;
     last_vcnt3 <= Vcnt[3];
-    if ( Vcnt[3] && ! last_vcnt3 ) VB_sampled <= VB & &Vcnt[8:6];
+    if ( Vcnt[3] && ! last_vcnt3 ) VB_sampled <= VB & (&Vcnt[8:6]);
     if( VB ) begin
         if( Vcnt[5:4]==2'b11 ) VS <= ~Vcnt[3];
     end else VS <= 1'b0;

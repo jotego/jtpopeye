@@ -293,51 +293,26 @@ always @(posedge clk or negedge rst_n)
         end
     end
 
-`ifndef SIMULATION
-T80s u_cpu(
-    .RESET_n    ( rst_n       ),
-    .CLK        ( clk         ),
-    .CEN        ( cpu_cen     ),
-    .WAIT_n     ( wait_n      ),
-    .INT_n      ( 1'b1        ),
-    .RD_n       ( rd_n        ),
-    .WR_n       ( wr_n        ),
+jtframe_z80 u_cpu(
+    .rst_n      ( rst_n       ),
+    .clk        ( clk         ),
+    .cen        ( cpu_cen     ),
+    .wait_n     ( wait_n      ),
+    .int_n      ( 1'b1        ),
+    .nmi_n      ( nmi_n       ),
+    .busrq_n    ( busrq_n     ),
+    .m1_n       (             ),
+    .mreq_n     ( mreq_n      ),
+    .iorq_n     ( iorq_n      ),
+    .rd_n       ( rd_n        ),
+    .wr_n       ( wr_n        ),
+    .rfsh_n     (             ),
+    .halt_n     (             ),
+    .busak_n    ( busak_n     ),
     .A          ( Ascrambled  ),
-    .DI         ( cpu_din     ),
-    .DO         ( cpu_dout    ),
-    .IORQ_n     ( iorq_n      ),
-    .M1_n       (             ),
-    .MREQ_n     ( mreq_n      ),
-    .NMI_n      ( nmi_n       ),
-    .BUSRQ_n    ( busrq_n     ),
-    .BUSAK_n    ( busak_n     ),
-    .RFSH_n     (             ),
-    .out0       ( 1'b0        )
+    .din        ( cpu_din     ),
+    .dout       ( cpu_dout    )
 );
-`else
-// This CPU is used for simulation
-tv80s #(.Mode(0)) u_cpu (
-    .reset_n( rst_n      ),
-    .clk    ( clk        ),
-    .cen    ( cpu_cen    ),
-    .wait_n ( wait_n     ),
-    .int_n  ( 1'b1       ),
-    .nmi_n  ( nmi_n      ),
-    .rd_n   ( rd_n       ),
-    .wr_n   ( wr_n       ),
-    .A      ( Ascrambled ),
-    .di     ( cpu_din    ),
-    .dout   ( cpu_dout   ),
-    .iorq_n ( iorq_n     ),
-    .m1_n   (            ),
-    .mreq_n ( mreq_n     ),
-    .busrq_n( busrq_n    ),
-    .rfsh_n (            ),
-    .busak_n( busak_n    ),
-    // unused
-    .halt_n ()
-);
-`endif
 
 // Dip switches and AY I/O ports
 reg  [7:0] dip_data;
