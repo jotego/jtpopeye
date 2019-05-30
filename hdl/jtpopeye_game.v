@@ -43,8 +43,8 @@ module jtpopeye_game(
     input           uart_rx,
     output          uart_tx,
 
+    `ifndef MISTER
     // SDRAM interface
-    input           downloading,
     input           loop_rst,
     output          sdram_req,
     output  [21:0]  sdram_addr,
@@ -52,15 +52,19 @@ module jtpopeye_game(
     input           data_rdy,
     input           sdram_ack,
     output          refresh_en,
+    `endif
 
     // ROM LOAD
+    input           downloading,
     input   [21:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
+    `ifndef MISTER
     output  [21:0]  prog_addr,
     output  [ 7:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output          prog_we,
+    `endif
 
     // DIP Switches
     input           dip_pause,  // not a DIP on real hardware
@@ -76,6 +80,13 @@ module jtpopeye_game(
     // Debug
     input   [3:0]   gfx_en
 );
+
+`ifdef MISTER
+wire [21:0]  prog_addr;
+wire [ 7:0]  prog_data;
+wire [ 1:0]  prog_mask;
+wire         prog_we;
+`endif
 
 wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
@@ -142,6 +153,7 @@ jtpopeye_prom_we u_prom_we(
     .encrypted      ( encrypted     )
 );
 
+`ifndef MISTER
 jtpopeye_rom u_rom(
     .rst_n       ( rst_n         ),
     .clk         ( clk           ),
@@ -164,6 +176,25 @@ jtpopeye_rom u_rom(
     .data_read   ( data_read     ),
     .refresh_en  ( refresh_en    )
 );
+`else
+jtpopeye_bram u_rom(
+    .rst_n       ( rst_n           ),
+    .clk         ( clk             ),
+
+    .main_addr   ( main_addr       ), // 32 kB, addressed as 8-bit words
+    .obj_addr    ( obj_addr        ), // 32 kB
+
+    .main_dout   ( main_data       ),
+    .main_cs     ( main_cs         ),
+    .obj_dout    ( obj_data        ),
+    .prog_addr   ( prog_addr[14:0] ),
+    .prog_data   ( prog_data       ),
+    .prog_mask   ( prog_mask       ), // active low
+    .prog_we     ( prog_we         )     
+);
+assign main_ok = 1'b1;
+assign ready   = 1'b1;
+`endif
 
 reg [1:0] main_rst_n=2'b0;
 always @(negedge clk) begin

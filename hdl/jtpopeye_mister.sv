@@ -18,6 +18,10 @@
 
 `timescale 1ns/1ps
 
+`ifndef MISTER
+`define MISTER
+`endif
+
 module emu
 (
     //Master input clock
@@ -88,6 +92,12 @@ module emu
     output        SDRAM_nCAS,
     output        SDRAM_nRAS,
     output        SDRAM_nWE
+    `ifdef SIMULATION
+    ,output         sim_pxl_cen,
+    output          sim_pxl_clk,
+    output          sim_vs,
+    output          sim_hs
+    `endif    
 );
 
 `include "build_id.v" 
@@ -97,7 +107,7 @@ localparam CONF_STR = {
         "A.JTPOPEYE;;", // 12
         "-;",
         "R0,Reset;",
-        "J,Fire,Bomb,Start 1P,Start 2P,Coin,Pause;",
+        "J,Punch,Start 1P,Start 2P,Coin,Pause;",
         "V,v",`BUILD_DATE, " http://patreon.com/topapate;"
 };
 
@@ -112,8 +122,7 @@ pll pll(
     .refclk     ( CLK_50M    ),
     .rst        ( 1'b0       ),
     .locked     ( pll_locked ),
-    .outclk_0   ( clk_sys    ),
-    .outclk_1   ( SDRAM_CLK  )
+    .outclk_0   ( clk_sys    )
 );
 
 ///////////////////////////////////////////////////
@@ -170,7 +179,6 @@ reg btn_right = 0;
 reg btn_down = 0;
 reg btn_up = 0;
 reg btn_fire1 = 0;
-reg btn_fire2 = 0;
 reg btn_coin  = 0;
 reg btn_pause = 0;
 
@@ -180,35 +188,39 @@ always @(posedge clk_sys) begin
     
     if(old_state != ps2_key[10]) begin
         case(code)
-            'h75: btn_up            <= pressed; // up
-            'h72: btn_down          <= pressed; // down
-            'h6B: btn_left              <= pressed; // left
-            'h74: btn_right         <= pressed; // right
-            'h05: btn_one_player    <= pressed; // F1
-            'h06: btn_two_players   <= pressed; // F2
-            'h04: btn_coin              <= pressed; // F3
-            'h0C: btn_pause     <= pressed; // F4
-            'h14: btn_fire1             <= pressed; // ctrl
-            'h11: btn_fire1             <= pressed; // alt
-            'h29: btn_fire2         <= pressed; // Space
+            'h75: btn_up          <= pressed; // up
+            'h72: btn_down        <= pressed; // down
+            'h6B: btn_left        <= pressed; // left
+            'h74: btn_right       <= pressed; // right
+            'h05: btn_one_player  <= pressed; // F1
+            'h06: btn_two_players <= pressed; // F2
+            'h04: btn_coin        <= pressed; // F3
+            'h0C: btn_pause       <= pressed; // F4
+            'h14: btn_fire1       <= pressed; // ctrl
         endcase
     end
 end
 
-wire [9:0] joy = joy_0 | joy_1;
+reg m_up, m_down, m_left, m_right, m_punch, m_jump, m_pause;
+reg m_start1, m_start2, m_coin;
+reg m2_up, m2_down, m2_left, m2_right, m2_punch, m2_jump;
 
-wire m_up     = btn_up    | joy[3];
-wire m_down   = btn_down  | joy[2];
-wire m_left   = btn_left  | joy[1];
-wire m_right  = btn_right | joy[0];
-wire m_fire   = btn_fire1 | joy[4];
-wire m_jump   = btn_fire2 | joy[5];
-wire m_pause  = btn_pause | joy[9];
-
-wire m_start1 = btn_one_player  | joy[6];
-wire m_start2 = btn_two_players | joy[7];
-wire m_coin   = btn_coin        | joy[8];
-
+always @(posedge clk_sys) begin
+    m_up     <= ~(btn_up    | joy_0[3]);
+    m_down   <= ~(btn_down  | joy_0[2]);
+    m_left   <= ~(btn_left  | joy_0[1]);
+    m_right  <= ~(btn_right | joy_0[0]);
+    m_punch  <= ~(btn_fire1 | joy_0[4]);
+    m_pause  <= ~(btn_pause | joy_0[9]);
+    m_start1 <= ~(btn_one_player  | joy_0[6]);
+    m_start2 <= ~(btn_two_players | joy_0[7]);
+    m_coin   <= ~(btn_coin        | joy_0[8]);
+    m2_up    <= ~joy_1[3];
+    m2_down  <= ~joy_1[2];
+    m2_left  <= ~joy_1[1];
+    m2_right <= ~joy_1[0];
+    m2_punch <= ~joy_1[4];
+end
 reg pause = 0;
 always @(posedge clk_sys) begin
     reg old_pause;
@@ -218,10 +230,15 @@ always @(posedge clk_sys) begin
     if(status[0] | buttons[1]) pause <= 0;
 end
 
+wire dip_upright = 1'b1;
+wire dip_demosnd = 1'b0;
+wire [3:0] dip_price  = 4'b0;
+
 ///////////////////////////////////////////////////////////////////
 
 
-wire [2:0] red, green, blue;
+wire [2:0] red, green;
+wire [1:0] blue;
 wire HSync,VSync,HBlank,VBlank;
 wire HS, VS, HB, VB;
 
@@ -234,28 +251,37 @@ assign HDMI_B   = VGA_B;
 assign HDMI_DE  = VGA_DE;
 assign HDMI_HS  = HS;
 assign HDMI_VS  = VS;
-assign HDMI_SL  = sl[1:0];
+assign HDMI_SL  = 2'b0;
 
 // base video
+wire SY_n;
 assign VGA_R    = { red,   red,   red[2:1] };
 assign VGA_G    = { green, green, green[2:1] };
-assign VGA_B    = { blue,  blue,  blue[2:1] };
-assign VGA_HS   = SY_n;
-assign VGA_VS   = 1;
+assign VGA_B    = { 4{blue} };
+assign VGA_HS   = HS;
+assign VGA_VS   = VS;
 
-wire [2:0] scale = status[5:3];
-wire [2:0] sl = scale ? scale - 1'd1 : 3'd0;
-wire       scandoubler = (scale || forced_scandoubler); 
+wire [1:0]    dip_level = 0; // ~status[13:12];
+wire [1:0]    dip_lives = 0; // ~status[9:8];
+wire [1:0]    dip_bonus = 0; // ~status[11:10];
+wire          dip_test  = 0; // ~status[15];
 
-wire [1:0]    dip_level = ~status[13:12];
-wire [1:0]    dip_lives = ~status[9:8];
-wire [1:0]    dip_bonus = ~status[11:10];
-wire          dip_test  = ~status[15];
+wire [4:0] game_joystick1 = { m_punch,  m_up,  m_down,  m_left,  m_right  };
+wire [4:0] game_joystick2 = { m2_punch, m2_up, m2_down, m2_left, m2_right };
+wire [1:0] game_start     = { m_start2, m_start1 };
+
+wire pxl2_cen, pxl_cen;
+wire game_pause = m_pause;
+wire game_service = 1'b0;
+wire rst_n = ~RESET;
+
+assign VGA_CE = pxl_cen;
 
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
     .clk            ( clk_sys               ),   // 40 MHz
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
+    .pxl_cen        ( pxl_cen               ),   // 10.08 MHz, pixel clock
 
     .red            ( red                   ),
     .green          ( green                 ),
@@ -267,33 +293,20 @@ jtpopeye_game u_game(
     .SY_n           ( SY_n                  ),
     // cabinet I/O
     .start_button   ( game_start            ),
-    .coin_input     ( coin_input            ),
-    .joystick1      ( game_joystick1[4:0]   ),
-    .joystick2      ( game_joystick2[4:0]   ),
+    .coin_input     ( m_coin                ),
+    .joystick1      ( game_joystick1        ),
+    .joystick2      ( game_joystick2        ),
     .service        ( game_service          ),
 
-    // ROM access from game
-    .loop_rst       ( loop_rst       ),
-    .sdram_addr     ( sdram_addr     ),
-    .sdram_req      ( sdram_req      ),
-    .sdram_ack      ( sdram_ack      ),
-    .data_read      ( data_read      ),
-    .data_rdy       ( data_rdy       ),
-    .refresh_en     ( refresh_en     ),
-
     // UART
-    .uart_rx        ( UART_RX        ),
-    .uart_tx        ( UART_TX        ),
+    .uart_rx        ( 1'b0           ),
+    .uart_tx        (                ),
 
     // ROM LOAD
     .downloading    ( downloading    ),
-    .ioctl_addr     ( ioctl_addr     ),
+    .ioctl_addr     ( ioctl_addr[21:0] ),
     .ioctl_data     ( ioctl_data     ),
     .ioctl_wr       ( ioctl_wr       ),
-    .prog_addr      ( prog_addr      ),
-    .prog_data      ( prog_data      ),
-    .prog_mask      ( prog_mask      ),
-    .prog_we        ( prog_we        ),
 
     // DIP Switches
     .dip_pause      ( game_pause     ),  // not a DIP on real hardware
@@ -304,10 +317,14 @@ jtpopeye_game u_game(
     .dip_price      ( dip_price      ),
     .dip_lives      ( dip_lives      ),
     // Sound output
-    .snd            ( snd[9:0]       ),
+    .snd            ( AUDIO_L[15:6]  ),
     .sample         ( /* unused  */  ),
     // Debug
-    .gfx_en         ( gfx_en         )
+    .gfx_en         ( 4'd0           )
 );
+
+assign AUDIO_L[5:0] = 6'd0;
+assign AUDIO_R = AUDIO_L;
+assign AUDIO_S = 0;
 
 endmodule // jtpopeye_mist

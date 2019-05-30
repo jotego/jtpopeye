@@ -42,3 +42,21 @@ initial $display("INFO: SDRAM_CLK delay set to %f ns",sdram_delay);
 assign #sdram_delay c2=c1;
 
 endmodule // pll_game_mist
+
+///////////// MiSTER PLL
+module pll(
+    input       refclk, // 27 MHz
+    input       rst,
+    output reg  outclk_0,     // 40.32 MHz
+    output      locked
+);
+
+assign locked = 1;
+
+initial begin
+    outclk_0 = 1'b0;
+    forever #12.4 outclk_0 = ~outclk_0;
+end
+
+endmodule // pll_game_mist
+
