@@ -386,4 +386,17 @@ u_uart(
     .tx_wr      ( uart_tx_wr    )  // write strobe
 );
 
+///////////////////////////////////
+// Dump ROM access to a file
+`ifdef SIMULATION
+integer file_rom;
+initial begin
+    file_rom=$fopen("rom_access.txt");
+end
+
+always @(posedge rom_cs) begin
+    $fdisplay(file_rom,"%4X (%4X)", Ascrambled[14:0], rom_addr );
+end
+`endif
+
 endmodule // jtpopeye_main
