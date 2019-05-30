@@ -108,7 +108,8 @@ localparam CONF_STR = {
         "-;",
         "R0,Reset;",
         "J,Punch,Start 1P,Start 2P,Coin,Pause;",
-        "V,v",`BUILD_DATE, " http://patreon.com/topapate;"
+        //"V,v",`BUILD_DATE, " http://patreon.com/topapate;"
+        "V,BETA version http://patreon.com/topapate;"
 };
 
 assign VGA_F1 = 0;

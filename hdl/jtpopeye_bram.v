@@ -97,10 +97,10 @@ end
 `ifdef SIMULATION
 initial begin : load
     integer f;
-    f=$fopen("../../rom/tpp2-c.7a", "rb"); $fread( main_mem, f,      0, 8191); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7b", "rb"); $fread( main_mem, f,  8192,16383 ); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7c", "rb"); $fread( main_mem, f, 16384,24575 ); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7e", "rb"); $fread( main_mem, f, 24576,31767 ); $fclose(f);
+    f=$fopen("../../rom/tpp2-c.7a", "rb"); $fread( main_mem, f,     0, 8192 ); $fclose(f);
+    f=$fopen("../../rom/tpp2-c.7b", "rb"); $fread( main_mem, f,  8192, 8192 ); $fclose(f);
+    f=$fopen("../../rom/tpp2-c.7c", "rb"); $fread( main_mem, f, 16384, 8192 ); $fclose(f);
+    f=$fopen("../../rom/tpp2-c.7e", "rb"); $fread( main_mem, f, 24576, 8192 ); $fclose(f);
 
     f=$fopen("../../rom/tpp2-v.1e", "rb"); $fread( obj0_mem, f); $fclose(f);
     f=$fopen("../../rom/tpp2-v.1f", "rb"); $fread( obj1_mem, f); $fclose(f);

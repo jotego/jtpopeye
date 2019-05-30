@@ -1,0 +1,10 @@
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_mist.v      ]
+# SDRAM
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_rom.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jtgng_sdram.v        ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jtframe_uart.v       ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/sdram/jtframe_romrq.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/video/jtframe_scan2x.v ]
+# PLL
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) mist/pll_game_mist.qip ]
+
