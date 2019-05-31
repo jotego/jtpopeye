@@ -130,7 +130,7 @@ wire [31:0] data_read;
 wire        data_rdy;
 wire        refresh_en;
 wire        pll_locked;
-wire        pxl2_cen;
+wire        pxl_cen, pxl2_cen;
 
 // play level. Latch all inputs to game module
 always @(posedge clk_sys) begin

@@ -216,8 +216,9 @@ jtpopeye_bck u_bak(
 //     .OBJV               ( OBJV          )
 // );
 
-assign OBJV = 'd0;
-assign OBJC = 'd0;
+assign obj_addr = 0;
+assign OBJV = 0;
+assign OBJC = 0;
 
 jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),

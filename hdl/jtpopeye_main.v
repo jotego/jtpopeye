@@ -73,7 +73,12 @@ wire [7:0] ram_data, sec_data, cpu_dout, ay_dout;
 assign DD     = cpu_dout;
 assign DD_DMA = ram_data;
 reg sec_cs, CSB, CSB_l, CSV, ram_cs;
+
+`ifndef NOUART
 wire uart_cs = !iorq_n && AD[7:4]==4'hf;
+`else
+wire uart_cs = 1'b0;
+`endif
 
 // UART
 wire [7:0] uart_rx_data;
