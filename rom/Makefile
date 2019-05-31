@@ -1,3 +1,35 @@
+test_txt:
+	z80asm ../ver/game/test_txt.s --output=test_txt.bin
+	cat \
+	test_txt.bin \
+	tpp2-v.1e \
+	tpp2-v.1f \
+	tpp2-v.1j \
+	tpp2-v.1k \
+	tpp2-v.5n \
+	tpp2-v.7j \
+	tpp2-c.5b \
+	tpp2-c.5a \
+	tpp2-c.4a \
+	tpp2-c.3a \
+	> jtpopeye.rom
+
+test_back:
+	z80asm ../ver/game/test_back.s --output=test_back.bin
+	cat \
+	test_back.bin \
+	tpp2-v.1e \
+	tpp2-v.1f \
+	tpp2-v.1j \
+	tpp2-v.1k \
+	tpp2-v.5n \
+	tpp2-v.7j \
+	tpp2-c.5b \
+	tpp2-c.5a \
+	tpp2-c.4a \
+	tpp2-c.3a \
+	> jtpopeye.rom
+
 popeye:
 	cat \
 	tpp2-c.7a \

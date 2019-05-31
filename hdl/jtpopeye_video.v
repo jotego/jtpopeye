@@ -223,7 +223,7 @@ jtpopeye_obj u_obj(
 );
 `else
 assign OBJV     =  2'd0;
-assign OBJC     =  6'd0;
+assign OBJC[2:0]=  3'd0;
 assign obj_addr = 13'd0;
 `endif
 

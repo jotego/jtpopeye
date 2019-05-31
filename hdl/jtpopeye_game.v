@@ -204,8 +204,10 @@ always @(negedge clk) begin
         main_rst_n <= { main_rst_n[0], 1'b1 };
 end
 
+wire rom_rst_n = main_rst_n[1];
+
 jtpopeye_main u_main(
-    .rst_n          ( main_rst_n[1] ),
+    .rst_n          ( rom_rst_n     ),
     .clk            ( clk           ),
     .cpu_cen        ( cpu_cen       ),
     .ay_cen         ( ay_cen        ),
@@ -249,7 +251,7 @@ jtpopeye_main u_main(
 );
 
 jtpopeye_video u_video(
-    .rst_n      ( rst_n         ),
+    .rst_n      ( rom_rst_n     ),
     .clk        ( clk           ),
     .H0_cen     ( H0_cen        ),
     .cpu_cen    ( cpu_cen       ),

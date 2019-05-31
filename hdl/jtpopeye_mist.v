@@ -117,7 +117,7 @@ wire [9:0] snd;
 
 wire [9:0] game_joystick1, game_joystick2;
 wire [1:0] game_coin, game_start;
-wire game_rst, rst_n;
+wire game_rst_n, rst_n;
 wire [3:0] gfx_en;
 reg en_mixing, coin_input;
 
@@ -252,7 +252,7 @@ u_frame(
 //////////// board
     .rst            ( rst            ),
     .rst_n          ( rst_n          ),
-    .game_rst       ( game_rst       ),
+    .game_rst_n     ( game_rst_n     ),
     // reset forcing signals:
     .dip_flip       ( /* unused */   ),
     .rst_req        ( rst_req        ),
@@ -273,7 +273,7 @@ u_frame(
 );
 
 jtpopeye_game u_game(
-    .rst_n          ( rst_n                 ),
+    .rst_n          ( game_rst_n            ),
     .clk            ( clk_sys               ),   // 40 MHz
     .pxl_cen        ( pxl_cen               ),   //  5.04 MHz, pixel clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock

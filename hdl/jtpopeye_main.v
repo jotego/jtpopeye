@@ -160,7 +160,11 @@ end
 
 reg [ 7:0] ram_din;
 reg [10:0] ram_addr;
-reg ram_we;
+reg ram_we, last_wr_n;
+wire negedge_wrn = !wr_n && last_wr_n;
+
+always @(posedge clk)
+    last_wr_n <= wr_n;
 
 always @(posedge clk) begin
     if( dma_cs )
@@ -168,7 +172,7 @@ always @(posedge clk) begin
     else begin
         if(ram_cs) ram_addr <= AD[10:0];
     end
-    if( ram_cs && !wr_n ) begin
+    if( ram_cs && negedge_wrn ) begin
         ram_we  <= 1'b1;
         ram_din <= cpu_dout;
     end
@@ -236,7 +240,7 @@ reg        clr_uart;
 reg        uart_rx_new; // signals that a new byte is ready to be read
 
 always @(*) begin
-    cpu_din  = 8'h0;
+    cpu_din  = 8'hff;
     clr_uart = 1'b0;
     case( {mreq_n, iorq_n} )
         2'b01:  // Memory request
