@@ -5,7 +5,6 @@ set_global_assignment -name VERILOG_MACRO "MIST=1"
 # set_global_assignment -name VERILOG_MACRO "NOUART=1"
 
 set_global_assignment -name TOP_LEVEL_ENTITY jtpopeye_mist
-set_global_assignment -name QIP_FILE jtpopeye.qip
 set_global_assignment -name QIP_FILE jtpopeye_mist.qip
 set_global_assignment -name QIP_FILE ../modules/jtframe/hdl/mist/mist.qip
 set_global_assignment -name QIP_FILE ../modules/jtframe/hdl/clocking/jtframe_pll20.qip
