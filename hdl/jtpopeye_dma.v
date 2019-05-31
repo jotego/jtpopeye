@@ -85,7 +85,7 @@ always @(posedge clk or negedge rst_n)
 reg [3:0] DMCS;
 
 always @(*) begin
-    dma_cs <= ~DM[10] & ~busak_n & ~H[1];
+    dma_cs  = ~DM[10] & ~busak_n & ~H[1];
     DMCS[0] = dma_cs && H[0] && DM[9:8]==2'd0;
     DMCS[1] = dma_cs && H[0] && DM[9:8]==2'd1;
     DMCS[2] = dma_cs && H[0] && DM[9:8]==2'd2;
