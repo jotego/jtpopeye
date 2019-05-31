@@ -21,6 +21,7 @@
 module jtpopeye_obj(
     input               rst_n,
     input               clk,
+    input               pxl_cen,
     input               pxl2_cen,
 
     input               ROHVS,
@@ -28,6 +29,7 @@ module jtpopeye_obj(
     input      [28:0]   DO,
     input               RV_n,
     input               INITEO_n,
+    input               VB,
 
     input      [ 7:0]   H,
     input      [17:0]   DJ,
@@ -35,25 +37,45 @@ module jtpopeye_obj(
     output     [12:0]   obj_addr,
     input      [31:0]   objrom_data,
     // pixel data
-    output     [ 5:0]   OBJC,
-    output     [ 1:0]   OBJV
+    output reg [ 2:0]   OBJC,
+    output reg [ 1:0]   OBJV
 );
 
 assign obj_addr = { DJ[17], DJ[10:1], DJ[0]^INITEO_n };
 
 reg hflip;
-reg [31:0] objd;
-reg [1:0] offset;
+reg [15:0] objd0, objd1;
 
 reg [2:0] objc;
+reg [4:0] cnt;  // device 5E, video sheet 2/3
 
-always @(posedge clk) if( pxl2_cen ) begin
+always @(posedge clk) if( pxl_cen ) begin
     if( &H[2:0]==3'd7 ) begin
         objc   <= DJ[16:14];
-        objd   <= objrom_data;
-        offset <= DJ[13:12];
+        cnt    <= { 1'b0, DJ[13:12] ^ {2{RV_n}}, 1'b1, ~&DJ[16:14] };
+        hflip  <= DJ[11] ^ RV_n;
+    end else begin
+        cnt    <= cnt+5'd1;
     end
 end
 
+// devices 4K, 4L, 4J, 5K, 4F, 4H, 4E and 5F, video sheet 2/3
+always @(posedge clk) if(pxl2_cen) begin : shift_register
+    if( !cnt[4] ) begin
+        { objd1, objd0 } <= objrom_data;
+    end else begin
+        objd1 <= hflip ? { objd1[14:0], 1'b0 } : { 1'b0, objd1[15:1] }; // pink
+        objd0 <= hflip ? { objd0[14:0], 1'b0 } : { 1'b0, objd0[15:1] }; // green
+    end
+end
+
+always @(posedge clk) if(pxl2_cen) begin
+    if(VB) begin
+        OBJV <= 2'b00;
+    end else if(cnt[4]) begin
+        OBJC <= objc;
+        OBJV <= hflip ? { objd1[15], objd0[15] } : { objd1[0], objd0[0] };
+    end
+end
 
 endmodule // jtpopeye_obj

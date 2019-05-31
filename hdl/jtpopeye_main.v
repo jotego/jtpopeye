@@ -153,19 +153,29 @@ end
 ///////////////////////////
 // Game RAM
 
-wire RAM_we = ram_cs && !wr_n;
-reg  [10:0] ADmux;
+reg [ 7:0] ram_din;
+reg [10:0] ram_addr;
+reg ram_we;
 
-always @(*) begin
-    ADmux = dma_cs ? {1'b1, AD_DMA} : AD[10:0];
+always @(posedge clk) begin
+    if( dma_cs )
+        ram_addr <= {1'b1, AD_DMA};
+    else begin
+        if(ram_cs) ram_addr <= AD[10:0];
+    end
+    if( ram_cs && !wr_n ) begin
+        ram_we  <= 1'b1;
+        ram_din <= cpu_dout;
+    end
+    else ram_we <= 1'b0;
 end
 
 jtgng_ram #(.aw(11)) u_ram(
     .clk    ( clk        ),
     .cen    ( cpu_cen    ),
-    .data   ( cpu_dout   ),
-    .addr   ( ADmux      ),
-    .we     ( RAM_we     ),
+    .data   ( ram_din    ),
+    .addr   ( ram_addr   ),
+    .we     ( ram_we     ),
     .q      ( ram_data   )
 );
 

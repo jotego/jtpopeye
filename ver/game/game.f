@@ -5,7 +5,6 @@
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
 ../../modules/jtframe/hdl/video/jtframe_scan2x.v
 ../../hdl/jtpopeye_rom.v
-../../hdl/jtpopeye_bram.v
 ../../hdl/jtpopeye_security.v
 ../../hdl/jtpopeye_timing.v
 ../../hdl/jtpopeye_main.v

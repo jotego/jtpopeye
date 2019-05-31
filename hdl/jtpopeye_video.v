@@ -138,6 +138,10 @@ jtpopeye_dma u_dma(
     .DO                 ( DO            )
 );
 
+// These are latched ny signal ROHVCK in video sheet 1/3
+assign OBJC[5:3] = DO[26:24];
+assign BAKC[4]   = DO[27];
+
 jtpopeye_txt u_txt(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -192,32 +196,36 @@ jtpopeye_bck u_bak(
     .DD                 ( DD            ),
     .ROVI               ( ROVI          ),
     .DO                 ( DO            ), // gfx buffer
-    .BAKC               ( BAKC          )
+    .BAKC               ( BAKC[3:0]     )
 );
 
-// jtpopeye_obj u_obj(
-//     .rst_n              ( rst_n         ),
-//     .clk                ( clk           ),
-//     .pxl2_cen           ( pxl2_cen      ),
-// 
-//     .ROHVS              ( ROHVS         ),
-//     .ROHVCK             ( ROHVCK        ),
-//     .RV_n               ( RV_n          ),     // Flip
-//     .INITEO_n           ( INITEO_n      ),
-// 
-//     .H                  ( H             ),
-//     .DJ                 ( DJ            ),
-//     .DO                 ( DO            ),
-//     // SDRAM interface
-//     .obj_addr           ( obj_addr      ),
-//     .objrom_data        ( objrom_data   ),
-//     // pixel data
-//     .OBJC               ( OBJC          ),
-//     .OBJV               ( OBJV          )
-// );
+`ifndef NOOBJ
+jtpopeye_obj u_obj(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .pxl2_cen           ( pxl2_cen      ),
 
-assign OBJV = 'd0;
-assign OBJC = 'd0;
+    .ROHVS              ( ROHVS         ),
+    .ROHVCK             ( ROHVCK        ),
+    .RV_n               ( RV_n          ),     // Flip
+    .INITEO_n           ( INITEO_n      ),
+    .VB                 ( VB            ),
+
+    .H                  ( H             ),
+    .DJ                 ( DJ            ),
+    .DO                 ( DO            ),
+    // SDRAM interface
+    .obj_addr           ( obj_addr      ),
+    .objrom_data        ( objrom_data   ),
+    // pixel data
+    .OBJC               ( OBJC[2:0]     ),
+    .OBJV               ( OBJV          )
+);
+`else
+assign OBJV     =  2'd0;
+assign OBJC     =  6'd0;
+assign obj_addr = 13'd0;
+`endif
 
 jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),
