@@ -65,7 +65,7 @@ end
 
 always @(posedge clk or negedge rst_n) 
     if(!rst_n) begin
-        DM = 'd0;
+        DM = 11'd0;
     end else if(cen) begin
         VBl <= VB;
         if( VB_posedge ) 

@@ -25,6 +25,7 @@ module jtpopeye_video(
     input               cpu_cen,
     input               pxl_cen,  // TXT pixel clock
     input               pxl2_cen, // OBJ pixel clock
+    input               pause,
 
     input      [ 7:0]   DD,
     // CPU interface
@@ -147,6 +148,7 @@ jtpopeye_txt u_txt(
     .clk                ( clk           ),
     .pxl_cen            ( pxl_cen       ),
     .cpu_cen            ( cpu_cen       ),
+    .pause              ( pause         ),
 
     .AD                 ( AD            ),
     .DD                 ( DD            ),

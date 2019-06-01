@@ -257,6 +257,7 @@ jtpopeye_video u_video(
     .cpu_cen    ( cpu_cen       ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
     .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
+    .pause      ( dip_pause     ),
 
     // CPU interface
     .DD         ( DD            ),

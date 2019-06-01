@@ -23,6 +23,7 @@ module jtpopeye_txt(
     input               clk,
     input               pxl_cen,
     input               cpu_cen,
+    input               pause,
 
     input      [12:0]   AD,
     input      [ 7:0]   DD,
@@ -58,9 +59,10 @@ jtpopeye_video_dec u_dec(
 wire we = CSV & MEMWRO;
 reg wev, wec;
 
+wire [9:0] scan = { V[7:3], H[7:3] };
 reg [7:0] din;
 always @(posedge clk) begin
-    ram_addr <= CSV ? ADx[9:0] : { V[7:3], H[7:3] };
+    ram_addr <= CSV ? ADx[9:0] : scan;
     wev      <= we && AD[11:10]==2'b00;
     wec      <= we && AD[11:10]==2'b01; // colour
     din      <= DD;
@@ -78,6 +80,17 @@ jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
     .addr   ( ram_addr       ),
     .we     ( wev            ),
     .q      ( rom_addr[10:3] )
+);
+
+wire [7:0] pause_data;
+
+jtgng_ram #(.aw(10), .dw(8),.synfile("msg.hex"),.simfile("msg.bin")) u_ram_pause(
+    .clk    ( clk            ),
+    .cen    ( cpu_cen        ),
+    .data   ( 8'h00          ),
+    .addr   ( scan           ),
+    .we     ( 1'b0           ),
+    .q      ( pause_data     )
 );
 
 wire [3:0] pre_txtc;
@@ -99,6 +112,10 @@ jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
 // Character ROM
 
 wire [7:0] txtv;
+reg [10:0] rom_addr_mux;
+
+always @(posedge clk)
+    rom_addr_mux <= pause ? {pause_data, V[2:0] } : rom_addr;
 
 jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
     .offset(12'h800)
@@ -106,7 +123,7 @@ jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
     .clk    ( clk               ),
     .cen    ( pxl_cen           ),
     .data   ( prom_din          ),
-    .rd_addr( rom_addr          ),
+    .rd_addr( rom_addr_mux      ),
     .wr_addr( prog_addr[10:0]   ),
     .we     ( prom_5n_we        ),
     .q      ( txtv              )

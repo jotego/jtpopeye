@@ -1,5 +1,6 @@
 PROJECT=jtpopeye
 SOURCE_FILES= \
+	msg.py 					    \
 	../hdl/jtpopeye_bck.v		\
 	../hdl/jtpopeye_buf.v		\
 	../hdl/jtpopeye_cen.v		\
@@ -16,10 +17,11 @@ SOURCE_FILES= \
 	../hdl/jtpopeye_txt.v		\
 	../hdl/jtpopeye_video_dec.v	\
 	../hdl/jtpopeye_video.v		\
-	../modules/jtframe/hdl/ram/jtgng_ram.v		\
-	../modules/jtframe/hdl/ram/jtgng_prom.v		\
-	../modules/jtframe/hdl/jtgng_sdram.v		\
-	../modules/jtframe/hdl/sdram/jt1943_romrq.v \
+	../modules/jtframe/hdl/ram/jtgng_ram.v		 \
+	../modules/jtframe/hdl/ram/jtgng_prom.v		 \
+	../modules/jtframe/hdl/jtgng_sdram.v		 \
+	../modules/jtframe/hdl/sdram/jtframe_romrq.v \
+	jtpopeye_mist.qip           \
 	jtpopeye.qip
 
 ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf
@@ -66,6 +68,7 @@ smart.log: $(ASSIGNMENT_FILES)
 	quartus_sh --determine_smart_action $(PROJECT) > smart.log
 
 $(ASSIGNMENT_FILES): set_qip.tcl
+	msg.py
 	quartus_sh --prepare $(PROJECT)
 	quartus_sh -t set_qip.tcl
 

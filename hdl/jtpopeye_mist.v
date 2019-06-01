@@ -317,7 +317,11 @@ jtpopeye_game u_game(
     .prog_we        ( prog_we        ),
 
     // DIP Switches
+`ifndef ALWAYS_PAUSE
     .dip_pause      ( game_pause     ),  // not a DIP on real hardware
+`else 
+    .dip_pause      ( 1'b1           ),
+`endif
     .dip_upright    ( dip_upright    ),
     .dip_level      ( dip_level      ),  // difficulty level
     .dip_bonus      ( dip_bonus      ),
