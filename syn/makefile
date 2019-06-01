@@ -17,11 +17,16 @@ SOURCE_FILES= \
 	../hdl/jtpopeye_txt.v		\
 	../hdl/jtpopeye_video_dec.v	\
 	../hdl/jtpopeye_video.v		\
-	../modules/jtframe/hdl/ram/jtgng_ram.v		 \
-	../modules/jtframe/hdl/ram/jtgng_prom.v		 \
-	../modules/jtframe/hdl/jtgng_sdram.v		 \
-	../modules/jtframe/hdl/sdram/jtframe_romrq.v \
-	jtpopeye_mist.qip           \
+	../modules/jtframe/hdl/ram/jtgng_ram.v		     \
+	../modules/jtframe/hdl/ram/jtgng_prom.v		     \
+	../modules/jtframe/hdl/jtgng_sdram.v		     \
+	../modules/jtframe/hdl/sdram/jtframe_romrq.v     \
+	../modules/jtframe/hdl/mist/jtframe_mist.v       \
+	../modules/jtframe/hdl/mist/jtgng_mist_base.v    \
+	../modules/jtframe/hdl/jtgng_board.v             \
+	../modules/jtframe/hdl/keyboard/jtgng_keyboard.v \
+	../modules/jtframe/hdl/keyboard/ps2_intf.vhd     \
+	jtpopeye_mist.qip                                \
 	jtpopeye.qip
 
 ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf

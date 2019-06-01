@@ -176,7 +176,7 @@ always @(posedge clk) begin
         ram_we  <= 1'b1;
         ram_din <= cpu_dout;
     end
-    else ram_we <= 1'b0;
+    else if(cpu_cen) ram_we <= 1'b0;
 end
 
 jtgng_ram #(.aw(11)) u_ram(

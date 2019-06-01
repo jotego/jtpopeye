@@ -182,7 +182,7 @@ jtframe_scan2x #(.DW(8), .HLEN(322)) u_scan2x(
 );
 
 jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
-    .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_HIGH(1'b1)
+    .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_LOW(1'b0)
     )
 u_frame(
     .clk_sys        ( clk_sys        ),
