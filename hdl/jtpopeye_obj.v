@@ -55,7 +55,7 @@ always @(posedge clk) if( pxl_cen ) begin
         cnt    <= { 1'b0, DJ[13:12] ^ {2{RV_n}}, 1'b1, ~&DJ[16:14] };
         hflip  <= DJ[11] ^ RV_n;
     end else begin
-        cnt    <= cnt+5'd1;
+        cnt    <= { 1'b0, cnt[3:0] }+5'd1;
     end
 end
 

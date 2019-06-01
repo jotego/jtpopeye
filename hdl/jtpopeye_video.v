@@ -41,7 +41,7 @@ module jtpopeye_video(
     output     [9:0]    AD_DMA,
     output              dma_cs, // tell main memory to get data out for DMA
     output              busrq_n,
-    output              busak_n,
+    input               busak_n,
     // SDRAM interface
     output     [12:0]   obj_addr,
     input      [31:0]   objrom_data,    
@@ -120,6 +120,7 @@ jtpopeye_timing u_timing(
     .prom_din           ( prom_din[3:0] )
 );
 
+`ifndef NODMA
 jtpopeye_dma u_dma(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -138,6 +139,13 @@ jtpopeye_dma u_dma(
     .busak_n            ( busak_n       ),
     .DO                 ( DO            )
 );
+`else
+assign DMA10 = 1'b0;
+assign AD_DMA = 10'd0;
+assign dma_cs = 1'b0;
+assign busrq_n = 1'b1;
+assign DO = 29'd0;
+`endif
 
 // These are latched ny signal ROHVCK in video sheet 1/3
 assign OBJC[5:3] = DO[26:24];

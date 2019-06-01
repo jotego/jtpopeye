@@ -277,17 +277,53 @@ always @(posedge clk or negedge rst_n)
 
 ////////////////////////////////
 // NMI generation
-reg nmi_n, VBl;
+reg nmi_n, VBl, clr_nmi_n;
+wire rfsh_n;
+wire rfsh_mreq = !rfsh_n && !mreq_n;
+reg rfsh_mreq_last;
+wire rfsh_mreq_posedge = rfsh_mreq && !rfsh_mreq_last;
+wire VB_posedge = VB && !VBl;
 
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
-        nmi_n <= 1'b1;
+        nmi_n     <= 1'b1;
+        clr_nmi_n <= 1'b0;
     end else if(cpu_cen) begin
+        rfsh_mreq_last <= rfsh_mreq;
         VBl <= VB;
-        if( !AD[9] )
+        if( rfsh_mreq_posedge ) clr_nmi_n <= AD[9];
+        if( !clr_nmi_n )
             nmi_n <= 1'b1; // clear NMI
-        else if( VB && !VBl ) nmi_n <= 1'b0; // set NMI
+        else if( VB_posedge ) nmi_n <= 1'b0; // set NMI
     end
+
+/////////////////////////////////
+// Watchdog
+reg watchdog_rst;
+always @(posedge clk or negedge rst_n) begin : watchdog
+    reg [3:0] cnt;    // 74LS161, 2L sheet 1/3
+    reg cpu_ok;       // 74LS74, 3K sheet 1/3
+    if( !rst_n ) begin
+        cnt    <= 4'd0;
+        cpu_ok <= 1'b1;
+        watchdog_rst <= 1'b0;
+    end else begin
+        if( rfsh_mreq_posedge ) cpu_ok <= AD[5];
+        if( clr_nmi_n || cpu_ok ) begin
+            cnt<=4'd0;
+            watchdog_rst <= 1'b0;
+        end else if( VB_posedge ) begin
+            { watchdog_rst, cnt } <= { 1'b0, cnt }+5'd1;
+        end
+    end
+end
+
+reg [2:0] cpu_rst_aux;
+always @(posedge clk)
+    cpu_rst_aux[0] <= ~watchdog_rst;
+always @(negedge clk)
+    cpu_rst_aux[2:1] <= cpu_rst_aux[1:0];
+wire cpu_rst_n = cpu_rst_aux[2];
 
 /////////////////////////////////
 // wait_n signal. This is used to avoid issues when
@@ -325,7 +361,7 @@ jtframe_z80 u_cpu(
     .iorq_n     ( iorq_n      ),
     .rd_n       ( rd_n        ),
     .wr_n       ( wr_n        ),
-    .rfsh_n     (             ),
+    .rfsh_n     ( rfsh_n      ),
     .halt_n     (             ),
     .busak_n    ( busak_n     ),
     .A          ( Ascrambled  ),
