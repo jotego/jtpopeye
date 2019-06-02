@@ -18,6 +18,12 @@
 
 `timescale 1ns/1ps
 
+//               MemWR  ||  MemRD
+// sec_cs A0  || A[1:0] || /OE || Mode
+//   0    0   ||  10    ||  1  ||   0
+//   0    1   ||  01    ||  0  ||   1
+//   1    x   ||  11    ||  1  ||   1
+
 module jtpopeye_security(
     input              clk,
     input              cen /* synthesis direct_enable = 1 */,
