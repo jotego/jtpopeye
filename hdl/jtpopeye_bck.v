@@ -18,6 +18,9 @@
 
 `timescale 1ns/1ps
 
+// 2^6 = 64 horizontal x4 units
+// 2^6 = 64 vertical   x4 units
+
 module jtpopeye_bck(
     input               rst_n,
     input               clk,

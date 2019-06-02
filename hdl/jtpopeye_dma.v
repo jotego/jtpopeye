@@ -63,12 +63,16 @@ always @(*) begin
     AD_DMA[1] = DM[9];
 end
 
+wire DMclr = !HBD_n;// || dma_cs;
+reg  last_DMclr;
+
 always @(posedge clk or negedge rst_n) 
     if(!rst_n) begin
         DM = 11'd0;
     end else if(cen) begin
         VBl <= VB;
-        if( VB_posedge ) 
+        last_DMclr <= DMclr;
+        if( DMclr && !last_DMclr )  // 7400, sheet 1/3 device 1D
             DM <= 11'd0;
         else if( H[1:0]==2'b10 || busak_n ) DM <= DM+11'd1;
     end
