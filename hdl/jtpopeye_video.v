@@ -147,6 +147,13 @@ assign busrq_n = 1'b1;
 assign DO = 29'd0;
 `endif
 
+wire [12:0] ADvideo;
+// AD is obfuscated
+jtpopeye_video_dec u_dec(
+    .AD     ( AD        ),
+    .AD_dec ( ADvideo   )
+);
+
 // These are latched ny signal ROHVCK in video sheet 1/3
 assign OBJC[5:3] = DO[26:24];
 assign BAKC[4]   = DO[27];
@@ -158,7 +165,7 @@ jtpopeye_txt u_txt(
     .cpu_cen            ( cpu_cen       ),
     .pause              ( pause         ),
 
-    .AD                 ( AD            ),
+    .AD                 ( ADvideo       ),
     .DD                 ( DD            ),
     .H                  ( H             ),
     .V                  ( V             ),
@@ -200,9 +207,10 @@ jtpopeye_bck u_bak(
     .cpu_cen            ( cpu_cen       ),
     .pxl_cen            ( pxl_cen       ),
 
+    .ROHVCK             ( ROHVCK        ),
     .CSBW_n             ( CSBW_n        ),
     .DWRBK              ( DWRBK         ),
-    .AD                 ( AD            ),
+    .AD                 ( ADvideo       ),
     .DD                 ( DD            ),
     .ROVI               ( ROVI          ),
     .DO                 ( DO            ), // gfx buffer

@@ -60,10 +60,10 @@ always @(posedge clk) if(pxl2_cen) begin
     if( !VB_n ) { red, green, blue } <= 8'd0;
     else
     case( {txt_cs, obj_cs, bak_cs} )
-        3'b100: {red, green, blue} <= txt_rgb;
-        3'b010: {red, green, blue} <= obj_rgb;
-        3'b001: {red, green, blue} <= bak_rgb;
-        default:{red, green, blue} <= 8'd0;
+        3'b100: {blue, green, red } <= ~txt_rgb;
+        3'b010: {blue, green, red } <= ~obj_rgb;
+        3'b001: {blue, green, red } <= ~bak_rgb;
+        default:{blue, green, red } <= 8'd0;
     endcase
 end
 

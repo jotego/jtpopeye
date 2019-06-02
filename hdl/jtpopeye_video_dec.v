@@ -34,4 +34,15 @@ assign AD_dec[    8] = AD[    9];
 assign AD_dec[    9] =~AD[    5];
 assign AD_dec[12:10] = AD[12:10];
 
+// assign AD_dec[  2:0] =~AD[  2:0];
+// assign AD_dec[    3] = AD[    6];
+// assign AD_dec[    4] =~AD[    3];
+// assign AD_dec[    5] =~AD[    4];
+// assign AD_dec[    6] = AD[    7];
+// assign AD_dec[    7] = AD[    8];
+// assign AD_dec[    8] = AD[    9];
+// assign AD_dec[    9] =~AD[    5];
+// assign AD_dec[12:10] = AD[12:10];
+
+
 endmodule // jtpopeye_video_ad

@@ -46,15 +46,8 @@ module jtpopeye_txt(
 reg  [3:0] txtc, txtc0;
 wire [10:0] rom_addr;
 reg  [ 9:0] ram_addr;
-wire [12:0]  ADx;
 
 assign rom_addr[2:0] = V[2:0];
-
-// AD is obfuscated
-jtpopeye_video_dec u_dec(
-    .AD     ( AD    ),
-    .AD_dec ( ADx   )
-);
 
 wire we = CSV & MEMWRO;
 reg wev, wec;
@@ -62,7 +55,7 @@ reg wev, wec;
 wire [9:0] scan = { V[7:3], H[7:3] };
 reg [7:0] din;
 always @(posedge clk) begin
-    ram_addr <= CSV ? ADx[9:0] : scan;
+    ram_addr <= CSV ? AD[9:0] : scan;
     wev      <= we && AD[11:10]==2'b00;
     wec      <= we && AD[11:10]==2'b01; // colour
     din      <= DD;

@@ -28,6 +28,7 @@ module jtpopeye_bck(
     input               CSBW_n,
     input               DWRBK,
 
+    input               ROHVCK,
     input      [12:0]   AD,
     input      [ 8:0]   ROVI,
     input      [28:0]   DO,
@@ -35,21 +36,18 @@ module jtpopeye_bck(
     output reg [ 3:0]   BAKC
 );
 
-reg [7:0] ROH;
+reg [7:0] ROH;  // 74161. 7N/7M video sheet 3/3
 reg [8:1] ROVl;
 
-always @(posedge clk) if(pxl_cen) begin
-    ROVl <= ROVI[8:1];
-    ROH  <= DO[7:0];
+always @(posedge clk) begin
+    if(!ROHVCK) begin
+        ROH  <= DO[7:0];
+        ROVl <= ROVI[8:1];
+    end else
+    if(pxl_cen) begin
+        ROH <= ROH+8'd1;
+    end
 end
-
-// AD is obfuscated
-wire [12:0] ADx;
-
-jtpopeye_video_dec u_dec(
-    .AD     ( AD       ),
-    .AD_dec ( ADx      )
-);
 
 reg [11:0] ram_addr;
 wire [7:0] ram_dout;
@@ -80,8 +78,8 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
             st[0]: begin
                     // set RAM address for reading
                     ram_we     <= 1'b0;
-                    ram_addr   <= !CSBW_n ? ADx[11:0] : {ROVl[6:1],ROH[7:2]};
-                    nibble_sel <= !CSBW_n ? !ADx[12] : ROVl[7];
+                    ram_addr   <= !CSBW_n ? AD[11:0] : {ROVl[6:1],ROH[7:2]};
+                    nibble_sel <= !CSBW_n ? !AD[12] : ROVl[7];
                 end 
             st[1]:; // wait for data input
             st[2]: begin // write the requested nibble
