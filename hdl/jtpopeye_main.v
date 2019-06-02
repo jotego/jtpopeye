@@ -167,21 +167,23 @@ always @(posedge clk)
     last_wr_n <= wr_n;
 
 always @(posedge clk) begin
+    ram_we <= 1'b0;
     if( dma_cs )
         ram_addr <= {1'b1, AD_DMA};
     else begin
-        if(ram_cs) ram_addr <= AD[10:0];
+        if(ram_cs) begin
+            ram_addr <= AD[10:0];
+            if( negedge_wrn ) begin
+                ram_we  <= 1'b1;
+                ram_din <= cpu_dout;
+            end
+        end
     end
-    if( ram_cs && negedge_wrn ) begin
-        ram_we  <= 1'b1;
-        ram_din <= cpu_dout;
-    end
-    else if(cpu_cen) ram_we <= 1'b0;
 end
 
 jtgng_ram #(.aw(11)) u_ram(
     .clk    ( clk        ),
-    .cen    ( cpu_cen    ),
+    .cen    ( 1'b1       ),
     .data   ( ram_din    ),
     .addr   ( ram_addr   ),
     .we     ( ram_we     ),
@@ -207,30 +209,33 @@ jtpopeye_security u_security(
 // cabinet input
 reg ay_cs;
 
-always @(*) begin
-    ay_cs = 1'b0;
-    case(AD[1:0])
-        2'd0: begin
-            ay_cs = !iorq_n && !rd_n;
-            cabinet_input = ay_dout;
-        end
-        2'd1: begin
-            cabinet_input[7]   = coin_input;
-            cabinet_input[6]   = service;
-            cabinet_input[5]   = INITEO;   // HB ^ RV
-            cabinet_input[4]   = 1'b1;
-            cabinet_input[3:2] = start_button;
-            cabinet_input[1:0] = 2'b11;
-        end
-        2'd2: begin // 2P input
-            cabinet_input[7:5] = ~3'b0;
-            cabinet_input[4:0] = joystick2[4:0]; // 2P
-        end
-        2'd3: begin // 1P input
-            cabinet_input[7:5] = ~3'b0;
-            cabinet_input[4:0] = joystick1[4:0]; // 2P
-        end
-    endcase
+always @(posedge clk) begin
+    ay_cs <= 1'b0;
+    cabinet_input <= 8'hff;
+    if( !iorq_n && !rd_n) begin
+        case(AD[1:0])
+            2'd0: begin
+                ay_cs <= !iorq_n && !rd_n;
+                cabinet_input <= ay_dout;
+            end
+            2'd1: begin
+                cabinet_input[7]   <= coin_input;
+                cabinet_input[6]   <= service;
+                cabinet_input[5]   <= 1'b1;
+                cabinet_input[4]   <= INITEO;   // HB ^ RV
+                cabinet_input[3:2] <= start_button;
+                cabinet_input[1:0] <= 2'b11;
+            end
+            2'd2: begin // 2P input
+                cabinet_input[7:5] <= 3'b111;
+                cabinet_input[4:0] <= joystick2[4:0]; // 2P
+            end
+            2'd3: begin // 1P input
+                cabinet_input[7:5] <= 3'b111;
+                cabinet_input[4:0] <= joystick1[4:0]; // 2P
+            end
+        endcase
+    end
 end
 
 ///////////////////////////
@@ -256,7 +261,7 @@ always @(*) begin
                     2'b00: cpu_din = { 7'd0, uart_rx_new  }; // Rx status
                     2'b01: cpu_din = { 7'd0, uart_tx_busy }; // Tx status
                     2'b1?: begin
-                        cpu_din = uart_rx_data;
+                        cpu_din  = uart_rx_data;
                         clr_uart = !rd_n;
                     end
                     default:;

@@ -101,8 +101,8 @@ wire dip_upright = 1'b1;
 reg [1:0] dip_level;
 wire dip_demosnd = 1'b0;
 wire [1:0] dip_lives  = status[6:5];
-wire [3:0] dip_price  = 4'b0;
-wire [1:0] dip_bonus  = 2'b0;
+wire [3:0] dip_price  = 4'hf;
+wire [1:0] dip_bonus  = 2'b11;
 
 wire [21:0]   prog_addr;
 wire [ 7:0]   prog_data;
