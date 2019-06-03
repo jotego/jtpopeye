@@ -16,6 +16,8 @@
     Version: 1.0
     Date: 12-3-2019 */
 
+// Video schematic sheet 2/3
+
 `timescale 1ns/1ps
 
 module jtpopeye_timing(
@@ -33,7 +35,7 @@ module jtpopeye_timing(
     output reg          HB,
     output reg          HBD_n, // HB - DMA
     output reg          VB,
-    output              INITEO_n,
+    output reg          INITEO_n,   // Even/odd frame. 
     output reg          SY_n,       // composite sync
     // HS and VS were not present in the original board
     output reg          HS,
@@ -53,7 +55,7 @@ module jtpopeye_timing(
 
 wire RV = ~RV_n;
 wire [3:0] prom_data;
-assign INITEO_n = ~(RV ^ HB );
+
 // H counter
 reg [7:0] Hcnt;
 reg [9:0] Vcnt;
@@ -61,7 +63,6 @@ wire [8:0] Hnext = {1'b0, Hcnt} + 9'd1;
 
 `ifdef SIMULATION
 initial begin
-    Vcnt = 'd0;
     VB   = 'd0;
 end
 `endif
@@ -115,9 +116,13 @@ always @(posedge clk or negedge rst_n)
     if( !rst_n ) begin
         HBlatch <= 1'b0;
         VBl     <= 1'b0;
+        INITEO_n <= 1'b0;
     end else begin
         VBl <= VB;
-        if( VB && !VBl ) HBlatch <= HB;
+        if( VB && !VBl ) begin
+            HBlatch <= HB;
+            INITEO_n <= HB ^ RV;
+        end
     end
 
 //////////////////////////////////////////////////////////
@@ -138,20 +143,26 @@ wire Vup = prom_data[1];
 reg  Vupl;
 wire Vup_edge = Vup && !Vupl;
 
+// The vertical counter is translated directly from the
+// 7474 and 74161 gates. It needs to be accurate in order to latch
+// HB correctly on INIT_EO signal, which marks the even and odd frames
 
-always @(*) begin
-    V[7:0] = Vcnt[8:1] ^ RV;
-end
-
-always @(posedge clk) 
-    if( pxl2_cen ) begin
+always @(posedge clk or negedge rst_n) 
+    if( !rst_n ) begin
+        Vcnt <= 10'd0;
+    end else begin
         Vupl <= Vup;
         if( Vup_edge ) begin
-            Vcnt <= (Vcnt[9]&&Vcnt[0]) ? 10'd0 : Vcnt+10'd1;
+            Vcnt[0]   <= ~Vcnt[9] & ~Vcnt[0];   // 8E (first FF)
+            Vcnt[8:1] <= Vcnt[9] ? 8'd0 : Vcnt[8:1] + {7'd0,Vcnt[0]}; // 7F, 8F
+            Vcnt[9]   <= &Vcnt[8:0];    // 8E (second FF)
             if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
         end
     end
 
+always @(*) begin
+    V[7:0] = Vcnt[8:1] ^ RV;    // 6J and 6H
+end
 // Interleaving
 
 jtpopeye_roh u_roh(
