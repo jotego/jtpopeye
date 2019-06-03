@@ -55,9 +55,9 @@ wire RV = ~RV_n;
 wire [3:0] prom_data;
 assign INITEO_n = ~(RV ^ HB );
 // H counter
-reg [8:0] Hcnt;
+reg [7:0] Hcnt;
 reg [9:0] Vcnt;
-wire [8:0] Hnext = Hcnt[8:0] + 9'd1;
+wire [8:0] Hnext = {1'b0, Hcnt} + 9'd1;
 
 `ifdef SIMULATION
 initial begin
@@ -73,23 +73,38 @@ always @(*) begin
 end
 
 reg HBlatch;
+reg HBtoggle;
 
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         Hcnt <= 'd0;        
         HB   <= 1'b0;
+        HBtoggle <= 1'b0;
     end else
     if(pxl_cen) begin   // 20.16/4 MHz
-        if( !Hcnt[8] ) begin
-            Hcnt[8:0] <= Hnext[8:0];
+        if( !Hnext[8] ) begin
+            Hcnt <= Hnext[7:0];
+            HB   <= HBtoggle;
         end else begin // 
-            Hcnt[8:6] <= HB ? 3'd0 : 3'b11;
+            Hcnt[7:6] <= ~{2{HBtoggle}};
             Hcnt[5:0] <= 6'd0;
-            HB <= ~HB;
+            HBtoggle <= ~HBtoggle;
         end
         if( &Hcnt[2:0] ) HBlatch <= HB;
-        HBD_n <= ~(HBlatch & HB);
     end
+
+//////////////////////////////////////////////////////////
+// /HBD generation, 7474, 7400, (5C, 5B, video sheet 2/3)
+always @(posedge clk or negedge rst_n) begin :HBDn_generator
+    reg Hcnt3l;
+    if( !rst_n ) begin
+        HBD_n  <= 1'b1;
+        Hcnt3l <= 1'b0;
+    end else begin
+        Hcnt3l <= Hcnt[3];
+        if( Hcnt[3] && !Hcnt3l) HBD_n <= ~(HBlatch & HB);
+    end
+end
 
 // V counter
 wire Vup = prom_data[1];
