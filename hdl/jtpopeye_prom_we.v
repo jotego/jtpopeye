@@ -80,26 +80,31 @@ always @(posedge clk_rom) begin
 end
 
 `ifndef TESTROM
-reg [3:0] encrypt_test=4'hf;
-reg check;
-reg last_downloading;
+    `ifdef NOUART
+    initial encrypted = 1'b1;   // All ROMs are loaded as enctrypted is
+        // NOUART is defined
+    `else
+    reg [3:0] encrypt_test=4'hf;
+    reg check;
+    reg last_downloading;
 
-always @(posedge clk_rom) begin
-    last_downloading <= downloading;
-    if( !last_downloading && downloading ) check<=1'b1;
-    if( check && ioctl_wr ) begin
-        case( ioctl_addr[1:0] )
-            2'b00: encrypt_test[0] = ioctl_data==8'he4;
-            2'b01: encrypt_test[1] = ioctl_data==8'h64;
-            2'b10: encrypt_test[2] = ioctl_data==8'ha5;
-            2'b11: begin
-                encrypt_test[3] = ioctl_data==8'h46;
-                check <= 1'b0;
-            end
-        endcase
+    always @(posedge clk_rom) begin
+        last_downloading <= downloading;
+        if( !last_downloading && downloading ) check<=1'b1;
+        if( check && ioctl_wr ) begin
+            case( ioctl_addr[1:0] )
+                2'b00: encrypt_test[0] = ioctl_data==8'he4;
+                2'b01: encrypt_test[1] = ioctl_data==8'h64;
+                2'b10: encrypt_test[2] = ioctl_data==8'ha5;
+                2'b11: begin
+                    encrypt_test[3] = ioctl_data==8'h46;
+                    check <= 1'b0;
+                end
+            endcase
+        end
+        encrypted <= &encrypt_test;
     end
-    encrypted <= &encrypt_test;
-end
+    `endif
 `else
 // For simulations with test roms and no loading:
 initial encrypted = 1'b0;
