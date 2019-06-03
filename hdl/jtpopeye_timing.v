@@ -73,24 +73,51 @@ always @(*) begin
 end
 
 reg HBlatch;
-reg HBtoggle;
+
+//////////////////////////////////////////////////////////
+// H counter: This uses an asynchronous reset
+// causing a glitch at count transition FE to FF on real
+// hardware:
+// If The output of EXOR 8C at capacitor C3 is very fast:
+// FD, FE, FF/0F, 10, 11, 12...
+// If that output is a nice spot:
+// count: FD, FE, FF/0F, 00, 01, 02...
+// HB:     0   0      0   1   1   1
+// If the output is slower
+// count: FD, FE, FF/0F, 00, 01, 02...
+// HB:     0   0      0   0   1   1
+// If the output is even slower, HB will not trip
+// Probably the design was targeted for the nice sport
+// but I bet some boards out there got HB off by one clock cycle
+// This produces a horizontal line interval of 63.488us = 15.75 kHz
 
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         Hcnt <= 'd0;        
         HB   <= 1'b0;
-        HBtoggle <= 1'b0;
     end else
     if(pxl_cen) begin   // 20.16/4 MHz
-        if( !Hnext[8] ) begin
-            Hcnt <= Hnext[7:0];
-            HB   <= HBtoggle;
-        end else begin // 
-            Hcnt[7:6] <= ~{2{HBtoggle}};
-            Hcnt[5:0] <= 6'd0;
-            HBtoggle <= ~HBtoggle;
+        Hcnt[3:0] <= Hcnt[3:0]+4'd1;
+        if( &Hcnt[3:0] ) begin
+            if( Hcnt[7:4]==4'b1111 ) begin
+                Hcnt[5:4] <= 2'd0;
+                Hcnt[7:6] <= HB ? 2'b0 : 2'b11;
+                HB <= ~HB;
+            end else  begin
+                Hcnt[7:4] <= Hcnt[7:4]+4'd1;
+            end
         end
-        if( &Hcnt[2:0] ) HBlatch <= HB;
+    end
+
+reg VBl;
+
+always @(posedge clk or negedge rst_n)
+    if( !rst_n ) begin
+        HBlatch <= 1'b0;
+        VBl     <= 1'b0;
+    end else begin
+        VBl <= VB;
+        if( VB && !VBl ) HBlatch <= HB;
     end
 
 //////////////////////////////////////////////////////////
