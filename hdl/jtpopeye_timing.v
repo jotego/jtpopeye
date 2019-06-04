@@ -59,7 +59,6 @@ wire [3:0] prom_data;
 // H counter
 reg [7:0] Hcnt;
 reg [9:0] Vcnt;
-wire [8:0] Hnext = {1'b0, Hcnt} + 9'd1;
 
 `ifdef SIMULATION
 initial begin

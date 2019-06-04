@@ -73,7 +73,7 @@ smart.log: $(ASSIGNMENT_FILES)
 	quartus_sh --determine_smart_action $(PROJECT) > smart.log
 
 $(ASSIGNMENT_FILES): set_qip.tcl
-	msg.py
+	python msg.py
 	quartus_sh --prepare $(PROJECT)
 	quartus_sh -t set_qip.tcl
 
