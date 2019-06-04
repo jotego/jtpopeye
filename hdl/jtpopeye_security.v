@@ -51,6 +51,8 @@ always @(posedge clk or negedge rst_n)
     if( !rst_n ) begin 
         data0 <= 8'd0;
         data1 <= 8'd0;
+        dout  <= 8'd0;
+        shift <= 3'd0;
     end else if( cen ) if(cs) begin
         if( !wr_n ) begin
             `ifdef SIMULATION

@@ -57,7 +57,7 @@ end
 
 // merge the colours!
 always @(posedge clk) if(pxl2_cen) begin
-    if( !VB_n ) { red, green, blue } <= 8'd0;
+    if( !VB_n || !HBD_n) { red, green, blue } <= 8'd0;
     else
     case( {txt_cs, obj_cs, bak_cs} )
         3'b100: {blue, green, red } <= ~txt_rgb;
