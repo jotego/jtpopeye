@@ -98,6 +98,7 @@ end else begin
     // accept a new request
     if( data_sel==2'd0 || data_rdy ) begin
         sdram_req <= |valid_req;
+        data_sel <= 2'b0;
         case( 1'b1 )
             valid_req[1]: begin
                 sdram_addr  <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
