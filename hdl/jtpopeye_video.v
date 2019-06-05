@@ -124,7 +124,7 @@ jtpopeye_timing u_timing(
 jtpopeye_dma u_dma(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .cen                ( pxl2_cen      ),
+    .pxl_cen            ( pxl_cen      ),
 
     .VB                 ( VB            ),
     .H                  ( H[1:0]        ),
@@ -221,6 +221,7 @@ jtpopeye_bck u_bak(
 jtpopeye_obj u_obj(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
+    .pxl_cen            ( pxl_cen       ),
     .pxl2_cen           ( pxl2_cen      ),
 
     .ROHVS              ( ROHVS         ),

@@ -21,7 +21,7 @@
 module jtpopeye_dma(
     input               rst_n,
     input               clk,
-    input               cen,
+    input               pxl_cen /* synthesis direct_enable=1 */,
 
     input               VB,
     input      [1:0]    H,
@@ -63,25 +63,34 @@ always @(*) begin
     AD_DMA[1] = DM[9];
 end
 
-wire DMclr = !HBD_n;// || dma_cs;
-reg  last_DMclr;
+reg DMclr;
+reg last_DMclr;
 
 always @(posedge clk or negedge rst_n) 
     if(!rst_n) begin
         DM = 11'd0;
-    end else if(cen) begin
-        VBl <= VB;
-        last_DMclr <= DMclr;
-        if( DMclr && !last_DMclr )  // 7400, sheet 1/3 device 1D
+    end else if(pxl_cen) begin
+        if( H==2'b01 )
+            dma_cs <= ~busak_n;
+
+        if( H==2'b11 ) begin        
+            last_DMclr <= DMclr;
+            DMclr <= (!dma_cs && !busrq_n) ? 1'b0 : ~HBD_n | dma_cs;
+        end
+        // DM counts from H blank to H blank to read all the RAMs
+        // It gets reset when there is a DMA event, i.e. a V blank
+        // The DMA copies 1024 bytes of data during VB
+        if (DMclr && !last_DMclr) // trip on positive edge. 7400, sheet 1/3 device 1D
             DM <= 11'd0;
-        else if( H[1:0]==2'b10 || busak_n ) DM <= DM+11'd1;
+        else if( !H[0] && (H[1] || busak_n) ) DM <= DM+11'd1;
     end
 
 
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         busrq_n <= 1'b1;
-    end else if(cen) begin
+    end else begin
+        VBl <= VB;
         if( VB_posedge ) busrq_n <= 1'b0;
         if( DM[10]     ) busrq_n <= 1'b1; // DMA done
     end
@@ -89,7 +98,6 @@ always @(posedge clk or negedge rst_n)
 reg [3:0] DMCS;
 
 always @(*) begin
-    dma_cs  = ~DM[10] & ~busak_n & ~H[1];
     DMCS[0] = dma_cs && H[0] && DM[9:8]==2'd0;
     DMCS[1] = dma_cs && H[0] && DM[9:8]==2'd1;
     DMCS[2] = dma_cs && H[0] && DM[9:8]==2'd2;
@@ -98,7 +106,7 @@ end
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram0(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[0]        ),
@@ -107,7 +115,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram0(
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram1(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[1]        ),
@@ -116,7 +124,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram1(
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram2(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[2]        ),
@@ -126,7 +134,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram2(
 
 jtgng_ram #(.aw(8), .dw(5)) u_ram3(
     .clk    ( clk            ),
-    .cen    ( cen            ),
+    .cen    ( pxl_cen        ),
     .data   ( DD_DMA[4:0]    ),
     .addr   ( DM[7:0]        ),
     .we     ( DMCS[3]        ),
