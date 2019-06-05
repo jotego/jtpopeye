@@ -36,12 +36,12 @@ module jtpopeye_rom(
     input               sdram_ack,
     input               loop_rst,
     output  reg         sdram_req,
-    output              refresh_en,
+    output  reg         refresh_en,
     output  reg [21:0]  sdram_addr,
     input       [31:0]  data_read
 );
 
-parameter  obj_offset = 22'd16384;
+localparam  obj_offset = 22'd16384;
 
 reg [3:0] ready_cnt;
 
@@ -49,8 +49,10 @@ reg [1:0] data_sel;
 wire main_req, obj_req;
 wire [14:0] main_addr_req;
 wire [12:0] obj_addr_req;
+wire obj_ok;
 
-assign refresh_en = main_cs && main_ok;
+always @(posedge clk)
+    refresh_en <= &{ main_cs&main_ok, obj_ok };
 
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
@@ -66,6 +68,8 @@ jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .we       ( data_sel[0]     )
 );
 
+//`define TRYOBJ
+`ifdef TRYOBJ
 jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .rst_n    ( rst_n           ),
     .clk      ( clk             ),
@@ -74,11 +78,17 @@ jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .addr_req ( obj_addr_req    ),
     .din      ( data_read       ),
     .din_ok   ( data_rdy        ),
-    .data_ok  (                 ),
+    .data_ok  ( obj_ok          ),
     .dout     ( obj_dout        ),
     .req      ( obj_req         ),
     .we       ( data_sel[1]     )
 );
+`else
+assign dout = 32'd0;
+assign obj_addr_req = 13'd0;
+assign obj_ok = 1'b1;
+assign obj_req = 1'b0;
+`endif
 
 // Requests are valid for comparison only if they are not
 // being already attended. data_sel is high for the request
@@ -108,7 +118,6 @@ end else begin
                 sdram_addr <= { 8'd0, main_addr_req[14:1] };
                 data_sel[0] <= 1'b1;
             end
-            default: data_sel <= 2'b0;
         endcase
     end
 end

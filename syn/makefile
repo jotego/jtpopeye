@@ -61,7 +61,7 @@ $(PROJECT).map.rpt: map.chg $(SOURCE_FILES)
 $(PROJECT).fit.rpt: fit.chg $(PROJECT).map.rpt
 	quartus_fit $(FIT_ARGS) $(PROJECT)
 	$(STAMP) asm.chg
-	$(STAMP) sta.chg
+	# $(STAMP) sta.chg
 
 $(PROJECT).asm.rpt: asm.chg $(PROJECT).fit.rpt
 	quartus_asm $(ASM_ARGS) $(PROJECT)
