@@ -33,7 +33,7 @@ module jtpopeye_timing(
     output reg          HB,
     output reg          HBD_n, // HB - DMA
     output reg          VB,
-    output              INITEO_n,
+    output reg          INITEO_n,
     output reg          SY_n,       // composite sync
     // HS and VS were not present in the original board
     output reg          HS,
@@ -47,7 +47,6 @@ module jtpopeye_timing(
 
 wire RV = ~RV_n;
 wire [3:0] prom_data;
-assign INITEO_n = ~(RV ^ HB );
 // H counter
 reg [8:0] Hcnt;
 reg [9:0] Vcnt;
@@ -68,6 +67,23 @@ end
 
 reg HBlatch;
 
+//////////////////////////////////////////////////////////
+// H counter: This uses an asynchronous reset
+// causing a glitch at count transition FE to FF on real
+// hardware:
+// If The output of EXOR 8C at capacitor C3 is very fast:
+// FD, FE, FF/0F, 10, 11, 12...
+// If that output is a nice spot:
+// count: FD, FE, FF/0F, 00, 01, 02...
+// HB:     0   0      0   1   1   1
+// If the output is slower
+// count: FD, FE, FF/0F, 00, 01, 02...
+// HB:     0   0      0   0   1   1
+// If the output is even slower, HB will not trip
+// Probably the design was targeted for the nice sport
+// but I bet some boards out there got HB off by one clock cycle
+// This produces a horizontal line interval of 63.488us = 15.75 kHz
+
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         Hcnt <= 'd0;        
@@ -85,6 +101,34 @@ always @(posedge clk or negedge rst_n)
         HBD_n <= ~(HBlatch & HB);
     end
 
+reg VBl;
+
+always @(posedge clk or negedge rst_n)
+    if( !rst_n ) begin
+        HBlatch <= 1'b0;
+        VBl     <= 1'b0;
+        INITEO_n <= 1'b0;
+    end else begin
+        VBl <= VB;
+        if( VB && !VBl ) begin
+            HBlatch <= HB;
+            INITEO_n <= HB ^ RV;
+        end
+    end
+
+//////////////////////////////////////////////////////////
+// /HBD generation, 7474, 7400, (5C, 5B, video sheet 2/3)
+always @(posedge clk or negedge rst_n) begin :HBDn_generator
+    reg Hcnt3l;
+    if( !rst_n ) begin
+        HBD_n  <= 1'b1;
+        Hcnt3l <= 1'b0;
+    end else begin
+        Hcnt3l <= Hcnt[3];
+        if( Hcnt[3] && !Hcnt3l) HBD_n <= ~(HBlatch & HB);
+    end
+end
+
 // V counter
 wire Vup = prom_data[1];
 reg  Vupl;
@@ -95,11 +139,15 @@ always @(*) begin
     V[7:0] = Vcnt[8:1] ^ RV;
 end
 
-always @(posedge clk) 
-    if( pxl2_cen ) begin
+always @(posedge clk or negedge rst_n) 
+    if( !rst_n ) begin
+        Vcnt <= 10'd0;
+    end else begin
         Vupl <= Vup;
         if( Vup_edge ) begin
-            Vcnt <= (Vcnt[9]&&Vcnt[0]) ? 10'd0 : Vcnt+10'd1;
+            Vcnt[0]   <= ~Vcnt[9] & ~Vcnt[0];   // 8E (first FF)
+            Vcnt[8:1] <= Vcnt[9] ? 8'd0 : Vcnt[8:1] + {7'd0,Vcnt[0]}; // 7F, 8F
+            Vcnt[9]   <= &Vcnt[8:0];    // 8E (second FF)
             if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
         end
     end
