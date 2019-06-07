@@ -38,12 +38,6 @@ module jtpopeye_timing(
     // HS and VS were not present in the original board
     output reg          HS,
     output reg          VS,
-    // Interlacing
-    output              ROHVS,
-    output              ROHVCK,
-    input               DM10,
-    input               busak,
-    output              MR_n,
     // PROM programming
     input   [7:0]       prog_addr,
     input               prom_7j_we,
@@ -109,36 +103,6 @@ always @(posedge clk)
             if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
         end
     end
-
-// Interleaving
-
-jtpopeye_roh u_roh(
-    .clk    ( clk    ),
-    .VB_n   ( ~VB    ),
-    .AI_n   ( ~H[0]  ),
-    .BI_n   ( ~H[1]  ),
-    .DM10   ( DM10   ),
-    .busak  ( busak  ),
-    .HBD_n  ( HBD_n  ),
-    .ROHVS  ( ROHVS  ),
-    .ROHVCK ( ROHVCK ),
-    .MR_n   ( MR_n   )
-);
-/*
-`ifdef SIMULATION
-jtpopeye_roh_model u_roh_model(
-    .VB_n   ( ~VB    ),
-    .AI_n   ( ~H[0]  ),
-    .BI_n   ( ~H[1]  ),
-    .DM10   ( DM10   ),
-    .busak  ( busak  ),
-    .HBD_n  ( HBD_n  ),
-    .ROHVS  (        ),
-    .ROHVCK (        ),
-    .MR_n   (        )
-);
-`endif
-*/
 
 // Composite sync
 reg pre_SY_n;

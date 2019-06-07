@@ -84,8 +84,6 @@ wire [28:0] DO;
 wire        RV = ~RV_n;
 wire        H2O;
 wire        INITEO_n;
-wire        DM10;
-wire        MR_n;
 
 assign INITEO = ~INITEO_n;
 
@@ -107,12 +105,6 @@ jtpopeye_timing u_timing(
     .VB                 ( VB            ),
     .HS                 ( HS            ),
     .VS                 ( VS            ),
-    // Interleaced signals
-    .ROHVS              ( ROHVS         ),
-    .ROHVCK             ( ROHVCK        ),
-    .busak              ( ~busak_n      ),
-    .DM10               ( DM10          ),
-    .MR_n               ( MR_n          ),
     .SY_n               ( SY_n          ),      // composite sync
     // PROM programming
     .prog_addr          ( prog_addr[7:0]),
@@ -124,14 +116,14 @@ jtpopeye_timing u_timing(
 jtpopeye_dma u_dma(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
-    .pxl_cen            ( pxl_cen      ),
+    .pxl_cen            ( pxl_cen       ),
 
     .VB                 ( VB            ),
     .H                  ( H[1:0]        ),
     .HBD_n              ( HBD_n         ), // HB - DMA
     .DD_DMA             ( DD_DMA        ),
-    .DM10               ( DM10          ),
-    .MR_n               ( MR_n          ),
+    .ROHVS              ( ROHVS         ),
+    .ROHVCK             ( ROHVCK        ),
 
     .AD_DMA             ( AD_DMA        ),
     .dma_cs             ( dma_cs        ),
@@ -145,6 +137,8 @@ assign AD_DMA = 10'd0;
 assign dma_cs = 1'b0;
 assign busrq_n = 1'b1;
 assign DO = 29'd0;
+assign ROHVS  = 1'b0;
+assign ROHVCK = 1'b0;
 `endif
 
 wire [12:0] ADvideo;

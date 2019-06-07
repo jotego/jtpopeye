@@ -28,8 +28,9 @@ module jtpopeye_dma(
     input               HBD_n,
     input      [7:0]    DD_DMA,
     input               busak_n,
-    output              DM10,
-    input               MR_n,
+
+    output reg          ROHVS,
+    output reg          ROHVCK,
 
     output reg [9:0]    AD_DMA,
     output reg          dma_cs, // tell main memory to get data out for DMA
@@ -48,7 +49,6 @@ wire [7:0] ROVI = DO[15:8];
 reg VBl;
 wire VB_posedge = VB && !VBl;
 
-assign DM10 = DM[10];
 // Address bus is obfuscated
 always @(*) begin
     AD_DMA[2] = DM[0];
@@ -65,6 +65,8 @@ end
 
 reg DMclr;
 reg last_DMclr;
+wire DMclr_posedge = DMclr && !last_DMclr;
+reg last_DMclr_posedge;
 
 always @(posedge clk or negedge rst_n) 
     if(!rst_n) begin
@@ -80,9 +82,15 @@ always @(posedge clk or negedge rst_n)
         // DM counts from H blank to H blank to read all the RAMs
         // It gets reset when there is a DMA event, i.e. a V blank
         // The DMA copies 1024 bytes of data during VB
-        if (DMclr && !last_DMclr) // trip on positive edge. 7400, sheet 1/3 device 1D
+        last_DMclr_posedge <= DMclr_posedge;
+        if (DMclr_posedge) // trip on positive edge. 7400, sheet 1/3 device 1D
             DM <= 11'd0;
         else if( !H[0] && (H[1] || busak_n) ) DM <= DM+11'd1;
+        // 7474, 1C
+        if( !H[0] ) begin
+            ROHVS  <= DMclr_posedge | last_DMclr_posedge;
+            ROHVCK <= ~H[1] | last_DMclr_posedge;
+        end
     end
 
 
