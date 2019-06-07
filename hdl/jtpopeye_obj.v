@@ -26,7 +26,6 @@ module jtpopeye_obj(
 
     input               ROHVS,
     input               ROHVCK,
-    input      [28:0]   DO,
     input               RV_n,
     input               INITEO_n,
     input               VB,
@@ -50,7 +49,7 @@ reg [2:0] objc;
 reg [4:0] cnt;  // device 5E, video sheet 2/3
 
 always @(posedge clk) if( pxl_cen ) begin
-    if( &H[2:0]==3'd7 ) begin
+    if( H[2:0]==3'd7 ) begin
         objc   <= DJ[16:14];
         cnt    <= { 1'b0, DJ[13:12] ^ {2{RV_n}}, 1'b1, ~&DJ[16:14] };
         hflip  <= DJ[11] ^ RV_n;

@@ -226,7 +226,6 @@ jtpopeye_obj u_obj(
 
     .H                  ( H             ),
     .DJ                 ( DJ            ),
-    .DO                 ( DO            ),
     // SDRAM interface
     .obj_addr           ( obj_addr      ),
     .objrom_data        ( objrom_data   ),
