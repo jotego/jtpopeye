@@ -97,8 +97,6 @@ always @(posedge clk or negedge rst_n)
             Hcnt[5:0] <= 6'd0;
             HB <= ~HB;
         end
-        if( &Hcnt[2:0] ) HBlatch <= HB;
-        HBD_n <= ~(HBlatch & HB);
     end
 
 reg VBl;

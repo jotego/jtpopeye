@@ -29,7 +29,7 @@ SOURCE_FILES= \
 	jtpopeye_mist.qip                                \
 	jtpopeye.qip
 
-ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf
+ASSIGNMENT_FILES = jtpopeye.qpf jtpopeye.qsf set_qip.tcl
 
 all: smart.log $(PROJECT).asm.rpt $(PROJECT).sta.rpt
 
