@@ -48,9 +48,8 @@ module jtpopeye_timing(
 wire RV = ~RV_n;
 wire [3:0] prom_data;
 // H counter
-reg [8:0] Hcnt;
+reg [7:0] Hcnt;
 reg [9:0] Vcnt;
-wire [8:0] Hnext = Hcnt[8:0] + 9'd1;
 
 `ifdef SIMULATION
 initial begin
@@ -90,12 +89,11 @@ always @(posedge clk or negedge rst_n)
         HB   <= 1'b0;
     end else
     if(pxl_cen) begin   // 20.16/4 MHz
-        if( !Hcnt[8] ) begin
-            Hcnt[8:0] <= Hnext[8:0];
-        end else begin // 
-            Hcnt[8:6] <= HB ? 3'd0 : 3'b11;
-            Hcnt[5:0] <= 6'd0;
+        if( Hcnt!= 8'hFF)
+            Hcnt <= Hcnt+8'h1;
+        else begin
             HB <= ~HB;
+            Hcnt <= HB ? 8'h0 : 8'hc0;
         end
     end
 

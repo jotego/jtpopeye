@@ -170,7 +170,7 @@ wire [5:0] bluex2  = {3{rgbx2[1:0]}};
 
 wire HSx2;
 
-jtframe_scan2x #(.DW(8), .HLEN(322)) u_scan2x(
+jtframe_scan2x #(.DW(8), .HLEN(256+64)) u_scan2x(
     .rst_n      ( rst_n     ),
     .clk        ( clk_sys   ),
     .base_cen   ( pxl_cen   ),
