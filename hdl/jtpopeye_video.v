@@ -83,9 +83,6 @@ wire [17:0] DJ;
 wire [28:0] DO;
 wire        RV = ~RV_n;
 wire        H2O;
-wire        INITEO_n;
-
-assign INITEO = ~INITEO_n;
 
 jtpopeye_timing u_timing(
     .rst_n              ( rst_n         ),
@@ -98,7 +95,7 @@ jtpopeye_timing u_timing(
     .H                  ( H             ),
     .V                  ( V             ),
     .H2O                ( H2O           ),
-    .INITEO_n           ( INITEO_n      ),
+    .INITEO             ( INITEO        ),
     // blankings
     .HB                 ( HB            ),
     .HBD_n              ( HBD_n         ), // HB - DMA
@@ -221,7 +218,7 @@ jtpopeye_obj u_obj(
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),
     .RV_n               ( RV_n          ),     // Flip
-    .INITEO_n           ( INITEO_n      ),
+    .INITEO             ( INITEO        ),
     .VB                 ( VB            ),
 
     .H                  ( H             ),

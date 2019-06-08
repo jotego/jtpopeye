@@ -31,9 +31,9 @@ module jtpopeye_timing(
     output  reg         H2O,
     // blankings
     output reg          HB,
-    output reg          HBD_n, // HB - DMA
+    output              HBD_n, // HB - DMA
     output reg          VB,
-    output reg          INITEO_n,
+    output reg          INITEO  ,
     output reg          SY_n,       // composite sync
     // HS and VS were not present in the original board
     output reg          HS,
@@ -64,7 +64,7 @@ always @(*) begin
     H2O    = Hcnt[2] ^ RV;
 end
 
-reg HBlatch;
+reg preEO;
 
 //////////////////////////////////////////////////////////
 // H counter: This uses an asynchronous reset
@@ -101,27 +101,28 @@ reg VBl;
 
 always @(posedge clk or negedge rst_n)
     if( !rst_n ) begin
-        HBlatch <= 1'b0;
+        preEO   <= 1'b0;
         VBl     <= 1'b0;
-        INITEO_n <= 1'b0;
+        INITEO   <= 1'b0;
     end else begin
         VBl <= VB;
         if( VB && !VBl ) begin
-            HBlatch <= HB;
-            INITEO_n <= HB ^ RV;
+            preEO    <= HB;
+            INITEO   <= ~(HB ^ RV);
         end
     end
 
 //////////////////////////////////////////////////////////
 // /HBD generation, 7474, 7400, (5C, 5B, video sheet 2/3)
+reg HB3;
+
+assign HBD_n = ~( HB3 & HB ); // This is HB inverted and starting 8 pixels later
+
 always @(posedge clk or negedge rst_n) begin :HBDn_generator
-    reg Hcnt3l;
     if( !rst_n ) begin
-        HBD_n  <= 1'b1;
-        Hcnt3l <= 1'b0;
-    end else begin
-        Hcnt3l <= Hcnt[3];
-        if( Hcnt[3] && !Hcnt3l) HBD_n <= ~(HBlatch & HB);
+        HB3  <= 1'b0;
+    end else if(pxl_cen) begin
+        if( Hcnt[2:0]==3'b111 ) HB3 <= HB;
     end
 end
 

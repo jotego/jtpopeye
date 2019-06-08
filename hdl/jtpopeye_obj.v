@@ -27,7 +27,7 @@ module jtpopeye_obj(
     input               ROHVS,
     input               ROHVCK,
     input               RV_n,
-    input               INITEO_n,
+    input               INITEO,
     input               VB,
 
     input      [ 7:0]   H,
@@ -40,7 +40,7 @@ module jtpopeye_obj(
     output reg [ 1:0]   OBJV
 );
 
-assign obj_addr = { DJ[17], DJ[10:1], DJ[0]^INITEO_n };
+assign obj_addr = { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
 
 reg hflip;
 reg [15:0] objd0, objd1;
