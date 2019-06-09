@@ -42,9 +42,13 @@ module jtpopeye_buf(
 reg ROVI_hc; // half carry
 reg [3:0] nc;
 
-always @(*) begin
-    ROVI = { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
+always @(posedge clk) begin
+    // ROVI <= { 1'b0, ~V[7],V[6:0] };
+    ROVI <=  { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
         + { 8'd0, ~RV_n ^ ROHVCK }; // carry in
+end
+
+always @(*) begin
     { ROVI_hc, nc } = { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
 end
 

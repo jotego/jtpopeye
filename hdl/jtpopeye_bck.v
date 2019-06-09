@@ -45,7 +45,7 @@ reg [8:1] ROVl;
 always @(posedge clk) begin
     if(!ROHVCK) begin
         ROH  <= DO[7:0];
-        ROVl <= ROVI[8:1];
+        ROVl <= {~ROVI[8], ROVI[7:1] };
     end else
     if(pxl_cen) begin
         ROH <= ROH+8'd1;
@@ -81,7 +81,8 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
             st[0]: begin
                     // set RAM address for reading
                     ram_we     <= 1'b0;
-                    ram_addr   <= !CSBW_n ? AD[11:0] : {ROVl[6:1],ROH[7:2]};
+                    ram_addr   <= !CSBW_n ? AD[11:0] : 
+                        /*!ROVl[8] ? 12'd0 : */{ROVl[6:1],ROH[7:2]};
                     nibble_sel <= !CSBW_n ? !AD[12] : ROVl[7];
                 end 
             st[1]:; // wait for data input

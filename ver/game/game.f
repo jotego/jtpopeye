@@ -4,6 +4,7 @@
 ../../modules/jtframe/hdl/ram/jtgng_ram.v
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
 ../../modules/jtframe/hdl/video/jtframe_scan2x.v
+../../modules/jtframe/hdl/jt74.v
 ../../hdl/jtpopeye_rom.v
 ../../hdl/jtpopeye_security.v
 ../../hdl/jtpopeye_timing.v
@@ -19,3 +20,4 @@
 ../../hdl/jtpopeye_txt.v
 ../../hdl/jtpopeye_game.v
 ../../hdl/jtpopeye_prom_we.v
+../../hdl/jtpopeye_roh_model.v

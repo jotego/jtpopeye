@@ -19,20 +19,18 @@
 `timescale 1ns/1ps
 
 module jtpopeye_video_dec(
-    input   [12:0]   AD,
-    output  [12:0]   AD_dec
+    input      [12:0]   AD,
+    output reg [12:0]   AD_dec
 );
 
+reg [12:0] pre;
 // AD is obfuscated
-assign AD_dec[  2:0] =~AD[  2:0];
-assign AD_dec[    3] = AD[    6];
-assign AD_dec[    4] =~AD[    3];
-assign AD_dec[    5] =~AD[    4];
-assign AD_dec[    6] = AD[    7];
-assign AD_dec[    7] = AD[    8];
-assign AD_dec[    8] = AD[    9];
-assign AD_dec[    9] =~AD[    5];
-assign AD_dec[12:10] = AD[12:10];
+always @(*) begin
+    pre[  5:0] =~AD[  5:0];
+    pre[ 12:6] = AD[ 12:6];
+    AD_dec[9:0] = { pre[5], pre[9], pre[8:7], pre[4:3], pre[6], pre[2:0] };
+    AD_dec[12:10] = pre[12:10];
+end
 
 // assign AD_dec[  2:0] =~AD[  2:0];
 // assign AD_dec[    3] = AD[    6];

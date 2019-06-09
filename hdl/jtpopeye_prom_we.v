@@ -31,7 +31,7 @@ module jtpopeye_prom_we(
     output reg           prog_we,
     output reg [ 5:0]    prom_we,   // update prom_we0 below if prom_we is edited!
     // signal whether the CPU data is encrypted or not
-    output reg           encrypted
+    output               encrypted
 );
 
 localparam PROM_ADDR = 8192*8;
@@ -78,7 +78,7 @@ always @(posedge clk_rom) begin
         end
     end
 end
-
+/*
 `ifndef TESTROM
 reg [3:0] encrypt_test=4'hf;
 reg check;
@@ -115,5 +115,7 @@ begin
         $display("Finished downloading a NON-ENCRYPTED ROM");
 end
 `endif
+*/
 
+assign encrypted = 1'b1;
 endmodule // jt1492_promprog

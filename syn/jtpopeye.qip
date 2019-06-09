@@ -20,8 +20,10 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_buf.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_bck.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_prom_we.v   ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_roh_model.v   ]
 # RAM
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/ram/jtgng_ram.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/ram/jtgng_prom.v      ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jtframe_uart.v        ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jt74.v        ]
 

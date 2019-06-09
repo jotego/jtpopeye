@@ -107,10 +107,11 @@ always @(posedge clk or negedge rst_n)
     end else begin
         VBl <= VB;
         if( VB && !VBl ) begin
-            preEO    <= HB;
-            INITEO   <= ~(HB ^ RV);
+            preEO    <= ~HB;
         end
+        INITEO   <= ~(preEO ^ RV);
     end
+
 
 //////////////////////////////////////////////////////////
 // /HBD generation, 7474, 7400, (5C, 5B, video sheet 2/3)

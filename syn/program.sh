@@ -1,2 +1,6 @@
 #!/bin/bash
-quartus_pgm -c '$(quartus_pgm -l | grep -o "USB-Blaster.*")' jtpopeye.cdf
+if [ "$USBLASTER" = "" ]; then
+    USBLASTER='$(quartus_pgm -l | grep -o "USB-Blaster.*")'
+fi
+
+quartus_pgm -c "$USBLASTER" jtpopeye.cdf
