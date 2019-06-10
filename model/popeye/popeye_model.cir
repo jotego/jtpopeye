@@ -1,0 +1,11 @@
+* /home/pi/kicad/popeye/popeye_model.cir
+
+* EESchema Netlist Version 1.1 (Spice format) creation date: lun 10 jun 2019 12:50:51 CEST
+
+* To exclude a component from the Spice Netlist add [Spice_Netlist_Enabled] user FIELD set to: N
+* To reorder the component spice node sequence add [Spice_Node_Sequence] user FIELD and define sequence: 2,1,0
+
+* Sheet Name: /
+U1  Net-_U1-Pad1_ ? B ? Net-_U1-Pad1_ B GND VCC 7402		
+
+.end
