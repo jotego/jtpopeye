@@ -20,8 +20,10 @@ module dma(
     input   VB
 );
 
+
 `include "dma_model.v"
 
+assign VBn = ~VB;
 pullup p0(DMCSpullup);
 
 endmodule

@@ -45,7 +45,7 @@ integer blanks=0;
 always @(posedge VB) begin
     $display("Vertical blank");
     blanks <= blanks+1;
-    if(blanks==2) $finish;
+    if(blanks==1) $finish;
 end
 
 initial begin
@@ -84,6 +84,36 @@ dma uut(
     .HBDn       ( HBDn      ),
     .VB         ( VB        )
 );
+
+
+wire [9:0] new_AD;
+wire [28:0] new_DO;
+
+reg new_busak_n=1'b1;
+wire new_busrq_n;
+wire new_dmacs;
+wire new_ROHVS, new_ROHVCK;
+always @(posedge clk)
+    if(cpu_cen) new_busak_n <= new_busrq_n;
+
+
+jtpopeye_dma u_dmanew (
+    .rst_n  (rst_n  ),
+    .clk    (clk    ),
+    .pxl_cen(pxl_cen),
+    .VB     (VB     ),
+    .H      (H[1:0] ), // TODO: Check connection ! Signal/port not matching : Expecting logic [1:0]  -- Found logic [7:0] 
+    .HBD_n  (HBDn   ),
+    .DD_DMA (8'd0  ),
+    .busak_n(new_busak_n),
+    .ROHVS  (new_ROHVS  ),
+    .ROHVCK (new_ROHVCK ),
+    .AD_DMA (new_AD ),
+    .dma_cs (new_dmacs ),
+    .busrq_n(new_busrq_n),
+    .DO     (new_DO     )
+);
+
 
 jtpopeye_timing u_timing (
     .rst_n     (rst_n     ),

@@ -857,8 +857,6 @@ Text Label 2150 6100 2    60   ~ 0
 BI
 Text Label 2400 7600 2    60   ~ 0
 AI
-Text Label 4200 8400 2    60   ~ 0
-VB
 Wire Wire Line
 	3100 2050 3950 2050
 Wire Wire Line

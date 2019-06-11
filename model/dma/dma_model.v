@@ -63,7 +63,6 @@ wire Net__U3H1_Pad9_;
 wire Net__U4E1_Pad5_;
 wire VBn;
 
-
 jt7404 U1(
     .in1       ( BIn                      ),
     .out2      ( BI                       ),
@@ -145,7 +144,7 @@ jt74161 U1F1(
 jt7474 U1L1(
     .cl1_b     ( Net__U1L1_Pad1_          ),
     .d1        ( 1'b1                     ),
-    .clk1      ( VB                       ),
+    .clk1      ( Net__U1L1_Pad3_          ),
     .pr1_b     ( 1'b1                     ),
     .q1        ( BUSRQ                    ),
     .q1_b      ( BUSRQn                   ),
@@ -245,7 +244,7 @@ jt74367 U2H1(
 );
 
 jt7402 U2K1(
-    .out1      ( VB                       ),
+    .out1      ( Net__U1L1_Pad3_          ),
     .in2       ( VBn                      ),
     .in3       ( VBn                      ),
     .out4      ( Net__U1L1_Pad1_          ),
