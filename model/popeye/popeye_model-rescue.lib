@@ -1,11 +1,11 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
-# popeye_model-rescue_74LS00
+# 74LS00
 #
-DEF popeye_model-rescue_74LS00 U 0 30 Y Y 4 F N
+DEF 74LS00 U 0 30 Y Y 4 F N
 F0 "U" 0 50 50 H V C CNN
-F1 "popeye_model-rescue_74LS00" 0 -100 50 H V C CNN
+F1 "74LS00" 0 -100 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 $FPLIST
@@ -49,11 +49,11 @@ X ~ 13 -600 -100 370 R 50 50 4 2 I I
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS02
+# 74LS02
 #
-DEF popeye_model-rescue_74LS02 U 0 30 Y Y 4 F N
+DEF 74LS02 U 0 30 Y Y 4 F N
 F0 "U" 0 50 50 H V C CNN
-F1 "popeye_model-rescue_74LS02" 50 -50 50 H V C CNN
+F1 "74LS02" 50 -50 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 $FPLIST
@@ -97,11 +97,11 @@ X ~ 13 600 0 300 L 50 50 4 2 O
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS04
+# 74LS04
 #
-DEF popeye_model-rescue_74LS04 U 0 30 Y Y 6 F N
+DEF 74LS04 U 0 30 Y Y 6 F N
 F0 "U" 195 115 50 H V C CNN
-F1 "popeye_model-rescue_74LS04" 190 -125 50 H V C CNN
+F1 "74LS04" 190 -125 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW
@@ -135,11 +135,11 @@ X ~ 13 -450 0 300 R 50 50 6 2 I I
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS138
+# 74LS138
 #
-DEF popeye_model-rescue_74LS138 U 0 40 Y Y 1 F N
+DEF 74LS138 U 0 40 Y Y 1 F N
 F0 "U" 100 500 50 H V C CNN
-F1 "popeye_model-rescue_74LS138" 150 -549 50 H V C CNN
+F1 "74LS138" 150 -549 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW
@@ -163,11 +163,11 @@ X O6 9 600 -250 300 L 50 50 1 1 O V
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS161
+# 74LS161
 #
-DEF popeye_model-rescue_74LS161 U 0 10 Y Y 1 F N
+DEF 74LS161 U 0 10 Y Y 1 F N
 F0 "U" 50 100 50 H V C CNN
-F1 "popeye_model-rescue_74LS161" 100 -200 50 H V C CNN
+F1 "74LS161" 100 -200 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW
@@ -191,11 +191,11 @@ X ~Pe 9 -700 0 300 R 50 50 1 1 I I
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS365
+# 74LS365
 #
-DEF popeye_model-rescue_74LS365 U 0 10 Y Y 1 F N
+DEF 74LS365 U 0 10 Y Y 1 F N
 F0 "U" 0 0 50 H V C CNN
-F1 "popeye_model-rescue_74LS365" 50 -200 50 H V C CNN
+F1 "74LS365" 50 -200 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW
@@ -219,11 +219,11 @@ X O4 9 700 100 300 L 50 50 1 1 T
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS367
+# 74LS367
 #
-DEF popeye_model-rescue_74LS367 U 0 10 Y Y 1 F N
+DEF 74LS367 U 0 10 Y Y 1 F N
 F0 "U" 0 -50 50 H V C CNN
-F1 "popeye_model-rescue_74LS367" 100 -250 50 H V C CNN
+F1 "74LS367" 100 -250 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW
@@ -247,11 +247,11 @@ X O4a 9 700 100 300 L 50 50 1 1 T
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS37
+# 74LS37
 #
-DEF popeye_model-rescue_74LS37 U 0 30 Y Y 4 F N
+DEF 74LS37 U 0 30 Y Y 4 F N
 F0 "U" 0 50 50 H V C CNN
-F1 "popeye_model-rescue_74LS37" 0 -100 50 H V C CNN
+F1 "74LS37" 0 -100 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 $FPLIST
@@ -295,11 +295,11 @@ X ~ 13 -600 -100 370 R 50 50 4 2 I I
 ENDDRAW
 ENDDEF
 #
-# popeye_model-rescue_74LS74
+# 74LS74
 #
-DEF popeye_model-rescue_74LS74 U 0 40 Y Y 2 F N
+DEF 74LS74 U 0 40 Y Y 2 F N
 F0 "U" 150 300 50 H V C CNN
-F1 "popeye_model-rescue_74LS74" 300 -295 50 H V C CNN
+F1 "74LS74" 300 -295 50 H V C CNN
 F2 "" 0 0 50 H V C CNN
 F3 "" 0 0 50 H V C CNN
 DRAW

@@ -1,6 +1,35 @@
-EESchema Schematic File Version 4
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
 LIBS:popeye_model-cache
-EELAYER 26 0
+EELAYER 25 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
@@ -15,7 +44,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L popeye_model-rescue:74LS00 U1B1
+L 74LS00 U1B1
 U 1 1 5CFF72BF
 P 2100 3950
 F 0 "U1B1" H 2100 4000 50  0000 C CNN
@@ -26,7 +55,7 @@ F 3 "" H 2100 3950 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1D1
+L 74LS00 U1D1
 U 2 1 5CFF7351
 P 5300 5500
 F 0 "U1D1" H 5300 5550 50  0000 C CNN
@@ -37,7 +66,7 @@ F 3 "" H 5300 5500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1D1
+L 74LS00 U1D1
 U 1 1 5CFF7418
 P 5200 3700
 F 0 "U1D1" H 5200 3750 50  0000 C CNN
@@ -48,7 +77,7 @@ F 3 "" H 5200 3700 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1D1
+L 74LS00 U1D1
 U 3 1 5CFF7488
 P 6400 4300
 F 0 "U1D1" H 6400 4350 50  0000 C CNN
@@ -59,7 +88,7 @@ F 3 "" H 6400 4300 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1B1
+L 74LS00 U1B1
 U 3 1 5CFF7505
 P 11050 2300
 F 0 "U1B1" H 11050 2350 50  0000 C CNN
@@ -70,7 +99,7 @@ F 3 "" H 11050 2300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1B1
+L 74LS00 U1B1
 U 4 1 5CFF7570
 P 11050 2900
 F 0 "U1B1" H 11050 2950 50  0000 C CNN
@@ -81,7 +110,7 @@ F 3 "" H 11050 2900 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS00 U1B1
+L 74LS00 U1B1
 U 2 1 5CFF75F1
 P 10750 6400
 F 0 "U1B1" H 10750 6450 50  0000 C CNN
@@ -92,7 +121,7 @@ F 3 "" H 10750 6400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS74 U2D1
+L 74LS74 U2D1
 U 1 1 5CFF7678
 P 2100 2600
 F 0 "U2D1" H 2250 2900 50  0000 C CNN
@@ -103,7 +132,7 @@ F 3 "" H 2100 2600 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS74 U2D1
+L 74LS74 U2D1
 U 2 1 5CFF76D5
 P 3950 2600
 F 0 "U2D1" H 4100 2900 50  0000 C CNN
@@ -115,7 +144,7 @@ F 3 "" H 3950 2600 50  0000 C CNN
 $EndComp
 NoConn ~ 2700 2800
 $Comp
-L popeye_model-rescue:74LS74 U2
+L 74LS74 U2
 U 1 1 5CFF79E8
 P 6400 2600
 F 0 "U2" H 6550 2900 50  0000 C CNN
@@ -128,7 +157,7 @@ $EndComp
 Text GLabel 5300 4550 3    60   Input ~ 0
 HBDn
 $Comp
-L popeye_model-rescue:74LS00 U3
+L 74LS00 U3
 U 1 1 5CFF818A
 P 7850 1450
 F 0 "U3" H 7850 1500 50  0000 C CNN
@@ -139,7 +168,7 @@ F 3 "" H 7850 1450 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS74 U2
+L 74LS74 U2
 U 2 1 5CFF8429
 P 9500 2600
 F 0 "U2" H 9650 2900 50  0000 C CNN
@@ -150,7 +179,7 @@ F 3 "" H 9500 2600 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS04 U1
+L 74LS04 U1
 U 1 1 5CFF8658
 P 1650 7000
 F 0 "U1" H 1845 7115 50  0000 C CNN
@@ -161,7 +190,7 @@ F 3 "" H 1650 7000 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS04 U1
+L 74LS04 U1
 U 2 1 5CFF86F3
 P 1650 7600
 F 0 "U1" H 1845 7715 50  0000 C CNN
@@ -181,7 +210,7 @@ ROHVS
 Text GLabel 12000 2900 2    60   Output ~ 0
 ROHVCK
 $Comp
-L popeye_model-rescue:74LS161 U1F1
+L 74LS161 U1F1
 U 1 1 5CFF8FC7
 P 13950 4050
 F 0 "U1F1" H 14000 4150 50  0000 C CNN
@@ -192,7 +221,7 @@ F 3 "" H 13950 4050 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS161 U2F1
+L 74LS161 U2F1
 U 1 1 5CFF9148
 P 15500 4050
 F 0 "U2F1" H 15550 4150 50  0000 C CNN
@@ -203,7 +232,7 @@ F 3 "" H 15500 4050 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS161 U2E1
+L 74LS161 U2E1
 U 1 1 5CFF91BD
 P 16950 4050
 F 0 "U2E1" H 17000 4150 50  0000 C CNN
@@ -214,7 +243,7 @@ F 3 "" H 16950 4050 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS138 U1E1
+L 74LS138 U1E1
 U 1 1 5CFF934B
 P 19600 2100
 F 0 "U1E1" H 19700 2600 50  0000 C CNN
@@ -251,7 +280,7 @@ NoConn ~ 14250 3350
 NoConn ~ 14350 3350
 NoConn ~ 14450 3350
 $Comp
-L popeye_model-rescue:74LS367 U2H1
+L 74LS367 U2H1
 U 1 1 5CFFA677
 P 19800 5400
 F 0 "U2H1" H 19800 5350 50  0000 C CNN
@@ -262,7 +291,7 @@ F 3 "" H 19800 5400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L popeye_model-rescue:74LS367 U3H1
+L 74LS367 U3H1
 U 1 1 5CFFAFF5
 P 19800 6450
 F 0 "U3H1" H 19800 6400 50  0000 C CNN
@@ -302,7 +331,7 @@ DM[6]
 Text GLabel 20900 6550 2    60   Output ~ 0
 DM[7]
 $Comp
-L popeye_model-rescue:74LS367 U3E1
+L 74LS367 U3E1
 U 1 1 5CFFC597
 P 15300 8050
 F 0 "U3E1" H 15300 8000 50  0000 C CNN
@@ -313,7 +342,7 @@ F 3 "" H 15300 8050 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS02 U6C1
+L 74LS02 U6C1
 U 1 1 5CFFC926
 P 13900 8000
 F 0 "U6C1" H 13900 8050 50  0000 C CNN
@@ -324,7 +353,7 @@ F 3 "" H 13900 8000 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L popeye_model-rescue:74LS365 U4E1
+L 74LS365 U4E1
 U 1 1 5CFFCC12
 P 16700 8050
 F 0 "U4E1" H 16700 8050 50  0000 C CNN
@@ -364,7 +393,7 @@ BIn
 Text GLabel 1200 7600 0    60   Input ~ 0
 AIn
 $Comp
-L popeye_model-rescue:74LS74 U1L1
+L 74LS74 U1L1
 U 1 1 5CFFEA13
 P 5050 8400
 F 0 "U1L1" H 5200 8700 50  0000 C CNN
@@ -377,7 +406,7 @@ $EndComp
 Text Label 4700 7850 0    60   ~ 0
 VDD
 $Comp
-L popeye_model-rescue:74LS02 U2K1
+L 74LS02 U2K1
 U 1 1 5CFFEDE2
 P 3300 8400
 F 0 "U2K1" H 3300 8450 50  0000 C CNN
@@ -390,7 +419,7 @@ $EndComp
 Text GLabel 2350 8400 0    60   Input ~ 0
 VBn
 $Comp
-L popeye_model-rescue:74LS02 U2K1
+L 74LS02 U2K1
 U 2 1 5CFFF800
 P 6000 9400
 F 0 "U2K1" H 6000 9450 50  0000 C CNN
@@ -411,7 +440,7 @@ DMEND
 Text Label 15850 2750 0    60   ~ 0
 DMclr_n
 $Comp
-L popeye_model-rescue:74LS37 U4
+L 74LS37 U4
 U 1 1 5D0004DB
 P 12950 11200
 F 0 "U4" H 12950 11250 50  0000 C CNN
@@ -422,11 +451,11 @@ F 3 "" H 12950 11200 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2100 2050 3100 2050
+	2100 2050 3950 2050
 Wire Wire Line
 	2100 3150 2100 3300
 Wire Wire Line
-	2100 3300 3100 3300
+	2100 3300 3950 3300
 Wire Wire Line
 	3950 3300 3950 3150
 Wire Wire Line
@@ -436,11 +465,11 @@ Connection ~ 3100 3300
 Wire Wire Line
 	1500 2400 1200 2400
 Wire Wire Line
-	1200 2400 1200 3950
+	1200 2400 1200 6100
 Wire Wire Line
 	1200 3950 1400 3950
 Wire Wire Line
-	1400 3850 1400 3950
+	1400 3850 1400 4050
 Wire Wire Line
 	1400 3850 1500 3850
 Wire Wire Line
@@ -453,11 +482,11 @@ Wire Wire Line
 Wire Wire Line
 	5200 3100 5200 2400
 Wire Wire Line
-	5200 2400 5450 2400
+	5200 2400 5800 2400
 Wire Wire Line
 	6400 3700 6400 3150
 Wire Wire Line
-	5100 4300 5100 4550
+	5100 4300 5100 5100
 Wire Wire Line
 	5100 5100 6300 5100
 Wire Wire Line
@@ -465,7 +494,7 @@ Wire Wire Line
 Wire Wire Line
 	4550 2800 4800 2800
 Wire Wire Line
-	4800 850  4800 2800
+	4800 850  4800 4550
 Wire Wire Line
 	4800 4550 5100 4550
 Connection ~ 5100 4550
@@ -482,7 +511,7 @@ Wire Wire Line
 Wire Wire Line
 	2800 3800 4300 3800
 Wire Wire Line
-	4300 3800 4300 4950
+	4300 3800 4300 5600
 Wire Wire Line
 	4300 5600 4700 5600
 Wire Wire Line
@@ -519,7 +548,7 @@ Wire Wire Line
 	2650 7600 2650 6250
 Connection ~ 2650 6250
 Wire Wire Line
-	1200 6100 2350 6100
+	1200 6100 10450 6100
 Wire Wire Line
 	2350 6100 2350 7000
 Wire Wire Line
@@ -537,11 +566,11 @@ Wire Wire Line
 Wire Wire Line
 	10000 2200 10000 1450
 Wire Wire Line
-	8450 1450 10000 1450
+	8450 1450 13300 1450
 Wire Wire Line
 	6400 2050 6400 1900
 Wire Wire Line
-	6400 1900 8850 1900
+	6400 1900 9500 1900
 Wire Wire Line
 	9500 1900 9500 2050
 Wire Wire Line
@@ -556,7 +585,7 @@ Wire Wire Line
 Wire Wire Line
 	11650 2900 12000 2900
 Wire Wire Line
-	9900 6250 9900 6300
+	9900 6250 9900 6500
 Wire Wire Line
 	9900 6500 10150 6500
 Connection ~ 8450 6250
@@ -566,20 +595,20 @@ Connection ~ 9900 6300
 Wire Wire Line
 	19000 1950 18900 1950
 Wire Wire Line
-	19000 2450 18450 2450
+	19000 2450 13500 2450
 Wire Wire Line
 	13500 2450 13500 850 
 Wire Wire Line
 	13500 850  4800 850 
 Connection ~ 4800 2800
 Wire Wire Line
-	1100 6250 2650 6250
+	1100 6250 9900 6250
 Wire Wire Line
 	11350 6400 12000 6400
 Wire Wire Line
 	12000 6400 12000 3050
 Wire Wire Line
-	12000 3050 13650 3050
+	12000 3050 16650 3050
 Wire Wire Line
 	13650 3050 13650 3350
 Wire Wire Line
@@ -611,7 +640,7 @@ Wire Wire Line
 Wire Wire Line
 	13950 3350 13950 2850
 Wire Wire Line
-	13950 2850 15400 2850
+	13950 2850 16950 2850
 Wire Wire Line
 	16950 2850 16950 3350
 Wire Wire Line
@@ -628,7 +657,7 @@ Wire Wire Line
 Wire Wire Line
 	13150 5500 13150 3150
 Wire Wire Line
-	13150 3150 13750 3150
+	13150 3150 13850 3150
 Wire Wire Line
 	13850 3150 13850 3350
 Wire Wire Line
@@ -637,7 +666,7 @@ Connection ~ 13750 3150
 Wire Wire Line
 	13300 1450 13300 2750
 Wire Wire Line
-	13300 2750 13450 2750
+	13300 2750 16450 2750
 Wire Wire Line
 	16450 2750 16450 3350
 Connection ~ 10000 1450
@@ -648,15 +677,15 @@ Wire Wire Line
 	13450 3350 13450 2750
 Connection ~ 13450 2750
 Wire Wire Line
-	19100 5000 15500 5000
+	19100 5000 14250 5000
 Wire Wire Line
 	14250 5000 14250 4750
 Wire Wire Line
-	19100 5100 16700 5100
+	19100 5100 15900 5100
 Wire Wire Line
 	15900 5100 15900 4750
 Wire Wire Line
-	19100 5200 15950 5200
+	19100 5200 14450 5200
 Wire Wire Line
 	14450 5200 14450 4750
 Wire Wire Line
@@ -664,11 +693,11 @@ Wire Wire Line
 Wire Wire Line
 	14150 5300 14150 4750
 Wire Wire Line
-	19100 5400 16900 5400
+	19100 5400 14350 5400
 Wire Wire Line
 	14350 5400 14350 4750
 Wire Wire Line
-	19100 5500 16600 5500
+	19100 5500 16000 5500
 Wire Wire Line
 	16000 5500 16000 4750
 Wire Wire Line
@@ -678,9 +707,9 @@ Wire Wire Line
 Wire Wire Line
 	19100 6850 18900 6850
 Wire Wire Line
-	15800 6450 16800 6450
+	15800 6450 19100 6450
 Wire Wire Line
-	15300 6550 15700 6550
+	15300 6550 19100 6550
 Wire Wire Line
 	19100 5700 18950 5700
 Wire Wire Line
@@ -696,7 +725,7 @@ Wire Wire Line
 Wire Wire Line
 	20900 6550 20500 6550
 Wire Wire Line
-	17450 4750 17450 4900
+	17450 4750 17450 5800
 Wire Wire Line
 	17450 4900 18550 4900
 Wire Wire Line
@@ -710,7 +739,7 @@ Wire Wire Line
 Wire Wire Line
 	18600 4850 17350 4850
 Wire Wire Line
-	17350 4750 17350 4850
+	17350 4750 17350 5900
 Wire Wire Line
 	17100 8750 17100 8850
 Wire Wire Line
@@ -718,7 +747,7 @@ Wire Wire Line
 Wire Wire Line
 	15950 8850 15950 7100
 Wire Wire Line
-	15950 7100 15000 7100
+	15950 7100 13900 7100
 Wire Wire Line
 	14900 7100 14900 7350
 Wire Wire Line
@@ -727,7 +756,7 @@ Connection ~ 15000 7100
 Wire Wire Line
 	13800 7400 13800 7250
 Wire Wire Line
-	13800 7250 13900 7250
+	13800 7250 14000 7250
 Wire Wire Line
 	14000 7250 14000 7400
 Wire Wire Line
@@ -744,7 +773,7 @@ Connection ~ 18450 2450
 Wire Wire Line
 	16300 7350 16300 5700
 Wire Wire Line
-	15100 5700 16300 5700
+	15100 5700 18350 5700
 Wire Wire Line
 	18350 5700 18350 2350
 Wire Wire Line
@@ -817,7 +846,7 @@ Wire Wire Line
 Wire Wire Line
 	3900 8400 4450 8400
 Wire Wire Line
-	2700 8300 2700 8400
+	2700 8300 2700 8500
 Wire Wire Line
 	2700 8400 2350 8400
 Connection ~ 2700 8400
@@ -841,7 +870,7 @@ Connection ~ 16300 5700
 Wire Wire Line
 	12350 11100 12250 11100
 Wire Wire Line
-	12250 11100 12250 11200
+	12250 11100 12250 11300
 Wire Wire Line
 	12250 11300 12350 11300
 Wire Wire Line
@@ -859,88 +888,4 @@ Text Label 2400 7600 2    60   ~ 0
 AI
 Text Label 4200 8400 2    60   ~ 0
 VB
-Wire Wire Line
-	3100 2050 3950 2050
-Wire Wire Line
-	3100 3300 3950 3300
-Wire Wire Line
-	1400 3950 1400 4050
-Wire Wire Line
-	5100 4550 5100 5100
-Wire Wire Line
-	4300 4950 4300 5600
-Wire Wire Line
-	5450 2400 5800 2400
-Wire Wire Line
-	2650 6250 8450 6250
-Wire Wire Line
-	1200 3950 1200 6100
-Wire Wire Line
-	2350 6100 10450 6100
-Wire Wire Line
-	8850 1900 9500 1900
-Wire Wire Line
-	8450 6250 9900 6250
-Wire Wire Line
-	9900 6300 9900 6500
-Wire Wire Line
-	4800 2800 4800 4550
-Wire Wire Line
-	13650 3050 15200 3050
-Wire Wire Line
-	15200 3050 16650 3050
-Wire Wire Line
-	15500 2850 16850 2850
-Wire Wire Line
-	15400 2850 15500 2850
-Wire Wire Line
-	16850 2850 16950 2850
-Wire Wire Line
-	13750 3150 13850 3150
-Wire Wire Line
-	10000 1450 13300 1450
-Wire Wire Line
-	15000 2750 16450 2750
-Wire Wire Line
-	13450 2750 15000 2750
-Wire Wire Line
-	15000 7100 14900 7100
-Wire Wire Line
-	14900 7100 13900 7100
-Wire Wire Line
-	13900 7250 14000 7250
-Wire Wire Line
-	18450 2450 13500 2450
-Wire Wire Line
-	17250 5700 18350 5700
-Wire Wire Line
-	16900 5400 15600 5400
-Wire Wire Line
-	16600 5500 16000 5500
-Wire Wire Line
-	16700 5100 15900 5100
-Wire Wire Line
-	16800 6450 19100 6450
-Wire Wire Line
-	15700 6550 19100 6550
-Wire Wire Line
-	15600 5400 14350 5400
-Wire Wire Line
-	15500 5000 14250 5000
-Wire Wire Line
-	15950 5200 14450 5200
-Wire Wire Line
-	17450 4900 17450 5800
-Wire Wire Line
-	17350 4850 17350 5900
-Wire Wire Line
-	2700 8400 2700 8500
-Wire Wire Line
-	16300 5700 17250 5700
-Wire Wire Line
-	12250 11200 12250 11300
-Text Label 14150 7100 0    50   ~ 0
-DMCSpullup
-Text Label 16000 2850 0    50   ~ 0
-VDD
 $EndSCHEMATC
