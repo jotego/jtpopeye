@@ -18,6 +18,39 @@
 
 `timescale 1ns/1ps
 
+// DM count is not encrypted
+// DM counter is always counting up but is cleared when
+//  * HBDn low (async) sets clear signal
+//  * BUSRQ high (async) sets clear signal
+//  * clear signal is restored at H[1:0]==2'b11
+//  * Counter may stay at 0 for several H cycles
+//
+// DM count rythm
+//  * During readout: count advances at H[1:0]==2'b10 and 
+//    H[1:0]==2'b00
+//  * Only counts up to 9E in one line because of time limit
+//  * During data transfer: count advances at H[1:0]==2'b10
+//    so it advances at half the speed
+//  * The ryhtm is determined by BUSAK signal latched at
+//    H[1:0]==2'b00. Even if DMA count is over, the rythm
+//    is not restored until BUSAK signal is sampled again
+// DMCS signal is high during data transfer
+// DMCSn[3:0] bus advances as expected during data transfer
+// 3FF is the last count during transfers, there is no clear
+// signal at the end of the count
+//
+// AD bus is shuffled, from MSB to LSB
+// AD: 1, 0, 5, 9, 8, 7, 4, 3, 6, 2 
+// DM: 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+//
+// ROHVS, ROHVCK
+//
+// * During transfers ROHVS=0, ROHVCK=1
+// * ROHVS goes high at H=00, and low at H=01
+// * ROHVCK = ~H[1] | ~ROHVS = ~(H[1]&ROHVS)
+// * Boths signals only trip one time after HBDn goes low
+
+
 module jtpopeye_dma(
     input               rst_n,
     input               clk,

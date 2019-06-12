@@ -271,7 +271,7 @@ jt74367 U3E1(
                   Net__U2F1_Pad11_,
                   Net__U1E1_Pad1_,
                   Net__U1F1_Pad12_,
-                  Net__U1F1_Pad13_,
+                  Net__U1F1_Pad11_,
                   Net__U1F1_Pad14_}),
     .Y         ({ AD[1],
                   AD[5],

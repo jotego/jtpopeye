@@ -660,16 +660,6 @@ Wire Wire Line
 Wire Wire Line
 	14450 5200 14450 4750
 Wire Wire Line
-	19100 5300 14150 5300
-Wire Wire Line
-	14150 5300 14150 4750
-Wire Wire Line
-	19100 5400 16900 5400
-Wire Wire Line
-	14350 5400 14350 4750
-Wire Wire Line
-	19100 5500 16600 5500
-Wire Wire Line
 	16000 5500 16000 4750
 Wire Wire Line
 	15800 4750 15800 6450
@@ -773,23 +763,16 @@ Wire Wire Line
 Wire Wire Line
 	17100 7100 17100 7350
 Wire Wire Line
-	16900 7350 16900 5400
-Connection ~ 16900 5400
-Wire Wire Line
-	16600 7350 16600 5500
-Connection ~ 16600 5500
+	16600 7350 16600 6000
 Wire Wire Line
 	16700 7350 16700 5100
 Connection ~ 16700 5100
 Wire Wire Line
 	16800 7350 16800 6450
-Connection ~ 16800 6450
 Wire Wire Line
-	15300 7350 15300 6550
-Connection ~ 15700 6550
+	15300 7350 15300 6950
 Wire Wire Line
 	15600 7350 15600 5400
-Connection ~ 15600 5400
 Wire Wire Line
 	15500 7350 15500 5000
 Connection ~ 15500 5000
@@ -912,17 +895,9 @@ Wire Wire Line
 Wire Wire Line
 	17250 5700 18350 5700
 Wire Wire Line
-	16900 5400 15600 5400
-Wire Wire Line
 	16600 5500 16000 5500
 Wire Wire Line
 	16700 5100 15900 5100
-Wire Wire Line
-	16800 6450 19100 6450
-Wire Wire Line
-	15700 6550 19100 6550
-Wire Wire Line
-	15600 5400 14350 5400
 Wire Wire Line
 	15500 5000 14250 5000
 Wire Wire Line
@@ -941,4 +916,51 @@ Text Label 14150 7100 0    50   ~ 0
 DMCSpullup
 Text Label 16000 2850 0    50   ~ 0
 VDD
+Wire Wire Line
+	14150 4750 14150 5400
+Wire Wire Line
+	14150 5400 15600 5400
+Wire Wire Line
+	14350 4750 14350 5300
+Wire Wire Line
+	14350 5300 16900 5300
+Wire Wire Line
+	19100 5300 17650 5300
+Wire Wire Line
+	17650 5300 17650 5400
+Wire Wire Line
+	17650 5400 15600 5400
+Connection ~ 15600 5400
+Wire Wire Line
+	16900 5300 16900 5500
+Wire Wire Line
+	19100 5400 17750 5400
+Wire Wire Line
+	17750 5400 17750 5500
+Wire Wire Line
+	17750 5500 16900 5500
+Connection ~ 16900 5500
+Wire Wire Line
+	16900 5500 16900 7350
+Wire Wire Line
+	19100 5500 18550 5500
+Wire Wire Line
+	18550 5500 18550 6000
+Wire Wire Line
+	18550 6000 16600 6000
+Connection ~ 16600 6000
+Wire Wire Line
+	16600 6000 16600 5500
+Wire Wire Line
+	19100 6550 17050 6550
+Wire Wire Line
+	17050 6550 17050 6950
+Wire Wire Line
+	17050 6950 15300 6950
+Connection ~ 15300 6950
+Wire Wire Line
+	15300 6950 15300 6550
+Wire Wire Line
+	19100 6450 16800 6450
+Connection ~ 16800 6450
 $EndSCHEMATC
