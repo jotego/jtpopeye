@@ -48,9 +48,14 @@ always @(posedge VB) begin
     if(blanks==1) $finish;
 end
 
+// initial #200_000 $finish;
+initial #30_000_000 $finish;
+
 initial begin
     $dumpfile("test.lxt");
-    $dumpvars;
+    $dumpvars(0,test.uut);
+    $dumpvars(0,test.u_dmanew);    
+    $dumpvars(1,test);    
     $dumpon;
 end
 
@@ -96,14 +101,16 @@ wire new_ROHVS, new_ROHVCK;
 always @(posedge clk)
     if(cpu_cen) new_busak_n <= new_busrq_n;
 
+wire pre_HBDn;
 
 jtpopeye_dma u_dmanew (
     .rst_n  (rst_n  ),
     .clk    (clk    ),
     .pxl_cen(pxl_cen),
     .VB     (VB     ),
-    .H      (H[1:0] ), // TODO: Check connection ! Signal/port not matching : Expecting logic [1:0]  -- Found logic [7:0] 
+    .H      (H[1:0] ),
     .HBD_n  (HBDn   ),
+    .pre_HBDn( pre_HBDn ),
     .DD_DMA (8'd0  ),
     .busak_n(new_busak_n),
     .ROHVS  (new_ROHVS  ),
@@ -126,6 +133,7 @@ jtpopeye_timing u_timing (
     .H2O       (H2O       ),
     .HB        (HB        ),
     .HBD_n     (HBDn      ),
+    .pre_HBDn  ( pre_HBDn ),
     .VB        (VB        ),
     .INITEO    (INITEO    ),
     .SY_n      (SY_n      ),
@@ -135,7 +143,5 @@ jtpopeye_timing u_timing (
     .prom_7j_we(1'b0      ),
     .prom_din  (4'd0      )
 );
-
-
 
 endmodule

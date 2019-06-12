@@ -59,6 +59,7 @@ module jtpopeye_dma(
     input               VB,
     input      [1:0]    H,
     input               HBD_n,
+    input               pre_HBDn,
     input      [7:0]    DD_DMA,
     input               busak_n,
 
@@ -66,7 +67,7 @@ module jtpopeye_dma(
     output reg          ROHVCK,
 
     output reg [9:0]    AD_DMA,
-    output reg          dma_cs, // tell main memory to get data out for DMA
+    output              dma_cs, // tell main memory to get data out for DMA
     output reg          busrq_n,
     output     [28:0]   DO
 );
@@ -96,59 +97,66 @@ always @(*) begin
     AD_DMA[1] = DM[9];
 end
 
-reg DMclr;
-reg last_DMclr;
-wire DMclr_posedge = DMclr && !last_DMclr;
-reg DMclr_nl;
+reg [ 2:0] st;
+reg [ 3:0] DMCS;
 
-always @(posedge clk or negedge rst_n) 
+assign dma_cs = st[1];
+
+always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
-        DM = 11'd0;
-    end else begin
-        if( H==2'b01 )
-            dma_cs <= ~busak_n;
-
-        if(!dma_cs && !busrq_n)
-            DMclr <= 1'b0;
-        else if( H==2'b11 ) DMclr <= ~HBD_n | dma_cs;
-        if(H[0]) last_DMclr <= DMclr;
-        // DM counts from H blank to H blank to read all the RAMs
-        // It gets reset when there is a DMA event, i.e. a V blank
-        // The DMA copies 1024 bytes of data during VB
-        DMclr_nl <= ~DMclr_posedge;
-        if (DMclr_posedge) // trip on positive edge. 7400, sheet 1/3 device 1D
-            DM <= 11'd0;
-        else if( !H[0] && (H[1] || busak_n) ) DM <= DM+11'd1;
-        // 7474, 1C
-        if( !H[0] ) begin
-            ROHVS  <= DMclr_posedge | ~DMclr_nl;
-            ROHVCK <= ~(H[1] & ~DMclr_nl);
-        end
+        DMCS <= 4'b0;
+    end else if(pxl_cen) begin
+        DMCS <= 4'b0;
+        DMCS[ DM[9:8] ] <= H==2'b10;
     end
 
 
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
-        busrq_n <= 1'b1;
-    end else begin
-        VBl <= VB;
-        if( DM[10] ) busrq_n <= 1'b1; // DMA done
-        else if( VB_posedge ) busrq_n <= 1'b0;
+        DM <= 11'd0;
+    end else if(pxl_cen) begin
+        case( st )
+            3'b001: begin // video buffer readout
+                if( H[0] ) DM <= DM+11'd1;
+                if( H==2'b0 ) ROHVS <= 1'b0;
+                if(H==2'b11) ROHVCK <= 1'b1;
+            end
+            3'b010: begin // buffer transfer
+                if( H == 2'b01 ) DM <= DM+11'd1;
+                ROHVS <= 1'b0;
+                ROHVCK <= 1'b1;
+            end
+            3'b100: begin // DM clear
+                DM <= 11'd0;
+                ROHVS <= ~pre_HBDn;
+                ROHVCK<= !(H==2'b01 || H==2'b10);
+            end
+        endcase
     end
+    
+reg HBDnl;
+wire HBDn_negedge = !pre_HBDn && HBDnl;
+    
+always @(posedge clk or negedge rst_n)
+    if(!rst_n) begin
+        VBl <= 1'b0;
+        busrq_n <= 1'b1;
+        st <= 3'b001;
+    end else begin
+        VBl <= VB;        
+        HBDnl <= pre_HBDn;
+        if( H==2'b10 ) st <= busrq_n ? 3'b001 : 3'b010;
+        // busrq_n:
+        if( DM[10] ) begin
+            busrq_n <= 1'b1;
+            st <= 3'b100;
+        end
+        else if( VB_posedge ) busrq_n <= 1'b0;
+        // HBDn
+        if( HBDn_negedge && busak_n )
+            st <= 3'b100;
 
-reg [3:0] DMCS;
-
-reg DMwr;
-always @(*) begin
-    DMwr = dma_cs && H[1:0] == 2'b01 && !DM[10];
-    DMCS[3:0] = 4'd0;
-    case( DM[9:8] )
-        2'd0: DMCS[0] = DMwr;
-        2'd1: DMCS[1] = DMwr;
-        2'd2: DMCS[2] = DMwr;
-        2'd3: DMCS[3] = DMwr;
-    endcase // DM[9:8]
-end
+    end
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram0(
     .clk    ( clk            ),
@@ -187,19 +195,5 @@ jtgng_ram #(.aw(8), .dw(5)) u_ram3(
     .we     ( DMCS[3]        ),
     .q      ( DO[28:24]      )
 );
-/*
-//`ifdef SIMULATION
-jtpopeye_roh_model uut(
-    .VB_n   ( ~VB       ),
-    .AI_n   ( ~H[0]     ),
-    .BI_n   ( ~H[1]     ),
-    .HBD_n  ( HBD_n     ),
-    .busak  ( ~busak_n  ),
-    .busrq_n( busrq_n   ),
-    .ROHVS  ( ROHVS     ),
-    .ROHVCK ( ROHVCK    ),
-    .DM     ( DM        )
-);
-//`endif
-*/
+
 endmodule // jtpopeye_dma

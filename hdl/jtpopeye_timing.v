@@ -32,6 +32,7 @@ module jtpopeye_timing(
     // blankings
     output reg          HB,
     output              HBD_n, // HB - DMA
+    output reg          pre_HBDn,
     output reg          VB,
     output reg          INITEO  ,
     output reg          SY_n,       // composite sync
@@ -122,8 +123,10 @@ assign HBD_n = ~( HB3 & HB ); // This is HB inverted and starting 8 pixels later
 always @(posedge clk or negedge rst_n) begin :HBDn_generator
     if( !rst_n ) begin
         HB3  <= 1'b0;
+        pre_HBDn <= 1'b1;
     end else if(pxl_cen) begin
         if( Hcnt[2:0]==3'b111 ) HB3 <= HB;
+        if( Hcnt[2:0]==3'b110 ) pre_HBDn <= ~HB;
     end
 end
 
