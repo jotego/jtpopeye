@@ -1,4 +1,8 @@
 #!/bin/bash
+if [ ! -e ramsim.bin ]; then
+    g++ ramsim.cc -o ramsim && ramsim    
+fi
+
 export MEM_CHECK_TIME=22_000_000
 export GAME_ROM_PATH=../../rom/jtpopeye.rom
 ../../modules/jtframe/bin/sim.sh -mist $* -sysname popeye \

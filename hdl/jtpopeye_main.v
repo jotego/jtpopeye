@@ -181,7 +181,7 @@ always @(posedge clk) begin
     end
 end
 
-jtgng_ram #(.aw(11)) u_ram(
+jtgng_ram #(.aw(11),.simfile("ramsim.bin")) u_ram(
     .clk    ( clk        ),
     .cen    ( 1'b1       ),
     .data   ( ram_din    ),

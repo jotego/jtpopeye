@@ -70,6 +70,7 @@ module jtpopeye_video(
 // DMA
 wire          ROHVS;
 wire          ROHVCK;
+wire          pre_HBDn;
 
 wire [3:0] TXTC;
 wire [4:0] BAKC;
@@ -99,6 +100,7 @@ jtpopeye_timing u_timing(
     // blankings
     .HB                 ( HB            ),
     .HBD_n              ( HBD_n         ), // HB - DMA
+    .pre_HBDn           ( pre_HBDn      ),
     .VB                 ( VB            ),
     .HS                 ( HS            ),
     .VS                 ( VS            ),
@@ -118,6 +120,7 @@ jtpopeye_dma u_dma(
     .VB                 ( VB            ),
     .H                  ( H[1:0]        ),
     .HBD_n              ( HBD_n         ), // HB - DMA
+    .pre_HBDn           ( pre_HBDn      ),
     .DD_DMA             ( DD_DMA        ),
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),
