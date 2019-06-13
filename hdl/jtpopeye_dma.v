@@ -63,11 +63,11 @@ module jtpopeye_dma(
     input      [7:0]    DD_DMA,
     input               busak_n,
 
-    output reg          ROHVS,
+    output              ROHVS,
     output reg          ROHVCK,
 
     output reg [9:0]    AD_DMA,
-    output              dma_cs, // tell main memory to get data out for DMA
+    output reg          dma_cs, // tell main memory to get data out for DMA
     output reg          busrq_n,
     output     [28:0]   DO
 );
@@ -76,6 +76,7 @@ reg [10:0] DM;
 `ifdef SIMULATION
 wire [7:0] ROH  = DO[7:0];
 wire [7:0] ROVI = DO[15:8];
+wire [7:0] DMlow= DM[7:0];
 `endif
 
 //wire H0_negedge = !H[0] && Hl[0];
@@ -97,65 +98,58 @@ always @(*) begin
     AD_DMA[1] = DM[9];
 end
 
-reg [ 2:0] st;
 reg [ 3:0] DMCS;
 
-assign dma_cs = st[1];
-
-always @(posedge clk or negedge rst_n)
-    if(!rst_n) begin
-        DMCS <= 4'b0;
-    end else if(pxl_cen) begin
-        DMCS <= 4'b0;
-        DMCS[ DM[9:8] ] <= H==2'b10;
-    end
-
-
-always @(posedge clk or negedge rst_n)
-    if(!rst_n) begin
-        DM <= 11'd0;
-    end else if(pxl_cen) begin
-        case( st )
-            3'b001: begin // video buffer readout
-                if( H[0] ) DM <= DM+11'd1;
-                if( H==2'b0 ) ROHVS <= 1'b0;
-                if(H==2'b11) ROHVCK <= 1'b1;
-            end
-            3'b010: begin // buffer transfer
-                if( H == 2'b01 ) DM <= DM+11'd1;
-                ROHVS <= 1'b0;
-                ROHVCK <= 1'b1;
-            end
-            3'b100: begin // DM clear
-                DM <= 11'd0;
-                ROHVS <= ~pre_HBDn;
-                ROHVCK<= !(H==2'b01 || H==2'b10);
-            end
-        endcase
-    end
-    
 reg HBDnl;
 wire HBDn_negedge = !pre_HBDn && HBDnl;
+//wire DMclr = ( VB_posedge || HBDn_negedge) && !dma_cs;
+reg DMclr;
+wire wait_cpu = !busrq_n && !dma_cs;
+
+reg [1:0] ROHVsr;
+assign ROHVS = ROHVsr[1];
     
 always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         VBl <= 1'b0;
         busrq_n <= 1'b1;
-        st <= 3'b001;
-    end else begin
-        VBl <= VB;        
-        HBDnl <= pre_HBDn;
-        if( H==2'b10 ) st <= busrq_n ? 3'b001 : 3'b010;
-        // busrq_n:
-        if( DM[10] ) begin
-            busrq_n <= 1'b1;
-            st <= 3'b100;
-        end
-        else if( VB_posedge ) busrq_n <= 1'b0;
-        // HBDn
-        if( HBDn_negedge && busak_n )
-            st <= 3'b100;
-
+        dma_cs  <= 1'b0;
+        DM      <= 11'd0;
+    end else if(pxl_cen) begin
+        case(H)
+            2'b00: begin
+                VBl <= VB;        
+                HBDnl <= pre_HBDn;
+                
+                if( VB_posedge ) begin
+                    busrq_n <= 1'b0;
+                    DM <= 11'd0;
+                    DMclr <= 1'b1;
+                end
+                dma_cs <= ~busak_n;
+                DMCS <= 4'd0;
+                if( dma_cs && !DM[10] ) DMCS[DM[9:8]] <= 1'b1;
+                ROHVsr<={ ROHVsr[0], 1'b0 };
+            end
+            2'b01: begin
+                if(!DMclr && !wait_cpu) DM <= DM+11'd1;
+                DMCS <= 4'd0;
+                ROHVCK <= ~ROHVS;
+            end
+            2'b10: if( DM[10] ) busrq_n <= 1'b1;
+            2'b11: begin                
+                if( (VB_posedge || HBDn_negedge || !busrq_n) && !dma_cs ) begin
+                    DM <= 11'd0;
+                    DMclr <= 1'b1;
+                    ROHVsr<=2'b11;
+                end
+                else begin
+                    if( !dma_cs ) DM <= DM+11'd1;   // during DMA transfer only increments at step 01
+                    DMclr <= 1'b0;
+                end
+                ROHVCK <= 1'b1;
+            end
+        endcase
     end
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram0(

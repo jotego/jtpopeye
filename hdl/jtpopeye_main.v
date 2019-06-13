@@ -168,7 +168,7 @@ always @(posedge clk)
 
 always @(posedge clk) begin
     ram_we <= 1'b0;
-    if( dma_cs )
+    if( dma_cs && !busak_n )
         ram_addr <= {1'b1, AD_DMA};
     else begin
         if(ram_cs) begin
