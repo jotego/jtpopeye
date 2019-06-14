@@ -116,6 +116,9 @@ begin
 end
 `endif
 */
-
+`ifndef TESTROM
 assign encrypted = 1'b1;
+`else
+assign encrypted = 1'b0;
+`endif
 endmodule // jt1492_promprog

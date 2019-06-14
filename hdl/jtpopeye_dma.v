@@ -49,6 +49,16 @@
 // * ROHVS goes high at H=00, and low at H=01
 // * ROHVCK = ~H[1] | ~ROHVS = ~(H[1]&ROHVS)
 // * Boths signals only trip one time after HBDn goes low
+//
+// Notes grabbed from MAME source code, to compare DMA hardware to emulation
+// DMA source mapped to CPU 0x8C00 - 0x8E7F, ram is 0x8800-0x8FFF in real hardware
+// DMA transfer is 0x8c00 to 0x8FFF in real hardware but there is not time
+// to read the full buffer. Only these ranges are read:
+// Unencrypted          Encrypted
+// 0x8C00 - 0x8C9E
+// 0x8D00 - 0x8D9E
+// 0x8E00 - 0x8E9E
+// 0x8F00 - 0x8F9E
 
 
 module jtpopeye_dma(
@@ -75,7 +85,7 @@ module jtpopeye_dma(
 reg [10:0] DM;
 `ifdef SIMULATION
 wire [7:0] ROH  = DO[7:0];
-wire [7:0] ROVI = DO[15:8];
+wire [7:0] ROVI_in = DO[15:8];
 wire [7:0] DMlow= DM[7:0];
 `endif
 

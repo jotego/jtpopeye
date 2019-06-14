@@ -111,7 +111,7 @@ jtpopeye_dma u_dmanew (
     .H      (H[1:0] ),
     .HBD_n  (HBDn   ),
     .pre_HBDn( pre_HBDn ),
-    .DD_DMA (8'd0  ),
+    .DD_DMA (new_AD[7:0]  ),
     .busak_n(new_busak_n),
     .ROHVS  (new_ROHVS  ),
     .ROHVCK (new_ROHVCK ),

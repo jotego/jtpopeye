@@ -124,7 +124,7 @@ end
 // Game ROM
 reg [7:0] rom_good;
 
-always @(*) if(encrypted) begin
+always @(*) begin
     // Address obfuscation
     AD[2:0]   = ~Ascrambled[2:0]; // 6E
     AD[ 3]    = ~Ascrambled[4];
@@ -135,22 +135,23 @@ always @(*) if(encrypted) begin
     AD[ 8]    =  Ascrambled[7];
     AD[ 9]    =  Ascrambled[8];
     AD[15:10] =  Ascrambled[15:10]; // 6H
-    // Original ROM contents are scrambled, fix it:
-    rom_addr = AD[14:0];
-    rom_good = {
-        rom_data[3], // MSB
-        rom_data[4],
-        rom_data[2],
-        rom_data[5],
-        rom_data[1],
-        rom_data[6],
-        rom_data[0],
-        rom_data[7]  // LSB
-    };
-end else begin
-    AD       = Ascrambled;
-    rom_addr = Ascrambled[14:0];
-    rom_good = rom_data;
+    if(encrypted) begin
+        // Original ROM contents are scrambled, fix it:
+        rom_addr = AD[14:0];
+        rom_good = {
+            rom_data[3], // MSB
+            rom_data[4],
+            rom_data[2],
+            rom_data[5],
+            rom_data[1],
+            rom_data[6],
+            rom_data[0],
+            rom_data[7]  // LSB
+        };
+    end else begin // plain access to ROM if the ROM is not encrypted
+        rom_addr = Ascrambled[14:0];
+        rom_good = rom_data;
+    end
 end
 
 

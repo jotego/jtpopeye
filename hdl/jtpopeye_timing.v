@@ -88,6 +88,7 @@ always @(posedge clk or negedge rst_n)
     if(!rst_n) begin
         Hcnt <= 'd0;        
         HB   <= 1'b0;
+        V    <= 8'd0;
     end else
     if(pxl_cen) begin   // 20.16/4 MHz
         if( Hcnt!= 8'hFF)
@@ -95,6 +96,11 @@ always @(posedge clk or negedge rst_n)
         else begin
             HB <= ~HB;
             Hcnt <= HB ? 8'h0 : 8'hc0;
+
+            // This is a guess: device marked as PLA on page video 2/3
+            // should be a 74364 flip flop
+            // NB: RV was after the latch on the schematics
+            if( !HB ) V[7:0] <= Vcnt[8:1] ^ RV; 
         end
     end
 
@@ -134,11 +140,6 @@ end
 wire Vup = prom_data[1];
 reg  Vupl;
 wire Vup_edge = Vup && !Vupl;
-
-
-always @(*) begin
-    V[7:0] = Vcnt[8:1] ^ RV;
-end
 
 always @(posedge clk or negedge rst_n) 
     if( !rst_n ) begin
