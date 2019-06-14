@@ -42,15 +42,29 @@ module jtpopeye_bck(
 reg [7:0] ROH;  // 74161. 7N/7M video sheet 3/3
 reg [8:1] ROVl;
 
+// 74161 x 2
 always @(posedge clk) begin
     if(!ROHVCK) begin
         ROH  <= DO[7:0];
-        ROVl <= {~ROVI[8], ROVI[7:1] };
-    end else
-    if(pxl_cen) begin
+    end else if(pxl_cen) begin
         ROH <= ROH+8'd1;
     end
 end
+
+// 74273
+reg ROHVCKl;
+wire posedge_ROHVCK = ROHVCK && !ROHVCKl;
+always @(posedge clk) ROHVCKl <= ROHVCK;
+
+always @(posedge clk) begin
+    if(!CSBW_n) begin
+        ROVl <= 8'd0;
+    end else
+    if(!ROHVCK) begin
+        ROVl <= {~ROVI[8], ROVI[7:1] };
+    end
+end
+
 
 reg [11:0] ram_addr;
 wire [7:0] ram_dout;
