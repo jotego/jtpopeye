@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name popeye_model-rescue)(type Legacy)(uri ${KIPRJMOD}/popeye_model-rescue.lib)(options "")(descr ""))
+  (lib (name jt74xx)(type Legacy)(uri /home/jtejada/github/jtpopeye/modules/jtframe/kicad/jt74xx.lib)(options "")(descr ""))
 )

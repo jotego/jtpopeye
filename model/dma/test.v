@@ -37,7 +37,7 @@ end
 
 initial begin
     clk = 1'b0;
-    forever #20 clk = ~clk;
+    forever #12.4 clk = ~clk;
 end
 
 integer blanks=0;
@@ -45,11 +45,11 @@ integer blanks=0;
 always @(posedge VB) begin
     $display("Vertical blank");
     blanks <= blanks+1;
-    if(blanks==1) $finish;
+    if(blanks==2) $finish;
 end
 
 // initial #200_000 $finish;
-initial #30_000_000 $finish;
+//initial #30_000_000 $finish;
 
 initial begin
     $dumpfile("test.lxt");

@@ -1,0 +1,1855 @@
+EESchema Schematic File Version 4
+LIBS:popeye_model-cache
+EELAYER 26 0
+EELAYER END
+$Descr A2 23386 16535
+encoding utf-8
+Sheet 2 3
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L popeye_model-rescue:74LS00 U1B?
+U 1 1 5D0A43AE
+P 2050 4350
+AR Path="/5D0A43AE" Ref="U1B?"  Part="1" 
+AR Path="/5D094963/5D0A43AE" Ref="U1B1"  Part="1" 
+AR Path="/5D0826CE/5D0A43AE" Ref="U1B?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A43AE" Ref="U1B1"  Part="1" 
+F 0 "U1B1" H 2050 4400 50  0000 C CNN
+F 1 "74LS00" H 2050 4250 50  0000 C CNN
+F 2 "" H 2050 4350 50  0000 C CNN
+F 3 "" H 2050 4350 50  0000 C CNN
+	1    2050 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1D?
+U 2 1 5D0A43B5
+P 5250 5900
+AR Path="/5D0A43B5" Ref="U1D?"  Part="2" 
+AR Path="/5D094963/5D0A43B5" Ref="U1D1"  Part="2" 
+AR Path="/5D0826CE/5D0A43B5" Ref="U1D?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A43B5" Ref="U1D1"  Part="2" 
+F 0 "U1D1" H 5250 5950 50  0000 C CNN
+F 1 "74LS00" H 5250 5800 50  0000 C CNN
+F 2 "" H 5250 5900 50  0000 C CNN
+F 3 "" H 5250 5900 50  0000 C CNN
+	2    5250 5900
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1D?
+U 1 1 5D0A43BC
+P 5150 4100
+AR Path="/5D0A43BC" Ref="U1D?"  Part="1" 
+AR Path="/5D094963/5D0A43BC" Ref="U1D1"  Part="1" 
+AR Path="/5D0826CE/5D0A43BC" Ref="U1D?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A43BC" Ref="U1D1"  Part="1" 
+F 0 "U1D1" H 5150 4150 50  0000 C CNN
+F 1 "74LS00" H 5150 4000 50  0000 C CNN
+F 2 "" H 5150 4100 50  0000 C CNN
+F 3 "" H 5150 4100 50  0000 C CNN
+	1    5150 4100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1D?
+U 3 1 5D0A43C3
+P 6350 4700
+AR Path="/5D0A43C3" Ref="U1D?"  Part="3" 
+AR Path="/5D094963/5D0A43C3" Ref="U1D1"  Part="3" 
+AR Path="/5D0826CE/5D0A43C3" Ref="U1D?"  Part="3" 
+AR Path="/5D9F2DD3/5D0A43C3" Ref="U1D1"  Part="3" 
+F 0 "U1D1" H 6350 4750 50  0000 C CNN
+F 1 "74LS00" H 6350 4600 50  0000 C CNN
+F 2 "" H 6350 4700 50  0000 C CNN
+F 3 "" H 6350 4700 50  0000 C CNN
+	3    6350 4700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1B?
+U 3 1 5D0A43CA
+P 11000 2700
+AR Path="/5D0A43CA" Ref="U1B?"  Part="3" 
+AR Path="/5D094963/5D0A43CA" Ref="U1B1"  Part="3" 
+AR Path="/5D0826CE/5D0A43CA" Ref="U1B?"  Part="3" 
+AR Path="/5D9F2DD3/5D0A43CA" Ref="U1B1"  Part="3" 
+F 0 "U1B1" H 11000 2750 50  0000 C CNN
+F 1 "74LS00" H 11000 2600 50  0000 C CNN
+F 2 "" H 11000 2700 50  0000 C CNN
+F 3 "" H 11000 2700 50  0000 C CNN
+	3    11000 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1B?
+U 4 1 5D0A43D1
+P 11000 3300
+AR Path="/5D0A43D1" Ref="U1B?"  Part="4" 
+AR Path="/5D094963/5D0A43D1" Ref="U1B1"  Part="4" 
+AR Path="/5D0826CE/5D0A43D1" Ref="U1B?"  Part="4" 
+AR Path="/5D9F2DD3/5D0A43D1" Ref="U1B1"  Part="4" 
+F 0 "U1B1" H 11000 3350 50  0000 C CNN
+F 1 "74LS00" H 11000 3200 50  0000 C CNN
+F 2 "" H 11000 3300 50  0000 C CNN
+F 3 "" H 11000 3300 50  0000 C CNN
+	4    11000 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS00 U1B?
+U 2 1 5D0A43D8
+P 10700 6800
+AR Path="/5D0A43D8" Ref="U1B?"  Part="2" 
+AR Path="/5D094963/5D0A43D8" Ref="U1B1"  Part="2" 
+AR Path="/5D0826CE/5D0A43D8" Ref="U1B?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A43D8" Ref="U1B1"  Part="2" 
+F 0 "U1B1" H 10700 6850 50  0000 C CNN
+F 1 "74LS00" H 10700 6700 50  0000 C CNN
+F 2 "" H 10700 6800 50  0000 C CNN
+F 3 "" H 10700 6800 50  0000 C CNN
+	2    10700 6800
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS74 U2D?
+U 1 1 5D0A43DF
+P 2050 3000
+AR Path="/5D0A43DF" Ref="U2D?"  Part="1" 
+AR Path="/5D094963/5D0A43DF" Ref="U2D1"  Part="1" 
+AR Path="/5D0826CE/5D0A43DF" Ref="U2D?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A43DF" Ref="U2D1"  Part="1" 
+F 0 "U2D1" H 2200 3300 50  0000 C CNN
+F 1 "74LS74" H 2350 2705 50  0000 C CNN
+F 2 "" H 2050 3000 50  0000 C CNN
+F 3 "" H 2050 3000 50  0000 C CNN
+	1    2050 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS74 U2D?
+U 2 1 5D0A43E6
+P 3900 3000
+AR Path="/5D0A43E6" Ref="U2D?"  Part="2" 
+AR Path="/5D094963/5D0A43E6" Ref="U2D1"  Part="2" 
+AR Path="/5D0826CE/5D0A43E6" Ref="U2D?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A43E6" Ref="U2D1"  Part="2" 
+F 0 "U2D1" H 4050 3300 50  0000 C CNN
+F 1 "74LS74" H 4200 2705 50  0000 C CNN
+F 2 "" H 3900 3000 50  0000 C CNN
+F 3 "" H 3900 3000 50  0000 C CNN
+	2    3900 3000
+	1    0    0    -1  
+$EndComp
+NoConn ~ 2650 3200
+$Comp
+L popeye_model-rescue:74LS74 U?
+U 1 1 5D0A43EE
+P 6350 3000
+AR Path="/5D0A43EE" Ref="U?"  Part="1" 
+AR Path="/5D094963/5D0A43EE" Ref="U2"  Part="1" 
+AR Path="/5D0826CE/5D0A43EE" Ref="U?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A43EE" Ref="U2"  Part="1" 
+F 0 "U2" H 6500 3300 50  0000 C CNN
+F 1 "74LS74" H 6650 2705 50  0000 C CNN
+F 2 "" H 6350 3000 50  0000 C CNN
+F 3 "" H 6350 3000 50  0000 C CNN
+	1    6350 3000
+	1    0    0    -1  
+$EndComp
+Text GLabel 5250 4950 3    60   Input ~ 0
+HBDn
+$Comp
+L popeye_model-rescue:74LS00 U?
+U 1 1 5D0A43F6
+P 7800 1850
+AR Path="/5D0A43F6" Ref="U?"  Part="1" 
+AR Path="/5D094963/5D0A43F6" Ref="U3"  Part="1" 
+AR Path="/5D0826CE/5D0A43F6" Ref="U?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A43F6" Ref="U3"  Part="1" 
+F 0 "U3" H 7800 1900 50  0000 C CNN
+F 1 "74LS00" H 7800 1750 50  0000 C CNN
+F 2 "" H 7800 1850 50  0000 C CNN
+F 3 "" H 7800 1850 50  0000 C CNN
+	1    7800 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS74 U?
+U 2 1 5D0A43FD
+P 9450 3000
+AR Path="/5D0A43FD" Ref="U?"  Part="2" 
+AR Path="/5D094963/5D0A43FD" Ref="U2"  Part="2" 
+AR Path="/5D0826CE/5D0A43FD" Ref="U?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A43FD" Ref="U2"  Part="2" 
+F 0 "U2" H 9600 3300 50  0000 C CNN
+F 1 "74LS74" H 9750 2705 50  0000 C CNN
+F 2 "" H 9450 3000 50  0000 C CNN
+F 3 "" H 9450 3000 50  0000 C CNN
+	2    9450 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS04 U?
+U 1 1 5D0A4404
+P 1600 7400
+AR Path="/5D0A4404" Ref="U?"  Part="1" 
+AR Path="/5D094963/5D0A4404" Ref="U1"  Part="1" 
+AR Path="/5D0826CE/5D0A4404" Ref="U?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4404" Ref="U1"  Part="1" 
+F 0 "U1" H 1795 7515 50  0000 C CNN
+F 1 "74LS04" H 1790 7275 50  0000 C CNN
+F 2 "" H 1600 7400 50  0000 C CNN
+F 3 "" H 1600 7400 50  0000 C CNN
+	1    1600 7400
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS04 U?
+U 2 1 5D0A440B
+P 1600 8000
+AR Path="/5D0A440B" Ref="U?"  Part="2" 
+AR Path="/5D094963/5D0A440B" Ref="U1"  Part="2" 
+AR Path="/5D0826CE/5D0A440B" Ref="U?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A440B" Ref="U1"  Part="2" 
+F 0 "U1" H 1795 8115 50  0000 C CNN
+F 1 "74LS04" H 1790 7875 50  0000 C CNN
+F 2 "" H 1600 8000 50  0000 C CNN
+F 3 "" H 1600 8000 50  0000 C CNN
+	2    1600 8000
+	1    0    0    -1  
+$EndComp
+Text Label 7600 2300 0    60   ~ 0
+VDD
+Text Label 2500 2450 0    60   ~ 0
+VDD
+NoConn ~ 6950 2800
+Text GLabel 11950 2700 2    60   Output ~ 0
+ROHVS
+Text GLabel 11950 3300 2    60   Output ~ 0
+ROHVCK
+$Comp
+L popeye_model-rescue:74LS161 U1F?
+U 1 1 5D0A4417
+P 13900 4450
+AR Path="/5D0A4417" Ref="U1F?"  Part="1" 
+AR Path="/5D094963/5D0A4417" Ref="U1F1"  Part="1" 
+AR Path="/5D0826CE/5D0A4417" Ref="U1F?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4417" Ref="U1F1"  Part="1" 
+F 0 "U1F1" H 13950 4550 50  0000 C CNN
+F 1 "74LS161" H 14000 4250 50  0000 C CNN
+F 2 "" H 13900 4450 50  0000 C CNN
+F 3 "" H 13900 4450 50  0000 C CNN
+	1    13900 4450
+	0    1    1    0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS161 U2F?
+U 1 1 5D0A441E
+P 15450 4450
+AR Path="/5D0A441E" Ref="U2F?"  Part="1" 
+AR Path="/5D094963/5D0A441E" Ref="U2F1"  Part="1" 
+AR Path="/5D0826CE/5D0A441E" Ref="U2F?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A441E" Ref="U2F1"  Part="1" 
+F 0 "U2F1" H 15500 4550 50  0000 C CNN
+F 1 "74LS161" H 15550 4250 50  0000 C CNN
+F 2 "" H 15450 4450 50  0000 C CNN
+F 3 "" H 15450 4450 50  0000 C CNN
+	1    15450 4450
+	0    1    1    0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS161 U2E?
+U 1 1 5D0A4425
+P 16900 4450
+AR Path="/5D0A4425" Ref="U2E?"  Part="1" 
+AR Path="/5D094963/5D0A4425" Ref="U2E1"  Part="1" 
+AR Path="/5D0826CE/5D0A4425" Ref="U2E?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4425" Ref="U2E1"  Part="1" 
+F 0 "U2E1" H 16950 4550 50  0000 C CNN
+F 1 "74LS161" H 17000 4250 50  0000 C CNN
+F 2 "" H 16900 4450 50  0000 C CNN
+F 3 "" H 16900 4450 50  0000 C CNN
+	1    16900 4450
+	0    1    1    0   
+$EndComp
+$Comp
+L 74xx_IEEE:74LS138 U1E?
+U 1 1 5D0A442C
+P 19600 2350
+AR Path="/5D0A442C" Ref="U1E?"  Part="1" 
+AR Path="/5D094963/5D0A442C" Ref="U1E1"  Part="1" 
+AR Path="/5D0826CE/5D0A442C" Ref="U1E?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A442C" Ref="U1E1"  Part="1" 
+F 0 "U1E1" H 19700 2850 50  0000 C CNN
+F 1 "74LS138" H 19750 1801 50  0000 C CNN
+F 2 "" H 19600 2350 50  0000 C CNN
+F 3 "" H 19600 2350 50  0000 C CNN
+	1    19600 2350
+	1    0    0    -1  
+$EndComp
+NoConn ~ 20150 2550
+NoConn ~ 20150 2650
+NoConn ~ 20150 2750
+NoConn ~ 20150 2850
+Text Label 18950 2800 2    60   ~ 0
+VSS
+NoConn ~ 17100 3750
+NoConn ~ 17200 3750
+NoConn ~ 17300 3750
+NoConn ~ 17400 3750
+NoConn ~ 15650 3750
+NoConn ~ 15750 3750
+NoConn ~ 15850 3750
+NoConn ~ 15950 3750
+NoConn ~ 14100 3750
+NoConn ~ 14200 3750
+NoConn ~ 14300 3750
+NoConn ~ 14400 3750
+$Comp
+L popeye_model-rescue:74LS367 U2H?
+U 1 1 5D0A4448
+P 19750 5800
+AR Path="/5D0A4448" Ref="U2H?"  Part="1" 
+AR Path="/5D094963/5D0A4448" Ref="U2H1"  Part="1" 
+AR Path="/5D0826CE/5D0A4448" Ref="U2H?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4448" Ref="U2H1"  Part="1" 
+F 0 "U2H1" H 19750 5750 50  0000 C CNN
+F 1 "74LS367" H 19850 5550 50  0000 C CNN
+F 2 "" H 19750 5800 50  0000 C CNN
+F 3 "" H 19750 5800 50  0000 C CNN
+	1    19750 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L popeye_model-rescue:74LS367 U3H?
+U 1 1 5D0A444F
+P 19750 6850
+AR Path="/5D0A444F" Ref="U3H?"  Part="1" 
+AR Path="/5D094963/5D0A444F" Ref="U3H1"  Part="1" 
+AR Path="/5D0826CE/5D0A444F" Ref="U3H?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A444F" Ref="U3H1"  Part="1" 
+F 0 "U3H1" H 19750 6800 50  0000 C CNN
+F 1 "74LS367" H 19850 6600 50  0000 C CNN
+F 2 "" H 19750 6850 50  0000 C CNN
+F 3 "" H 19750 6850 50  0000 C CNN
+	1    19750 6850
+	1    0    0    -1  
+$EndComp
+Text Label 18950 7250 2    60   ~ 0
+VSS
+NoConn ~ 19050 7150
+NoConn ~ 19050 6650
+NoConn ~ 19050 6450
+NoConn ~ 19050 6550
+NoConn ~ 19050 6750
+NoConn ~ 20450 6750
+NoConn ~ 20450 6650
+NoConn ~ 20450 6550
+NoConn ~ 20450 6450
+Text Label 19050 6100 2    60   ~ 0
+VSS
+$Comp
+L popeye_model-rescue:74LS367 U3E?
+U 1 1 5D0A4469
+P 15250 8450
+AR Path="/5D0A4469" Ref="U3E?"  Part="1" 
+AR Path="/5D094963/5D0A4469" Ref="U3E1"  Part="1" 
+AR Path="/5D0826CE/5D0A4469" Ref="U3E?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4469" Ref="U3E1"  Part="1" 
+F 0 "U3E1" H 15250 8400 50  0000 C CNN
+F 1 "74LS367" H 15350 8200 50  0000 C CNN
+F 2 "" H 15250 8450 50  0000 C CNN
+F 3 "" H 15250 8450 50  0000 C CNN
+	1    15250 8450
+	0    1    1    0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS02 U6C?
+U 1 1 5D0A4470
+P 13850 8400
+AR Path="/5D0A4470" Ref="U6C?"  Part="1" 
+AR Path="/5D094963/5D0A4470" Ref="U6C1"  Part="1" 
+AR Path="/5D0826CE/5D0A4470" Ref="U6C?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4470" Ref="U6C1"  Part="1" 
+F 0 "U6C1" H 13850 8450 50  0000 C CNN
+F 1 "74LS02" H 13900 8350 50  0000 C CNN
+F 2 "" H 13850 8400 50  0000 C CNN
+F 3 "" H 13850 8400 50  0000 C CNN
+	1    13850 8400
+	0    1    1    0   
+$EndComp
+$Comp
+L popeye_model-rescue:74LS365 U4E?
+U 1 1 5D0A4477
+P 16650 8450
+AR Path="/5D0A4477" Ref="U4E?"  Part="1" 
+AR Path="/5D094963/5D0A4477" Ref="U4E1"  Part="1" 
+AR Path="/5D0826CE/5D0A4477" Ref="U4E?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4477" Ref="U4E1"  Part="1" 
+F 0 "U4E1" H 16650 8450 50  0000 C CNN
+F 1 "74LS365" H 16700 8250 50  0000 C CNN
+F 2 "" H 16650 8450 50  0000 C CNN
+F 3 "" H 16650 8450 50  0000 C CNN
+	1    16650 8450
+	0    1    1    0   
+$EndComp
+Text GLabel 15350 9150 3    60   Output ~ 0
+AD[0]
+Text GLabel 15150 9150 3    60   Output ~ 0
+AD[1]
+Text GLabel 15650 9500 3    60   Output ~ 0
+AD[2]
+Text GLabel 15450 9500 3    60   Output ~ 0
+AD[3]
+Text GLabel 15550 9150 3    60   Output ~ 0
+AD[4]
+Text GLabel 15250 9500 3    60   Output ~ 0
+AD[5]
+Text GLabel 16850 9850 3    60   Output ~ 0
+AD[6]
+Text GLabel 16550 9500 3    60   Output ~ 0
+AD[7]
+Text GLabel 16650 9850 3    60   Output ~ 0
+AD[8]
+Text GLabel 16750 9500 3    60   Output ~ 0
+AD[9]
+NoConn ~ 16950 9150
+Text Label 17050 7550 3    60   ~ 0
+VSS
+Text GLabel 13850 9000 3    60   Output ~ 0
+DMCS
+Text GLabel 1150 7400 0    60   Input ~ 0
+BIn
+Text GLabel 1150 8000 0    60   Input ~ 0
+AIn
+$Comp
+L popeye_model-rescue:74LS74 U1L?
+U 1 1 5D0A448D
+P 5000 8800
+AR Path="/5D0A448D" Ref="U1L?"  Part="1" 
+AR Path="/5D094963/5D0A448D" Ref="U1L1"  Part="1" 
+AR Path="/5D0826CE/5D0A448D" Ref="U1L?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A448D" Ref="U1L1"  Part="1" 
+F 0 "U1L1" H 5150 9100 50  0000 C CNN
+F 1 "74LS74" H 5300 8505 50  0000 C CNN
+F 2 "" H 5000 8800 50  0000 C CNN
+F 3 "" H 5000 8800 50  0000 C CNN
+	1    5000 8800
+	1    0    0    -1  
+$EndComp
+Text Label 4650 8250 0    60   ~ 0
+VDD
+$Comp
+L popeye_model-rescue:74LS02 U2K?
+U 1 1 5D0A4495
+P 3250 8800
+AR Path="/5D0A4495" Ref="U2K?"  Part="1" 
+AR Path="/5D094963/5D0A4495" Ref="U2K1"  Part="1" 
+AR Path="/5D0826CE/5D0A4495" Ref="U2K?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A4495" Ref="U2K1"  Part="1" 
+F 0 "U2K1" H 3250 8850 50  0000 C CNN
+F 1 "74LS02" H 3300 8750 50  0000 C CNN
+F 2 "" H 3250 8800 50  0000 C CNN
+F 3 "" H 3250 8800 50  0000 C CNN
+	1    3250 8800
+	1    0    0    -1  
+$EndComp
+Text GLabel 2300 8800 0    60   Input ~ 0
+VBn
+$Comp
+L popeye_model-rescue:74LS02 U2K?
+U 2 1 5D0A449D
+P 5950 9800
+AR Path="/5D0A449D" Ref="U2K?"  Part="2" 
+AR Path="/5D094963/5D0A449D" Ref="U2K1"  Part="2" 
+AR Path="/5D0826CE/5D0A449D" Ref="U2K?"  Part="2" 
+AR Path="/5D9F2DD3/5D0A449D" Ref="U2K1"  Part="2" 
+F 0 "U2K1" H 5950 9850 50  0000 C CNN
+F 1 "74LS02" H 6000 9750 50  0000 C CNN
+F 2 "" H 5950 9800 50  0000 C CNN
+F 3 "" H 5950 9800 50  0000 C CNN
+	2    5950 9800
+	-1   0    0    1   
+$EndComp
+Text GLabel 6550 9900 2    60   Input ~ 0
+RESET
+Text GLabel 5600 9000 2    60   Output ~ 0
+BUSRQn
+Text Label 5750 8600 0    60   ~ 0
+BUSRQ
+Text Label 8500 7300 0    60   ~ 0
+DMEND
+Text Label 15800 3150 0    60   ~ 0
+DMclr_n
+$Comp
+L popeye_model-rescue:74LS37 U?
+U 1 1 5D0A44A9
+P 12900 11600
+AR Path="/5D0A44A9" Ref="U?"  Part="1" 
+AR Path="/5D094963/5D0A44A9" Ref="U4"  Part="1" 
+AR Path="/5D0826CE/5D0A44A9" Ref="U?"  Part="1" 
+AR Path="/5D9F2DD3/5D0A44A9" Ref="U4"  Part="1" 
+F 0 "U4" H 12900 11650 50  0000 C CNN
+F 1 "74LS37" H 12900 11500 50  0000 C CNN
+F 2 "" H 12900 11600 50  0000 C CNN
+F 3 "" H 12900 11600 50  0000 C CNN
+	1    12900 11600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2050 2450 3050 2450
+Wire Wire Line
+	2050 3550 2050 3700
+Wire Wire Line
+	2050 3700 3050 3700
+Wire Wire Line
+	3900 3700 3900 3550
+Wire Wire Line
+	3050 3700 3050 2450
+Connection ~ 3050 2450
+Connection ~ 3050 3700
+Wire Wire Line
+	1450 2800 1150 2800
+Wire Wire Line
+	1150 2800 1150 4350
+Wire Wire Line
+	1150 4350 1350 4350
+Wire Wire Line
+	1350 4250 1350 4350
+Wire Wire Line
+	1350 4250 1450 4250
+Wire Wire Line
+	1350 4450 1450 4450
+Connection ~ 1350 4350
+Wire Wire Line
+	3300 3000 3300 4000
+Wire Wire Line
+	3300 4350 2650 4350
+Wire Wire Line
+	5150 3500 5150 2800
+Wire Wire Line
+	5150 2800 5400 2800
+Wire Wire Line
+	6350 4100 6350 3550
+Wire Wire Line
+	5050 4700 5050 4950
+Wire Wire Line
+	5050 5500 6250 5500
+Wire Wire Line
+	6250 5500 6250 5300
+Wire Wire Line
+	4500 3200 4750 3200
+Wire Wire Line
+	4750 1250 4750 3200
+Wire Wire Line
+	4750 4950 5050 4950
+Connection ~ 5050 4950
+Wire Wire Line
+	4500 2800 4600 2800
+Wire Wire Line
+	4600 2800 4600 5800
+Wire Wire Line
+	4600 5800 4650 5800
+Wire Wire Line
+	2650 2800 2750 2800
+Wire Wire Line
+	2750 2800 2750 4200
+Wire Wire Line
+	2750 4200 4250 4200
+Wire Wire Line
+	4250 4200 4250 5350
+Wire Wire Line
+	4250 6000 4650 6000
+Wire Wire Line
+	5250 4700 5250 4950
+Wire Wire Line
+	5750 3000 5750 5350
+Wire Wire Line
+	5750 5350 4250 5350
+Connection ~ 4250 5350
+Wire Wire Line
+	7200 1950 7200 3200
+Wire Wire Line
+	7200 3200 6950 3200
+Wire Wire Line
+	5400 2800 5400 1750
+Wire Wire Line
+	5400 1750 7200 1750
+Connection ~ 5400 2800
+Wire Wire Line
+	8400 1850 8400 2800
+Wire Wire Line
+	8400 2800 8850 2800
+Wire Wire Line
+	1450 3000 1050 3000
+Wire Wire Line
+	1050 3000 1050 6650
+Wire Wire Line
+	8400 6650 8400 3000
+Wire Wire Line
+	8400 3000 8850 3000
+Wire Wire Line
+	2050 8000 2600 8000
+Wire Wire Line
+	2600 8000 2600 6650
+Connection ~ 2600 6650
+Wire Wire Line
+	1150 6500 2300 6500
+Wire Wire Line
+	2300 6500 2300 7400
+Wire Wire Line
+	2300 7400 2050 7400
+Connection ~ 1150 4350
+Wire Wire Line
+	10400 3200 10050 3200
+Wire Wire Line
+	10050 2800 10400 2800
+Wire Wire Line
+	10400 6500 10400 3400
+Connection ~ 2300 6500
+Wire Wire Line
+	10400 2600 9950 2600
+Wire Wire Line
+	9950 2600 9950 1850
+Wire Wire Line
+	8400 1850 9950 1850
+Wire Wire Line
+	6350 2450 6350 2300
+Wire Wire Line
+	6350 2300 8800 2300
+Wire Wire Line
+	9450 2300 9450 2450
+Wire Wire Line
+	8800 2300 8800 3600
+Wire Wire Line
+	8800 3600 9450 3600
+Wire Wire Line
+	9450 3600 9450 3550
+Connection ~ 8800 2300
+Wire Wire Line
+	11600 2700 11950 2700
+Wire Wire Line
+	11600 3300 11950 3300
+Wire Wire Line
+	9850 6650 9850 6700
+Wire Wire Line
+	9850 6900 10100 6900
+Connection ~ 8400 6650
+Wire Wire Line
+	10100 6700 9850 6700
+Connection ~ 9850 6700
+Wire Wire Line
+	13450 2850 13450 1250
+Wire Wire Line
+	13450 1250 4750 1250
+Connection ~ 4750 3200
+Wire Wire Line
+	1050 6650 2600 6650
+Wire Wire Line
+	11300 6800 11950 6800
+Wire Wire Line
+	11950 6800 11950 3450
+Wire Wire Line
+	11950 3450 13600 3450
+Wire Wire Line
+	13600 3450 13600 3750
+Wire Wire Line
+	15150 3450 15150 3750
+Connection ~ 13600 3450
+Wire Wire Line
+	16600 3450 16600 3750
+Connection ~ 15150 3450
+Wire Wire Line
+	13900 5150 13900 5200
+Wire Wire Line
+	13900 5200 14650 5200
+Wire Wire Line
+	14650 5200 14650 3350
+Wire Wire Line
+	14650 3350 15250 3350
+Wire Wire Line
+	15250 3350 15250 3750
+Wire Wire Line
+	15450 5150 15450 5200
+Wire Wire Line
+	15450 5200 16200 5200
+Wire Wire Line
+	16200 5200 16200 3350
+Wire Wire Line
+	16200 3350 16700 3350
+Wire Wire Line
+	16700 3350 16700 3750
+Wire Wire Line
+	13900 3750 13900 3250
+Wire Wire Line
+	13900 3250 15350 3250
+Wire Wire Line
+	16900 3250 16900 3750
+Wire Wire Line
+	15450 3750 15450 3250
+Connection ~ 15450 3250
+Wire Wire Line
+	15350 3750 15350 3250
+Connection ~ 15350 3250
+Wire Wire Line
+	16800 3750 16800 3250
+Connection ~ 16800 3250
+Wire Wire Line
+	5850 5900 13100 5900
+Wire Wire Line
+	13100 5900 13100 3550
+Wire Wire Line
+	13100 3550 13700 3550
+Wire Wire Line
+	13800 3550 13800 3750
+Wire Wire Line
+	13700 3750 13700 3550
+Connection ~ 13700 3550
+Wire Wire Line
+	13250 1850 13250 3150
+Wire Wire Line
+	13250 3150 13400 3150
+Wire Wire Line
+	16400 3150 16400 3750
+Connection ~ 9950 1850
+Wire Wire Line
+	14950 3750 14950 3150
+Connection ~ 14950 3150
+Wire Wire Line
+	13400 3750 13400 3150
+Connection ~ 13400 3150
+Wire Wire Line
+	19050 5400 15450 5400
+Wire Wire Line
+	14200 5400 14200 5150
+Wire Wire Line
+	19050 5500 16650 5500
+Wire Wire Line
+	15850 5500 15850 5150
+Wire Wire Line
+	19050 5600 15900 5600
+Wire Wire Line
+	14400 5600 14400 5150
+Wire Wire Line
+	15950 5900 15950 5150
+Wire Wire Line
+	15750 5150 15750 6850
+Wire Wire Line
+	15650 5150 15650 6950
+Wire Wire Line
+	19050 7250 18850 7250
+Wire Wire Line
+	15750 6850 16750 6850
+Wire Wire Line
+	15250 6950 15650 6950
+Wire Wire Line
+	19050 6100 18900 6100
+Wire Wire Line
+	18900 6100 18900 6200
+Wire Wire Line
+	18900 6200 19050 6200
+Wire Wire Line
+	17400 5150 17400 5300
+Wire Wire Line
+	17400 5300 18500 5300
+Wire Wire Line
+	18550 5250 17300 5250
+Wire Wire Line
+	17300 5150 17300 5250
+Wire Wire Line
+	17050 9150 17050 9250
+Wire Wire Line
+	17050 9250 15900 9250
+Wire Wire Line
+	15900 9250 15900 7500
+Wire Wire Line
+	15900 7500 14950 7500
+Wire Wire Line
+	14850 7500 14850 7750
+Wire Wire Line
+	14950 7750 14950 7500
+Connection ~ 14950 7500
+Wire Wire Line
+	13750 7800 13750 7650
+Wire Wire Line
+	13750 7650 13850 7650
+Wire Wire Line
+	13950 7650 13950 7800
+Wire Wire Line
+	13850 7500 13850 7650
+Connection ~ 14850 7500
+Connection ~ 13850 7650
+Wire Wire Line
+	16350 7750 16350 6000
+Wire Wire Line
+	16350 6000 18400 6000
+Wire Wire Line
+	18400 6000 18400 2850
+Wire Wire Line
+	16250 7750 16250 6100
+Wire Wire Line
+	15050 6100 16250 6100
+Wire Wire Line
+	17200 5150 17200 6100
+Connection ~ 17200 6100
+Wire Wire Line
+	15650 9150 15650 9500
+Wire Wire Line
+	15450 9500 15450 9150
+Wire Wire Line
+	15250 9500 15250 9150
+Wire Wire Line
+	16850 9150 16850 9850
+Wire Wire Line
+	16550 9500 16550 9150
+Wire Wire Line
+	16650 9850 16650 9150
+Wire Wire Line
+	16750 9500 16750 9150
+Wire Wire Line
+	16950 7750 16950 7500
+Wire Wire Line
+	16950 7500 17050 7500
+Wire Wire Line
+	17050 7500 17050 7750
+Wire Wire Line
+	16550 7750 16550 6400
+Wire Wire Line
+	16650 7750 16650 5500
+Connection ~ 16650 5500
+Wire Wire Line
+	16750 7750 16750 6850
+Wire Wire Line
+	15250 7750 15250 7350
+Wire Wire Line
+	15550 7750 15550 5800
+Wire Wire Line
+	15450 7750 15450 5400
+Connection ~ 15450 5400
+Wire Wire Line
+	15650 7750 15650 7100
+Wire Wire Line
+	15650 7100 15900 7100
+Wire Wire Line
+	15900 7100 15900 5600
+Connection ~ 15900 5600
+Wire Wire Line
+	15350 7750 15350 6200
+Wire Wire Line
+	15350 6200 17400 6200
+Connection ~ 17400 5300
+Wire Wire Line
+	15150 7750 15150 6300
+Wire Wire Line
+	15150 6300 17300 6300
+Connection ~ 17300 5250
+Wire Wire Line
+	4400 8600 4400 8250
+Wire Wire Line
+	4400 8250 5000 8250
+Wire Wire Line
+	3850 8800 4400 8800
+Wire Wire Line
+	2650 8700 2650 8800
+Wire Wire Line
+	2650 8800 2300 8800
+Connection ~ 2650 8800
+Wire Wire Line
+	5600 8600 6450 8600
+Wire Wire Line
+	6450 8600 6450 5300
+Wire Wire Line
+	5000 9350 5000 9800
+Wire Wire Line
+	5000 9800 5350 9800
+Wire Wire Line
+	6550 9700 6800 9700
+Wire Wire Line
+	6800 9700 6800 7300
+Wire Wire Line
+	6800 7300 15050 7300
+Wire Wire Line
+	15050 7300 15050 6100
+Connection ~ 16250 6100
+Wire Wire Line
+	12300 11500 12200 11500
+Wire Wire Line
+	12200 11500 12200 11600
+Wire Wire Line
+	12200 11700 12300 11700
+Wire Wire Line
+	12200 11600 12050 11600
+Connection ~ 12200 11600
+Text Label 13500 11600 0    60   ~ 0
+BUSAK
+Text GLabel 12050 11600 0    60   Input ~ 0
+BUSAK_n
+Text Label 3300 2800 2    60   ~ 0
+BUSAK
+Text Label 2100 6500 2    60   ~ 0
+BI
+Text Label 2350 8000 2    60   ~ 0
+AI
+Wire Wire Line
+	3050 2450 3900 2450
+Wire Wire Line
+	3050 3700 3900 3700
+Wire Wire Line
+	1350 4350 1350 4450
+Wire Wire Line
+	5050 4950 5050 5500
+Wire Wire Line
+	4250 5350 4250 6000
+Wire Wire Line
+	5400 2800 5750 2800
+Wire Wire Line
+	2600 6650 8400 6650
+Wire Wire Line
+	1150 4350 1150 6500
+Wire Wire Line
+	2300 6500 10400 6500
+Wire Wire Line
+	8800 2300 9450 2300
+Wire Wire Line
+	8400 6650 9850 6650
+Wire Wire Line
+	9850 6700 9850 6900
+Wire Wire Line
+	4750 3200 4750 4950
+Wire Wire Line
+	13600 3450 15150 3450
+Wire Wire Line
+	15150 3450 16600 3450
+Wire Wire Line
+	15450 3250 16800 3250
+Wire Wire Line
+	15350 3250 15450 3250
+Wire Wire Line
+	16800 3250 16900 3250
+Wire Wire Line
+	13700 3550 13800 3550
+Wire Wire Line
+	9950 1850 13250 1850
+Wire Wire Line
+	14950 3150 16400 3150
+Wire Wire Line
+	13400 3150 14950 3150
+Wire Wire Line
+	14950 7500 14850 7500
+Wire Wire Line
+	14850 7500 13850 7500
+Wire Wire Line
+	13850 7650 13950 7650
+Wire Wire Line
+	18400 2850 13450 2850
+Wire Wire Line
+	17200 6100 18300 6100
+Wire Wire Line
+	16550 5900 15950 5900
+Wire Wire Line
+	16650 5500 15850 5500
+Wire Wire Line
+	15450 5400 14200 5400
+Wire Wire Line
+	15900 5600 14400 5600
+Wire Wire Line
+	17400 5300 17400 6200
+Wire Wire Line
+	17300 5250 17300 6300
+Wire Wire Line
+	2650 8800 2650 8900
+Wire Wire Line
+	16250 6100 17200 6100
+Wire Wire Line
+	12200 11600 12200 11700
+Text Label 14100 7500 0    50   ~ 0
+DMCSpullup
+Text Label 15950 3250 0    50   ~ 0
+VDD
+Wire Wire Line
+	14100 5150 14100 5800
+Wire Wire Line
+	14100 5800 15550 5800
+Wire Wire Line
+	14300 5150 14300 5700
+Wire Wire Line
+	14300 5700 16850 5700
+Wire Wire Line
+	19050 5700 17600 5700
+Wire Wire Line
+	17600 5700 17600 5800
+Wire Wire Line
+	17600 5800 15550 5800
+Connection ~ 15550 5800
+Wire Wire Line
+	16850 5700 16850 5900
+Wire Wire Line
+	19050 5800 17700 5800
+Wire Wire Line
+	17700 5800 17700 5900
+Wire Wire Line
+	17700 5900 16850 5900
+Connection ~ 16850 5900
+Wire Wire Line
+	16850 5900 16850 7750
+Wire Wire Line
+	19050 5900 18500 5900
+Wire Wire Line
+	18500 5900 18500 6400
+Wire Wire Line
+	18500 6400 16550 6400
+Connection ~ 16550 6400
+Wire Wire Line
+	16550 6400 16550 5900
+Wire Wire Line
+	19050 6950 17000 6950
+Wire Wire Line
+	17000 6950 17000 7350
+Wire Wire Line
+	17000 7350 15250 7350
+Connection ~ 15250 7350
+Wire Wire Line
+	15250 7350 15250 6950
+Wire Wire Line
+	19050 6850 16750 6850
+Connection ~ 16750 6850
+Connection ~ 8400 1850
+$Comp
+L arcade:RAM_5501 2T1
+U 1 1 5D0DF432
+P 18700 8800
+F 0 "2T1" H 18725 8373 50  0000 C CNN
+F 1 "RAM_5501" H 18725 8280 50  0000 C CNN
+F 2 "" H 18150 9100 50  0001 C CNN
+F 3 "" H 18150 9100 50  0001 C CNN
+	1    18700 8800
+	1    0    0    -1  
+$EndComp
+Text Label 20450 5400 0    50   ~ 0
+DM[2]
+Text Label 20450 5500 0    50   ~ 0
+DM[5]
+Text Label 20450 5600 0    50   ~ 0
+DM[0]
+Text Label 20450 5700 0    50   ~ 0
+DM[3]
+Text Label 20450 5800 0    50   ~ 0
+DM[1]
+Text Label 20450 5900 0    50   ~ 0
+DM[4]
+Text Label 20450 6850 0    50   ~ 0
+DM[6]
+Text Label 20450 6950 0    50   ~ 0
+DM[7]
+Entry Wire Line
+	18400 8150 18500 8250
+Entry Wire Line
+	18500 8150 18600 8250
+Entry Wire Line
+	18600 8150 18700 8250
+Entry Wire Line
+	18700 8150 18800 8250
+Entry Wire Line
+	18800 8150 18900 8250
+Entry Wire Line
+	18300 8150 18400 8250
+Wire Wire Line
+	18400 8250 18400 8350
+Wire Wire Line
+	18500 8250 18500 8350
+Wire Wire Line
+	18600 8350 18600 8250
+Entry Wire Line
+	18900 8150 19000 8250
+Entry Wire Line
+	19000 8150 19100 8250
+Wire Wire Line
+	19100 8350 19100 8250
+Wire Wire Line
+	19000 8350 19000 8250
+Wire Wire Line
+	18900 8350 18900 8250
+Wire Wire Line
+	18800 8350 18800 8250
+Wire Wire Line
+	18700 8350 18700 8250
+Text Label 18300 8150 1    50   ~ 0
+DM[0]
+Text Label 18400 8150 1    50   ~ 0
+DM[1]
+Text Label 18500 8150 1    50   ~ 0
+DM[2]
+Text Label 18600 8150 1    50   ~ 0
+DM[3]
+Text Label 18700 8150 1    50   ~ 0
+DM[4]
+Text Label 18800 8150 1    50   ~ 0
+DM[5]
+Text Label 18900 8150 1    50   ~ 0
+DM[6]
+Text Label 19000 8150 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18050 8600 17800 8600
+Wire Wire Line
+	18050 8700 17800 8700
+Wire Wire Line
+	17800 8800 18050 8800
+Wire Wire Line
+	18050 8900 17800 8900
+Wire Wire Line
+	19550 8600 19400 8600
+Wire Wire Line
+	19400 8700 19550 8700
+Wire Wire Line
+	19550 8800 19400 8800
+Wire Wire Line
+	19400 8900 19550 8900
+$Comp
+L arcade:RAM_5501 1T1
+U 1 1 5D205A35
+P 18700 10300
+F 0 "1T1" H 18725 9873 50  0000 C CNN
+F 1 "RAM_5501" H 18725 9780 50  0000 C CNN
+F 2 "" H 18150 10600 50  0001 C CNN
+F 3 "" H 18150 10600 50  0001 C CNN
+	1    18700 10300
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	18400 9650 18500 9750
+Entry Wire Line
+	18500 9650 18600 9750
+Entry Wire Line
+	18600 9650 18700 9750
+Entry Wire Line
+	18700 9650 18800 9750
+Entry Wire Line
+	18800 9650 18900 9750
+Entry Wire Line
+	18300 9650 18400 9750
+Wire Wire Line
+	18400 9750 18400 9850
+Wire Wire Line
+	18500 9750 18500 9850
+Wire Wire Line
+	18600 9850 18600 9750
+Entry Wire Line
+	18900 9650 19000 9750
+Entry Wire Line
+	19000 9650 19100 9750
+Wire Wire Line
+	19100 9850 19100 9750
+Wire Wire Line
+	19000 9850 19000 9750
+Wire Wire Line
+	18900 9850 18900 9750
+Wire Wire Line
+	18800 9850 18800 9750
+Wire Wire Line
+	18700 9850 18700 9750
+Text Label 18300 9650 1    50   ~ 0
+DM[0]
+Text Label 18400 9650 1    50   ~ 0
+DM[1]
+Text Label 18500 9650 1    50   ~ 0
+DM[2]
+Text Label 18600 9650 1    50   ~ 0
+DM[3]
+Text Label 18700 9650 1    50   ~ 0
+DM[4]
+Text Label 18800 9650 1    50   ~ 0
+DM[5]
+Text Label 18900 9650 1    50   ~ 0
+DM[6]
+Text Label 19000 9650 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18050 10100 17800 10100
+Wire Wire Line
+	18050 10200 17800 10200
+Wire Wire Line
+	17800 10300 18050 10300
+Wire Wire Line
+	18050 10400 17800 10400
+Wire Wire Line
+	19550 10100 19400 10100
+Wire Wire Line
+	19400 10200 19550 10200
+Wire Wire Line
+	19550 10300 19400 10300
+Wire Wire Line
+	19400 10400 19550 10400
+Wire Wire Line
+	18050 9050 17900 9050
+Wire Wire Line
+	17900 9050 17900 10550
+Wire Wire Line
+	17900 10550 18050 10550
+Text Label 20150 2150 0    50   ~ 0
+DMCSn[0]
+Text Label 20150 2250 0    50   ~ 0
+DMCSn[1]
+Text Label 20150 2350 0    50   ~ 0
+DMCSn[2]
+Text Label 20150 2450 0    50   ~ 0
+DMCSn[3]
+Text Label 17900 9350 0    50   ~ 0
+DMCSn[0]
+$Comp
+L arcade:RAM_5501 2S1
+U 1 1 5D23BD69
+P 21250 8800
+F 0 "2S1" H 21275 8373 50  0000 C CNN
+F 1 "RAM_5501" H 21275 8280 50  0000 C CNN
+F 2 "" H 20700 9100 50  0001 C CNN
+F 3 "" H 20700 9100 50  0001 C CNN
+	1    21250 8800
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	20950 8150 21050 8250
+Entry Wire Line
+	21050 8150 21150 8250
+Entry Wire Line
+	21150 8150 21250 8250
+Entry Wire Line
+	21250 8150 21350 8250
+Entry Wire Line
+	21350 8150 21450 8250
+Entry Wire Line
+	20850 8150 20950 8250
+Wire Wire Line
+	20950 8250 20950 8350
+Wire Wire Line
+	21050 8250 21050 8350
+Wire Wire Line
+	21150 8350 21150 8250
+Entry Wire Line
+	21450 8150 21550 8250
+Entry Wire Line
+	21550 8150 21650 8250
+Wire Wire Line
+	21650 8350 21650 8250
+Wire Wire Line
+	21550 8350 21550 8250
+Wire Wire Line
+	21450 8350 21450 8250
+Wire Wire Line
+	21350 8350 21350 8250
+Wire Wire Line
+	21250 8350 21250 8250
+Text Label 20850 8150 1    50   ~ 0
+DM[0]
+Text Label 20950 8150 1    50   ~ 0
+DM[1]
+Text Label 21050 8150 1    50   ~ 0
+DM[2]
+Text Label 21150 8150 1    50   ~ 0
+DM[3]
+Text Label 21250 8150 1    50   ~ 0
+DM[4]
+Text Label 21350 8150 1    50   ~ 0
+DM[5]
+Text Label 21450 8150 1    50   ~ 0
+DM[6]
+Text Label 21550 8150 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20600 8600 20350 8600
+Wire Wire Line
+	20600 8700 20350 8700
+Wire Wire Line
+	20350 8800 20600 8800
+Wire Wire Line
+	20600 8900 20350 8900
+Wire Wire Line
+	22100 8600 21950 8600
+Wire Wire Line
+	21950 8700 22100 8700
+Wire Wire Line
+	22100 8800 21950 8800
+Wire Wire Line
+	21950 8900 22100 8900
+$Comp
+L arcade:RAM_5501 1S1
+U 1 1 5D23BD98
+P 21250 10300
+F 0 "1S1" H 21275 9873 50  0000 C CNN
+F 1 "RAM_5501" H 21275 9780 50  0000 C CNN
+F 2 "" H 20700 10600 50  0001 C CNN
+F 3 "" H 20700 10600 50  0001 C CNN
+	1    21250 10300
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	20950 9650 21050 9750
+Entry Wire Line
+	21050 9650 21150 9750
+Entry Wire Line
+	21150 9650 21250 9750
+Entry Wire Line
+	21250 9650 21350 9750
+Entry Wire Line
+	21350 9650 21450 9750
+Entry Wire Line
+	20850 9650 20950 9750
+Wire Wire Line
+	20950 9750 20950 9850
+Wire Wire Line
+	21050 9750 21050 9850
+Wire Wire Line
+	21150 9850 21150 9750
+Entry Wire Line
+	21450 9650 21550 9750
+Entry Wire Line
+	21550 9650 21650 9750
+Wire Wire Line
+	21650 9850 21650 9750
+Wire Wire Line
+	21550 9850 21550 9750
+Wire Wire Line
+	21450 9850 21450 9750
+Wire Wire Line
+	21350 9850 21350 9750
+Wire Wire Line
+	21250 9850 21250 9750
+Text Label 20850 9650 1    50   ~ 0
+DM[0]
+Text Label 20950 9650 1    50   ~ 0
+DM[1]
+Text Label 21050 9650 1    50   ~ 0
+DM[2]
+Text Label 21150 9650 1    50   ~ 0
+DM[3]
+Text Label 21250 9650 1    50   ~ 0
+DM[4]
+Text Label 21350 9650 1    50   ~ 0
+DM[5]
+Text Label 21450 9650 1    50   ~ 0
+DM[6]
+Text Label 21550 9650 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20600 10100 20350 10100
+Wire Wire Line
+	20600 10200 20350 10200
+Wire Wire Line
+	20350 10300 20600 10300
+Wire Wire Line
+	20600 10400 20350 10400
+Wire Wire Line
+	22100 10100 21950 10100
+Wire Wire Line
+	21950 10200 22100 10200
+Wire Wire Line
+	22100 10300 21950 10300
+Wire Wire Line
+	21950 10400 22100 10400
+Wire Wire Line
+	20600 9050 20450 9050
+Wire Wire Line
+	20450 9050 20450 10550
+Wire Wire Line
+	20450 10550 20600 10550
+Text Label 20450 9350 0    50   ~ 0
+DMCSn[1]
+$Comp
+L arcade:RAM_5501 2R1
+U 1 1 5D251696
+P 18700 11750
+F 0 "2R1" H 18725 11323 50  0000 C CNN
+F 1 "RAM_5501" H 18725 11230 50  0000 C CNN
+F 2 "" H 18150 12050 50  0001 C CNN
+F 3 "" H 18150 12050 50  0001 C CNN
+	1    18700 11750
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	18400 11100 18500 11200
+Entry Wire Line
+	18500 11100 18600 11200
+Entry Wire Line
+	18600 11100 18700 11200
+Entry Wire Line
+	18700 11100 18800 11200
+Entry Wire Line
+	18800 11100 18900 11200
+Entry Wire Line
+	18300 11100 18400 11200
+Wire Wire Line
+	18400 11200 18400 11300
+Wire Wire Line
+	18500 11200 18500 11300
+Wire Wire Line
+	18600 11300 18600 11200
+Entry Wire Line
+	18900 11100 19000 11200
+Entry Wire Line
+	19000 11100 19100 11200
+Wire Wire Line
+	19100 11300 19100 11200
+Wire Wire Line
+	19000 11300 19000 11200
+Wire Wire Line
+	18900 11300 18900 11200
+Wire Wire Line
+	18800 11300 18800 11200
+Wire Wire Line
+	18700 11300 18700 11200
+Text Label 18300 11100 1    50   ~ 0
+DM[0]
+Text Label 18400 11100 1    50   ~ 0
+DM[1]
+Text Label 18500 11100 1    50   ~ 0
+DM[2]
+Text Label 18600 11100 1    50   ~ 0
+DM[3]
+Text Label 18700 11100 1    50   ~ 0
+DM[4]
+Text Label 18800 11100 1    50   ~ 0
+DM[5]
+Text Label 18900 11100 1    50   ~ 0
+DM[6]
+Text Label 19000 11100 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18050 11550 17800 11550
+Wire Wire Line
+	18050 11650 17800 11650
+Wire Wire Line
+	17800 11750 18050 11750
+Wire Wire Line
+	18050 11850 17800 11850
+Wire Wire Line
+	19550 11550 19400 11550
+Wire Wire Line
+	19400 11650 19550 11650
+Wire Wire Line
+	19550 11750 19400 11750
+Wire Wire Line
+	19400 11850 19550 11850
+$Comp
+L arcade:RAM_5501 1R1
+U 1 1 5D2516C5
+P 18700 13250
+F 0 "1R1" H 18725 12823 50  0000 C CNN
+F 1 "RAM_5501" H 18725 12730 50  0000 C CNN
+F 2 "" H 18150 13550 50  0001 C CNN
+F 3 "" H 18150 13550 50  0001 C CNN
+	1    18700 13250
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	18400 12600 18500 12700
+Entry Wire Line
+	18500 12600 18600 12700
+Entry Wire Line
+	18600 12600 18700 12700
+Entry Wire Line
+	18700 12600 18800 12700
+Entry Wire Line
+	18800 12600 18900 12700
+Entry Wire Line
+	18300 12600 18400 12700
+Wire Wire Line
+	18400 12700 18400 12800
+Wire Wire Line
+	18500 12700 18500 12800
+Wire Wire Line
+	18600 12800 18600 12700
+Entry Wire Line
+	18900 12600 19000 12700
+Entry Wire Line
+	19000 12600 19100 12700
+Wire Wire Line
+	19100 12800 19100 12700
+Wire Wire Line
+	19000 12800 19000 12700
+Wire Wire Line
+	18900 12800 18900 12700
+Wire Wire Line
+	18800 12800 18800 12700
+Wire Wire Line
+	18700 12800 18700 12700
+Text Label 18300 12600 1    50   ~ 0
+DM[0]
+Text Label 18400 12600 1    50   ~ 0
+DM[1]
+Text Label 18500 12600 1    50   ~ 0
+DM[2]
+Text Label 18600 12600 1    50   ~ 0
+DM[3]
+Text Label 18700 12600 1    50   ~ 0
+DM[4]
+Text Label 18800 12600 1    50   ~ 0
+DM[5]
+Text Label 18900 12600 1    50   ~ 0
+DM[6]
+Text Label 19000 12600 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18050 13050 17800 13050
+Wire Wire Line
+	18050 13150 17800 13150
+Wire Wire Line
+	17800 13250 18050 13250
+Wire Wire Line
+	18050 13350 17800 13350
+Wire Wire Line
+	19550 13050 19400 13050
+Wire Wire Line
+	19400 13150 19550 13150
+Wire Wire Line
+	19550 13250 19400 13250
+Wire Wire Line
+	19400 13350 19550 13350
+Wire Wire Line
+	18050 12000 17900 12000
+Wire Wire Line
+	17900 12000 17900 13500
+Wire Wire Line
+	17900 13500 18050 13500
+Text Label 17900 12300 0    50   ~ 0
+DMCSn[2]
+$Comp
+L arcade:RAM_5501 2U1
+U 1 1 5D2516F8
+P 21250 11750
+F 0 "2U1" H 21275 11323 50  0000 C CNN
+F 1 "RAM_5501" H 21275 11230 50  0000 C CNN
+F 2 "" H 20700 12050 50  0001 C CNN
+F 3 "" H 20700 12050 50  0001 C CNN
+	1    21250 11750
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	20950 11100 21050 11200
+Entry Wire Line
+	21050 11100 21150 11200
+Entry Wire Line
+	21150 11100 21250 11200
+Entry Wire Line
+	21250 11100 21350 11200
+Entry Wire Line
+	21350 11100 21450 11200
+Entry Wire Line
+	20850 11100 20950 11200
+Wire Wire Line
+	20950 11200 20950 11300
+Wire Wire Line
+	21050 11200 21050 11300
+Wire Wire Line
+	21150 11300 21150 11200
+Entry Wire Line
+	21450 11100 21550 11200
+Entry Wire Line
+	21550 11100 21650 11200
+Wire Wire Line
+	21650 11300 21650 11200
+Wire Wire Line
+	21550 11300 21550 11200
+Wire Wire Line
+	21450 11300 21450 11200
+Wire Wire Line
+	21350 11300 21350 11200
+Wire Wire Line
+	21250 11300 21250 11200
+Text Label 20850 11100 1    50   ~ 0
+DM[0]
+Text Label 20950 11100 1    50   ~ 0
+DM[1]
+Text Label 21050 11100 1    50   ~ 0
+DM[2]
+Text Label 21150 11100 1    50   ~ 0
+DM[3]
+Text Label 21250 11100 1    50   ~ 0
+DM[4]
+Text Label 21350 11100 1    50   ~ 0
+DM[5]
+Text Label 21450 11100 1    50   ~ 0
+DM[6]
+Text Label 21550 11100 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20600 11550 20350 11550
+Wire Wire Line
+	20600 11650 20350 11650
+Wire Wire Line
+	20350 11750 20600 11750
+Wire Wire Line
+	20600 11850 20350 11850
+Wire Wire Line
+	22100 11550 21950 11550
+Wire Wire Line
+	21950 11650 22100 11650
+Wire Wire Line
+	22100 11750 21950 11750
+Wire Wire Line
+	21950 11850 22100 11850
+$Comp
+L arcade:RAM_5501 1U1
+U 1 1 5D251727
+P 21250 13250
+F 0 "1U1" H 21275 12823 50  0000 C CNN
+F 1 "RAM_5501" H 21275 12730 50  0000 C CNN
+F 2 "" H 20700 13550 50  0001 C CNN
+F 3 "" H 20700 13550 50  0001 C CNN
+	1    21250 13250
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	20950 12600 21050 12700
+Entry Wire Line
+	21050 12600 21150 12700
+Entry Wire Line
+	21150 12600 21250 12700
+Entry Wire Line
+	21250 12600 21350 12700
+Entry Wire Line
+	21350 12600 21450 12700
+Entry Wire Line
+	20850 12600 20950 12700
+Wire Wire Line
+	20950 12700 20950 12800
+Wire Wire Line
+	21050 12700 21050 12800
+Wire Wire Line
+	21150 12800 21150 12700
+Entry Wire Line
+	21450 12600 21550 12700
+Entry Wire Line
+	21550 12600 21650 12700
+Wire Wire Line
+	21650 12800 21650 12700
+Wire Wire Line
+	21550 12800 21550 12700
+Wire Wire Line
+	21450 12800 21450 12700
+Wire Wire Line
+	21350 12800 21350 12700
+Wire Wire Line
+	21250 12800 21250 12700
+Text Label 20850 12600 1    50   ~ 0
+DM[0]
+Text Label 20950 12600 1    50   ~ 0
+DM[1]
+Text Label 21050 12600 1    50   ~ 0
+DM[2]
+Text Label 21150 12600 1    50   ~ 0
+DM[3]
+Text Label 21250 12600 1    50   ~ 0
+DM[4]
+Text Label 21350 12600 1    50   ~ 0
+DM[5]
+Text Label 21450 12600 1    50   ~ 0
+DM[6]
+Text Label 21550 12600 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20600 13050 20350 13050
+Wire Wire Line
+	20600 13150 20350 13150
+Wire Wire Line
+	20350 13250 20600 13250
+Wire Wire Line
+	20600 13350 20350 13350
+Wire Wire Line
+	22100 13050 21950 13050
+Wire Wire Line
+	21950 13150 22100 13150
+Wire Wire Line
+	22100 13250 21950 13250
+Wire Wire Line
+	21950 13350 22100 13350
+Wire Wire Line
+	20600 12000 20450 12000
+Wire Wire Line
+	20450 12000 20450 13500
+Wire Wire Line
+	20450 13500 20600 13500
+Text Label 20450 12300 0    50   ~ 0
+DMCSn[3]
+NoConn ~ 22100 13150
+NoConn ~ 22100 13250
+NoConn ~ 22100 13350
+Wire Wire Line
+	18400 2850 18400 2150
+Wire Wire Line
+	18400 2150 19050 2150
+Connection ~ 18400 2850
+Wire Wire Line
+	18300 2250 19050 2250
+Wire Wire Line
+	18300 2250 18300 6100
+Wire Wire Line
+	19050 2800 18850 2800
+Wire Wire Line
+	18500 2600 19050 2600
+Wire Wire Line
+	18500 2600 18500 5300
+Wire Wire Line
+	18550 2700 19050 2700
+Wire Wire Line
+	18550 2700 18550 5250
+Wire Wire Line
+	19050 2350 13700 2350
+Wire Wire Line
+	13700 2350 13700 1100
+Wire Wire Line
+	13700 1100 4450 1100
+Wire Wire Line
+	4450 1100 4450 4000
+Wire Wire Line
+	4450 4000 3300 4000
+Connection ~ 3300 4000
+Wire Wire Line
+	3300 4000 3300 4350
+Text GLabel 22100 8600 2    50   Output ~ 0
+DO[8]
+Text GLabel 22100 8700 2    50   Output ~ 0
+DO[9]
+Text GLabel 22100 8800 2    50   Output ~ 0
+DO[10]
+Text GLabel 22100 8900 2    50   Output ~ 0
+DO[11]
+Text GLabel 22100 10100 2    50   Output ~ 0
+DO[12]
+Text GLabel 22100 10200 2    50   Output ~ 0
+DO[13]
+Text GLabel 22100 10300 2    50   Output ~ 0
+DO[14]
+Text GLabel 22100 10400 2    50   Output ~ 0
+DO[15]
+Text GLabel 22100 11550 2    50   Output ~ 0
+DO[24]
+Text GLabel 22100 11650 2    50   Output ~ 0
+DO[25]
+Text GLabel 22100 11750 2    50   Output ~ 0
+DO[26]
+Text GLabel 22100 11850 2    50   Output ~ 0
+DO[27]
+Text GLabel 22100 13050 2    50   Output ~ 0
+DO[28]
+Text GLabel 19550 13050 2    50   Output ~ 0
+DO[20]
+Text GLabel 19550 13150 2    50   Output ~ 0
+DO[21]
+Text GLabel 19550 13250 2    50   Output ~ 0
+DO[22]
+Text GLabel 19550 13350 2    50   Output ~ 0
+DO[23]
+Text GLabel 19550 11550 2    50   Output ~ 0
+DO[16]
+Text GLabel 19550 11650 2    50   Output ~ 0
+DO[17]
+Text GLabel 19550 11750 2    50   Output ~ 0
+DO[18]
+Text GLabel 19550 11850 2    50   Output ~ 0
+DO[19]
+Text GLabel 19550 10100 2    50   Output ~ 0
+DO[4]
+Text GLabel 19550 10200 2    50   Output ~ 0
+DO[5]
+Text GLabel 19550 10300 2    50   Output ~ 0
+DO[6]
+Text GLabel 19550 10400 2    50   Output ~ 0
+DO[7]
+Text GLabel 19550 8600 2    50   Output ~ 0
+DO[0]
+Text GLabel 19550 8700 2    50   Output ~ 0
+DO[1]
+Text GLabel 19550 8800 2    50   Output ~ 0
+DO[2]
+Text GLabel 19550 8900 2    50   Output ~ 0
+DO[3]
+Text GLabel 17800 8600 0    50   Input ~ 0
+DD[0]
+Text GLabel 17800 8700 0    50   Input ~ 0
+DD[1]
+Text GLabel 17800 8800 0    50   Input ~ 0
+DD[2]
+Text GLabel 17800 8900 0    50   Input ~ 0
+DD[3]
+Text GLabel 17800 10100 0    50   Input ~ 0
+DD[4]
+Text GLabel 17800 10200 0    50   Input ~ 0
+DD[5]
+Text GLabel 17800 10300 0    50   Input ~ 0
+DD[6]
+Text GLabel 17800 10400 0    50   Input ~ 0
+DD[7]
+Text GLabel 20350 8600 0    50   Input ~ 0
+DD[0]
+Text GLabel 20350 8700 0    50   Input ~ 0
+DD[1]
+Text GLabel 20350 8800 0    50   Input ~ 0
+DD[2]
+Text GLabel 20350 8900 0    50   Input ~ 0
+DD[3]
+Text GLabel 20350 11550 0    50   Input ~ 0
+DD[0]
+Text GLabel 20350 11650 0    50   Input ~ 0
+DD[1]
+Text GLabel 20350 11750 0    50   Input ~ 0
+DD[2]
+Text GLabel 20350 11850 0    50   Input ~ 0
+DD[3]
+Text GLabel 17800 11550 0    50   Input ~ 0
+DD[0]
+Text GLabel 17800 11650 0    50   Input ~ 0
+DD[1]
+Text GLabel 17800 11750 0    50   Input ~ 0
+DD[2]
+Text GLabel 17800 11850 0    50   Input ~ 0
+DD[3]
+Text GLabel 17800 13050 0    50   Input ~ 0
+DD[4]
+Text GLabel 17800 13150 0    50   Input ~ 0
+DD[5]
+Text GLabel 17800 13250 0    50   Input ~ 0
+DD[6]
+Text GLabel 17800 13350 0    50   Input ~ 0
+DD[7]
+Text GLabel 20350 13050 0    50   Input ~ 0
+DD[4]
+Text GLabel 20350 13150 0    50   Input ~ 0
+DD[5]
+Text GLabel 20350 13250 0    50   Input ~ 0
+DD[6]
+Text GLabel 20350 13350 0    50   Input ~ 0
+DD[7]
+Text GLabel 20350 10100 0    50   Input ~ 0
+DD[4]
+Text GLabel 20350 10200 0    50   Input ~ 0
+DD[5]
+Text GLabel 20350 10300 0    50   Input ~ 0
+DD[6]
+Text GLabel 20350 10400 0    50   Input ~ 0
+DD[7]
+Wire Bus Line
+	18300 8150 19100 8150
+Wire Bus Line
+	18300 9650 19100 9650
+Wire Bus Line
+	20850 8150 21650 8150
+Wire Bus Line
+	20850 9650 21650 9650
+Wire Bus Line
+	18300 11100 19100 11100
+Wire Bus Line
+	18300 12600 19100 12600
+Wire Bus Line
+	20850 11100 21650 11100
+Wire Bus Line
+	20850 12600 21650 12600
+$EndSCHEMATC

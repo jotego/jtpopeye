@@ -70,53 +70,53 @@ reg [11:0] ram_addr;
 wire [7:0] ram_dout;
 reg nibble_sel;
 
+always @(*) begin
+    nibble_sel = !CSBW_n ? !AD[12] : ROVl[7];
+end
 
 always @(posedge clk) if(pxl_cen) begin
-    if( ROH[1:0]==2'b11 )
-        BAKC <= nibble_sel ? ram_dout[3:0] : ram_dout[7:4];
+    if( ROH[1:0]==2'b11 && CSBW_n)
+        BAKC <= ROVl[7] ? ram_dout[3:0] : ram_dout[7:4];
 end
 
 reg [7:0] ram_din;
-reg       ram_we;
+reg       msb_we, lsb_we;
 
 always @(posedge clk or negedge rst_n) begin: ram_ports
     reg DWRBK_last;
-    reg [2:0] st;
     if( !rst_n ) begin
-        ram_we     <= 1'b0;
+        {msb_we, lsb_we}  <= 2'b0;
         DWRBK_last <= 1'b0;
-        st         <= 3'b1;
-    end else begin
-        // advance state
-        if( (DWRBK && !DWRBK_last) || !st[0] )
-            st <= { st[1:0], st[2] };
+    end else if(pxl_cen) begin
         DWRBK_last <= DWRBK;
-        case( 1'b1 )
-            st[0]: begin
-                    // set RAM address for reading
-                    ram_we     <= 1'b0;
-                    ram_addr   <= !CSBW_n ? AD[11:0] : 
-                        /*!ROVl[8] ? 12'd0 : */{ROVl[6:1],ROH[7:2]};
-                    nibble_sel <= !CSBW_n ? !AD[12] : ROVl[7];
-                end 
-            st[1]:; // wait for data input
-            st[2]: begin // write the requested nibble
-                    ram_we     <= 1'b1;
-                    ram_din    <= nibble_sel ?
-                        { ram_dout[7:4], DD[3:0] } : { DD[3:0], ram_dout[3:0] };
-                end
-            default:;
-        endcase
+        if( (DWRBK && !DWRBK_last) && !CSBW_n ) begin
+            // set RAM address for reading
+            {msb_we, lsb_we} <= !AD[12] ? 2'b01 : 2'b10;
+            ram_addr   <= AD[11:0];
+        end else begin
+            msb_we <= 1'b0;
+            lsb_we <= 1'b0;
+            ram_addr <= /*!ROVl[8] ? 12'd0 : */{ROVl[6:1],ROH[7:2]};
+        end
     end
 end
 
-jtgng_ram #(.aw(12), .dw(8)) u_ram1(
+jtgng_ram #(.aw(12), .dw(4)) u_msb(
     .clk    ( clk            ),
     .cen    ( 1'b1           ),
-    .data   ( ram_din        ),
+    .data   ( DD[3:0]        ),
     .addr   ( ram_addr       ),
-    .we     ( ram_we         ),
-    .q      ( ram_dout       )
+    .we     ( msb_we         ),
+    .q      ( ram_dout[7:4]  )
+);
+
+jtgng_ram #(.aw(12), .dw(4)) u_lsb(
+    .clk    ( clk            ),
+    .cen    ( 1'b1           ),
+    .data   ( DD[3:0]        ),
+    .addr   ( ram_addr       ),
+    .we     ( lsb_we         ),
+    .q      ( ram_dout[3:0]  )
 );
 
 

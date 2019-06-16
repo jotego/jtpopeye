@@ -49,7 +49,7 @@ always @(posedge clk) begin
 end
 
 always @(*) begin
-    { ROVI_hc, nc } = { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
+    { ROVI_hc, nc } = 4'd15 + { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
 end
 
 wire [2:0] adder_data = {3{DO[27]}} ^ ROVI[2:0];
