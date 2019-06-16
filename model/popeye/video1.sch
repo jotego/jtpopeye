@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A2 23386 16535
 encoding utf-8
-Sheet 3 3
+Sheet 3 4
 Title ""
 Date ""
 Rev ""
@@ -290,12 +290,6 @@ Wire Wire Line
 	3550 3200 2450 3200
 Wire Wire Line
 	3150 2550 2450 2550
-Text HLabel 2450 2150 0    50   Input ~ 0
-ROHVS
-Text HLabel 2450 3200 0    50   Input ~ 0
-RVn
-Text HLabel 2450 2550 0    50   Input ~ 0
-ROHVCK
 Wire Wire Line
 	10000 5000 10000 2150
 Wire Wire Line
@@ -362,29 +356,25 @@ Connection ~ 3250 11800
 $Comp
 L jt74xx:74LS74 4B1
 U 2 1 5D464466
-P 4950 9450
-F 0 "4B1" H 5050 9700 50  0000 C CNN
-F 1 "74LS74" H 5000 9450 50  0000 C CNN
-F 2 "" H 4950 9450 50  0001 C CNN
-F 3 "74xx/74hc_hct74.pdf" H 4950 9450 50  0001 C CNN
-	2    4950 9450
+P 4750 9450
+F 0 "4B1" H 4850 9700 50  0000 C CNN
+F 1 "74LS74" H 4800 9450 50  0000 C CNN
+F 2 "" H 4750 9450 50  0001 C CNN
+F 3 "74xx/74hc_hct74.pdf" H 4750 9450 50  0001 C CNN
+	2    4750 9450
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5250 9550 5500 9550
-Text HLabel 5500 9550 2    50   Output ~ 0
-TXTCL
-NoConn ~ 5250 9350
+	5050 9550 5300 9550
+NoConn ~ 5050 9350
 Wire Wire Line
-	4950 9150 4950 9050
+	4750 9150 4750 9050
 Wire Wire Line
-	4950 9050 5400 9050
+	4750 9050 5200 9050
 Wire Wire Line
-	5400 9050 5400 9750
+	5200 9050 5200 9750
 Wire Wire Line
-	5400 9750 4950 9750
-Text Label 4250 7750 2    50   ~ 0
-VDD
+	5200 9750 4750 9750
 $Comp
 L jt74xx:74LS74 4B1
 U 1 1 5D46AFA9
@@ -474,11 +464,9 @@ Wire Wire Line
 Wire Wire Line
 	4400 8400 4400 9350
 Wire Wire Line
-	4400 9350 4650 9350
-Wire Wire Line
 	2000 7000 2350 7000
 Wire Wire Line
-	4650 9450 2350 9450
+	4450 9450 2350 9450
 Wire Wire Line
 	2350 9450 2350 7000
 Connection ~ 2350 7000
@@ -591,7 +579,7 @@ Wire Wire Line
 Connection ~ 2850 7800
 Wire Wire Line
 	2850 7800 2500 7800
-Text Label 5150 9050 0    50   ~ 0
+Text Label 4950 9050 0    50   ~ 0
 VDD
 $Comp
 L jt74xx:74LS157 4M1
@@ -634,8 +622,6 @@ Text Label 8200 10950 2    50   ~ 0
 VSS
 Text Label 7300 7950 2    50   ~ 0
 V[0]
-Text HLabel 7400 7000 0    50   Input ~ 0
-H2O
 Wire Wire Line
 	8200 7000 7650 7000
 Wire Wire Line
@@ -701,14 +687,6 @@ Wire Wire Line
 Wire Wire Line
 	7150 10850 8200 10850
 Connection ~ 7150 9400
-Text HLabel 7400 7500 0    50   Input ~ 0
-DO[2]
-Text HLabel 7400 7600 0    50   Input ~ 0
-DO[3]
-Text HLabel 7400 7700 0    50   Input ~ 0
-DO[4]
-Text HLabel 7400 7800 0    50   Input ~ 0
-DO[5]
 Wire Wire Line
 	8200 7500 8050 7500
 Wire Wire Line
@@ -717,10 +695,6 @@ Wire Wire Line
 	8200 7700 7950 7700
 Wire Wire Line
 	7400 7800 7900 7800
-Text HLabel 7400 8650 0    50   Input ~ 0
-DO[6]
-Text HLabel 7400 8750 0    50   Input ~ 0
-DO[7]
 Wire Wire Line
 	8200 8650 7800 8650
 Wire Wire Line
@@ -1647,105 +1621,6 @@ Text GLabel 9100 3050 2    50   Output ~ 0
 ROVI[7]
 Text GLabel 9100 3150 2    50   Output ~ 0
 ROVI[8]
-$Comp
-L arcade:rpullup pu1
-U 1 1 5D805C82
-P 16650 2500
-F 0 "pu1" H 16600 3050 50  0000 L CNN
-F 1 "pullup" V 16550 2750 50  0000 L CNN
-F 2 "" H 16450 2500 50  0001 C CNN
-F 3 "" H 16450 2500 50  0001 C CNN
-	1    16650 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu2
-U 1 1 5D805F3F
-P 16750 2850
-F 0 "pu2" H 16700 3400 50  0000 L CNN
-F 1 "pullup" V 16650 3100 50  0000 L CNN
-F 2 "" H 16550 2850 50  0001 C CNN
-F 3 "" H 16550 2850 50  0001 C CNN
-	1    16750 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu3
-U 1 1 5D805FB9
-P 16850 2500
-F 0 "pu3" H 16800 3050 50  0000 L CNN
-F 1 "pullup" V 16750 2750 50  0000 L CNN
-F 2 "" H 16650 2500 50  0001 C CNN
-F 3 "" H 16650 2500 50  0001 C CNN
-	1    16850 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu4
-U 1 1 5D806039
-P 17000 2850
-F 0 "pu4" H 16950 3400 50  0000 L CNN
-F 1 "pullup" V 16900 3100 50  0000 L CNN
-F 2 "" H 16800 2850 50  0001 C CNN
-F 3 "" H 16800 2850 50  0001 C CNN
-	1    17000 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu5
-U 1 1 5D858217
-P 17100 2500
-F 0 "pu5" H 17050 3050 50  0000 L CNN
-F 1 "pullup" V 17000 2750 50  0000 L CNN
-F 2 "" H 16900 2500 50  0001 C CNN
-F 3 "" H 16900 2500 50  0001 C CNN
-	1    17100 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu6
-U 1 1 5D85821E
-P 17200 2850
-F 0 "pu6" H 17150 3400 50  0000 L CNN
-F 1 "pullup" V 17100 3100 50  0000 L CNN
-F 2 "" H 17000 2850 50  0001 C CNN
-F 3 "" H 17000 2850 50  0001 C CNN
-	1    17200 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu7
-U 1 1 5D858225
-P 17300 2500
-F 0 "pu7" H 17250 3050 50  0000 L CNN
-F 1 "pullup" V 17200 2750 50  0000 L CNN
-F 2 "" H 17100 2500 50  0001 C CNN
-F 3 "" H 17100 2500 50  0001 C CNN
-	1    17300 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu8
-U 1 1 5D85822C
-P 17450 2850
-F 0 "pu8" H 17400 3400 50  0000 L CNN
-F 1 "pullup" V 17350 3100 50  0000 L CNN
-F 2 "" H 17250 2850 50  0001 C CNN
-F 3 "" H 17250 2850 50  0001 C CNN
-	1    17450 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L arcade:rpullup pu9
-U 1 1 5D873464
-P 17550 2500
-F 0 "pu9" H 17500 3050 50  0000 L CNN
-F 1 "pullup" V 17450 2750 50  0000 L CNN
-F 2 "" H 17350 2500 50  0001 C CNN
-F 3 "" H 17350 2500 50  0001 C CNN
-	1    17550 2500
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	16650 2500 16650 3450
 Wire Wire Line
@@ -1782,4 +1657,139 @@ Wire Wire Line
 	17550 2500 17550 4250
 Wire Wire Line
 	17550 4250 16600 4250
+$Comp
+L arcade:rpullup pu1
+U 1 1 5DA333B0
+P 16650 2500
+F 0 "pu1" H 16728 2790 50  0000 L CNN
+F 1 "rpullup" H 16728 2699 50  0000 L CNN
+F 2 "" H 16450 2500 50  0001 C CNN
+F 3 "" H 16450 2500 50  0001 C CNN
+	1    16650 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu2
+U 1 1 5DA3345E
+P 16750 2850
+F 0 "pu2" H 16828 3140 50  0000 L CNN
+F 1 "rpullup" H 16828 3049 50  0000 L CNN
+F 2 "" H 16550 2850 50  0001 C CNN
+F 3 "" H 16550 2850 50  0001 C CNN
+	1    16750 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu3
+U 1 1 5DA3358D
+P 16850 2500
+F 0 "pu3" H 16928 2790 50  0000 L CNN
+F 1 "rpullup" H 16928 2699 50  0000 L CNN
+F 2 "" H 16650 2500 50  0001 C CNN
+F 3 "" H 16650 2500 50  0001 C CNN
+	1    16850 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu4
+U 1 1 5DA3361B
+P 17000 2850
+F 0 "pu4" H 17078 3140 50  0000 L CNN
+F 1 "rpullup" H 17078 3049 50  0000 L CNN
+F 2 "" H 16800 2850 50  0001 C CNN
+F 3 "" H 16800 2850 50  0001 C CNN
+	1    17000 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu5
+U 1 1 5DA336A7
+P 17100 2500
+F 0 "pu5" H 17178 2790 50  0000 L CNN
+F 1 "rpullup" H 17178 2699 50  0000 L CNN
+F 2 "" H 16900 2500 50  0001 C CNN
+F 3 "" H 16900 2500 50  0001 C CNN
+	1    17100 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu6
+U 1 1 5DA337DF
+P 17200 2850
+F 0 "pu6" H 17278 3140 50  0000 L CNN
+F 1 "rpullup" H 17278 3049 50  0000 L CNN
+F 2 "" H 17000 2850 50  0001 C CNN
+F 3 "" H 17000 2850 50  0001 C CNN
+	1    17200 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu7
+U 1 1 5DA3386B
+P 17300 2500
+F 0 "pu7" H 17378 2790 50  0000 L CNN
+F 1 "rpullup" H 17378 2699 50  0000 L CNN
+F 2 "" H 17100 2500 50  0001 C CNN
+F 3 "" H 17100 2500 50  0001 C CNN
+	1    17300 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu8
+U 1 1 5DA338F7
+P 17450 2850
+F 0 "pu8" H 17528 3140 50  0000 L CNN
+F 1 "rpullup" H 17528 3049 50  0000 L CNN
+F 2 "" H 17250 2850 50  0001 C CNN
+F 3 "" H 17250 2850 50  0001 C CNN
+	1    17450 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu9
+U 1 1 5DA33989
+P 17550 2500
+F 0 "pu9" H 17628 2790 50  0000 L CNN
+F 1 "rpullup" H 17628 2699 50  0000 L CNN
+F 2 "" H 17350 2500 50  0001 C CNN
+F 3 "" H 17350 2500 50  0001 C CNN
+	1    17550 2500
+	1    0    0    -1  
+$EndComp
+Text GLabel 7400 7000 0    50   Input ~ 0
+H2O
+Text GLabel 7400 7800 0    50   Input ~ 0
+DO[5]
+Text GLabel 7400 7700 0    50   Input ~ 0
+DO[4]
+Text GLabel 7400 7600 0    50   Input ~ 0
+DO[3]
+Text GLabel 7400 7500 0    50   Input ~ 0
+DO[2]
+Text GLabel 7400 8750 0    50   Input ~ 0
+DO[7]
+Text GLabel 7400 8650 0    50   Input ~ 0
+DO[6]
+Text Label 9450 7250 0    50   ~ 0
+ADR0[0]
+Text Label 9450 7350 0    50   ~ 0
+ADR0[1]
+Text Label 9450 7450 0    50   ~ 0
+ADR0[2]
+Text Label 9450 7550 0    50   ~ 0
+ADR0[3]
+Text Label 9450 8700 0    50   ~ 0
+ADR0[4]
+Text Label 9450 8800 0    50   ~ 0
+ADR0[5]
+Text GLabel 2450 2150 0    50   Input ~ 0
+ROHVS
+Text GLabel 2450 2550 0    50   Input ~ 0
+ROHVCK
+Text GLabel 2450 3200 0    50   Input ~ 0
+RVn
+Text GLabel 5300 9550 2    50   Output ~ 0
+TXTCL
+Wire Wire Line
+	4400 9350 4450 9350
 $EndSCHEMATC
