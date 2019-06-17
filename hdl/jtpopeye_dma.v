@@ -167,20 +167,18 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram0(
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
     .addr   ( DM[7:0]        ),
-    .we     ( DMCS[0]        )
-    //.q      ( DO[7:0]        )
+    .we     ( DMCS[0]        ),
+    .q      ( DO[7:0]        )
 );
-assign DO[7:0] = 8'hB0;
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram1(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
     .addr   ( DM[7:0]        ),
-    .we     ( DMCS[1]        )
-    // .q      ( DO[15:8]       )
+    .we     ( DMCS[1]        ),
+    .q      ( DO[15:8]       )
 );
-assign DO[15:8] = 8'h80;
 
 jtgng_ram #(.aw(8), .dw(8)) u_ram2(
     .clk    ( clk            ),

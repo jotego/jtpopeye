@@ -149,13 +149,13 @@ Text Label 9400 2800 0    50   ~ 0
 AT[2]
 Text Label 9400 2900 0    50   ~ 0
 AT[3]
-Text Label 9400 4050 0    50   ~ 0
+Text Label 9450 4050 0    50   ~ 0
 AT[4]
-Text Label 9400 4150 0    50   ~ 0
+Text Label 9450 4150 0    50   ~ 0
 AT[5]
-Text Label 9400 4250 0    50   ~ 0
+Text Label 9450 4250 0    50   ~ 0
 AT[6]
-Text Label 9400 4350 0    50   ~ 0
+Text Label 9450 4350 0    50   ~ 0
 AT[7]
 Text Label 9400 5500 0    50   ~ 0
 AT[8]
@@ -165,14 +165,8 @@ Text Label 9400 5700 0    50   ~ 0
 AT[10]
 Text Label 9400 5800 0    50   ~ 0
 AT[11]
-Text Label 8400 5250 2    50   ~ 0
-AD[9]
 Text Label 8400 5350 2    50   ~ 0
 ADx[5]
-Text Label 8400 5450 2    50   ~ 0
-AD[10]
-Text Label 8400 5550 2    50   ~ 0
-AD[11]
 $Comp
 L jt74xx:74LS273 U8
 U 1 1 5DA74257
@@ -300,13 +294,13 @@ Text Label 8400 4500 2    50   ~ 0
 ROV[1]
 Text Label 8400 4600 2    50   ~ 0
 ROV[2]
-Text Label 8400 5750 2    50   ~ 0
+Text Label 8350 5750 2    50   ~ 0
 ROV[3]
-Text Label 8400 5850 2    50   ~ 0
+Text Label 8350 5850 2    50   ~ 0
 ROV[4]
-Text Label 8400 5950 2    50   ~ 0
+Text Label 8350 5950 2    50   ~ 0
 ROV[5]
-Text Label 8400 6050 2    50   ~ 0
+Text Label 8350 6050 2    50   ~ 0
 ROV[6]
 Wire Wire Line
 	7650 6200 7650 6850
@@ -567,8 +561,6 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 10400 3500 50  0001 C CNN
 	5    10400 3500
 	1    0    0    -1  
 $EndComp
-Text Label 10100 3500 2    50   ~ 0
-AD[12]
 Text GLabel 11250 1250 0    50   Input ~ 0
 MEMWR0
 Wire Wire Line
@@ -945,4 +937,36 @@ Text Label 13650 2850 2    50   ~ 0
 BK[6]
 Text Label 13650 2950 2    50   ~ 0
 BK[7]
+Wire Wire Line
+	9400 4050 9450 4050
+Wire Wire Line
+	9450 4150 9400 4150
+Wire Wire Line
+	9400 4250 9450 4250
+Wire Wire Line
+	9450 4350 9400 4350
+Wire Wire Line
+	8350 5750 8400 5750
+Wire Wire Line
+	8400 5850 8350 5850
+Wire Wire Line
+	8350 5950 8400 5950
+Wire Wire Line
+	8400 6050 8350 6050
+Text GLabel 8300 5450 0    50   Input ~ 0
+AD[10]
+Wire Wire Line
+	8300 5450 8400 5450
+Text GLabel 8300 5550 0    50   Input ~ 0
+AD[11]
+Wire Wire Line
+	8300 5550 8400 5550
+Text GLabel 8300 5250 0    50   Input ~ 0
+AD[9]
+Wire Wire Line
+	8300 5250 8400 5250
+Text GLabel 10050 3500 0    50   Input ~ 0
+AD[1]
+Wire Wire Line
+	10050 3500 10100 3500
 $EndSCHEMATC

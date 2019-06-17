@@ -1050,28 +1050,12 @@ Text Label 20450 6850 0    50   ~ 0
 DM[6]
 Text Label 20450 6950 0    50   ~ 0
 DM[7]
-Entry Wire Line
-	18400 8150 18500 8250
-Entry Wire Line
-	18500 8150 18600 8250
-Entry Wire Line
-	18600 8150 18700 8250
-Entry Wire Line
-	18700 8150 18800 8250
-Entry Wire Line
-	18800 8150 18900 8250
-Entry Wire Line
-	18300 8150 18400 8250
 Wire Wire Line
 	18400 8250 18400 8350
 Wire Wire Line
 	18500 8250 18500 8350
 Wire Wire Line
 	18600 8350 18600 8250
-Entry Wire Line
-	18900 8150 19000 8250
-Entry Wire Line
-	19000 8150 19100 8250
 Wire Wire Line
 	19100 8350 19100 8250
 Wire Wire Line
@@ -1082,21 +1066,21 @@ Wire Wire Line
 	18800 8350 18800 8250
 Wire Wire Line
 	18700 8350 18700 8250
-Text Label 18300 8150 1    50   ~ 0
+Text Label 18400 8250 1    50   ~ 0
 DM[0]
-Text Label 18400 8150 1    50   ~ 0
+Text Label 18500 8250 1    50   ~ 0
 DM[1]
-Text Label 18500 8150 1    50   ~ 0
+Text Label 18600 8250 1    50   ~ 0
 DM[2]
-Text Label 18600 8150 1    50   ~ 0
+Text Label 18700 8250 1    50   ~ 0
 DM[3]
-Text Label 18700 8150 1    50   ~ 0
+Text Label 18800 8250 1    50   ~ 0
 DM[4]
-Text Label 18800 8150 1    50   ~ 0
+Text Label 18900 8250 1    50   ~ 0
 DM[5]
-Text Label 18900 8150 1    50   ~ 0
+Text Label 19000 8250 1    50   ~ 0
 DM[6]
-Text Label 19000 8150 1    50   ~ 0
+Text Label 19100 8250 1    50   ~ 0
 DM[7]
 Wire Wire Line
 	18050 8600 17800 8600
@@ -1125,54 +1109,6 @@ F 3 "" H 18150 10600 50  0001 C CNN
 	1    18700 10300
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	18400 9650 18500 9750
-Entry Wire Line
-	18500 9650 18600 9750
-Entry Wire Line
-	18600 9650 18700 9750
-Entry Wire Line
-	18700 9650 18800 9750
-Entry Wire Line
-	18800 9650 18900 9750
-Entry Wire Line
-	18300 9650 18400 9750
-Wire Wire Line
-	18400 9750 18400 9850
-Wire Wire Line
-	18500 9750 18500 9850
-Wire Wire Line
-	18600 9850 18600 9750
-Entry Wire Line
-	18900 9650 19000 9750
-Entry Wire Line
-	19000 9650 19100 9750
-Wire Wire Line
-	19100 9850 19100 9750
-Wire Wire Line
-	19000 9850 19000 9750
-Wire Wire Line
-	18900 9850 18900 9750
-Wire Wire Line
-	18800 9850 18800 9750
-Wire Wire Line
-	18700 9850 18700 9750
-Text Label 18300 9650 1    50   ~ 0
-DM[0]
-Text Label 18400 9650 1    50   ~ 0
-DM[1]
-Text Label 18500 9650 1    50   ~ 0
-DM[2]
-Text Label 18600 9650 1    50   ~ 0
-DM[3]
-Text Label 18700 9650 1    50   ~ 0
-DM[4]
-Text Label 18800 9650 1    50   ~ 0
-DM[5]
-Text Label 18900 9650 1    50   ~ 0
-DM[6]
-Text Label 19000 9650 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	18050 10100 17800 10100
 Wire Wire Line
@@ -1216,28 +1152,12 @@ F 3 "" H 20700 9100 50  0001 C CNN
 	1    21250 8800
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	20950 8150 21050 8250
-Entry Wire Line
-	21050 8150 21150 8250
-Entry Wire Line
-	21150 8150 21250 8250
-Entry Wire Line
-	21250 8150 21350 8250
-Entry Wire Line
-	21350 8150 21450 8250
-Entry Wire Line
-	20850 8150 20950 8250
 Wire Wire Line
 	20950 8250 20950 8350
 Wire Wire Line
 	21050 8250 21050 8350
 Wire Wire Line
 	21150 8350 21150 8250
-Entry Wire Line
-	21450 8150 21550 8250
-Entry Wire Line
-	21550 8150 21650 8250
 Wire Wire Line
 	21650 8350 21650 8250
 Wire Wire Line
@@ -1248,22 +1168,6 @@ Wire Wire Line
 	21350 8350 21350 8250
 Wire Wire Line
 	21250 8350 21250 8250
-Text Label 20850 8150 1    50   ~ 0
-DM[0]
-Text Label 20950 8150 1    50   ~ 0
-DM[1]
-Text Label 21050 8150 1    50   ~ 0
-DM[2]
-Text Label 21150 8150 1    50   ~ 0
-DM[3]
-Text Label 21250 8150 1    50   ~ 0
-DM[4]
-Text Label 21350 8150 1    50   ~ 0
-DM[5]
-Text Label 21450 8150 1    50   ~ 0
-DM[6]
-Text Label 21550 8150 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	20600 8600 20350 8600
 Wire Wire Line
@@ -1291,54 +1195,6 @@ F 3 "" H 20700 10600 50  0001 C CNN
 	1    21250 10300
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	20950 9650 21050 9750
-Entry Wire Line
-	21050 9650 21150 9750
-Entry Wire Line
-	21150 9650 21250 9750
-Entry Wire Line
-	21250 9650 21350 9750
-Entry Wire Line
-	21350 9650 21450 9750
-Entry Wire Line
-	20850 9650 20950 9750
-Wire Wire Line
-	20950 9750 20950 9850
-Wire Wire Line
-	21050 9750 21050 9850
-Wire Wire Line
-	21150 9850 21150 9750
-Entry Wire Line
-	21450 9650 21550 9750
-Entry Wire Line
-	21550 9650 21650 9750
-Wire Wire Line
-	21650 9850 21650 9750
-Wire Wire Line
-	21550 9850 21550 9750
-Wire Wire Line
-	21450 9850 21450 9750
-Wire Wire Line
-	21350 9850 21350 9750
-Wire Wire Line
-	21250 9850 21250 9750
-Text Label 20850 9650 1    50   ~ 0
-DM[0]
-Text Label 20950 9650 1    50   ~ 0
-DM[1]
-Text Label 21050 9650 1    50   ~ 0
-DM[2]
-Text Label 21150 9650 1    50   ~ 0
-DM[3]
-Text Label 21250 9650 1    50   ~ 0
-DM[4]
-Text Label 21350 9650 1    50   ~ 0
-DM[5]
-Text Label 21450 9650 1    50   ~ 0
-DM[6]
-Text Label 21550 9650 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	20600 10100 20350 10100
 Wire Wire Line
@@ -1374,54 +1230,6 @@ F 3 "" H 18150 12050 50  0001 C CNN
 	1    18700 11750
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	18400 11100 18500 11200
-Entry Wire Line
-	18500 11100 18600 11200
-Entry Wire Line
-	18600 11100 18700 11200
-Entry Wire Line
-	18700 11100 18800 11200
-Entry Wire Line
-	18800 11100 18900 11200
-Entry Wire Line
-	18300 11100 18400 11200
-Wire Wire Line
-	18400 11200 18400 11300
-Wire Wire Line
-	18500 11200 18500 11300
-Wire Wire Line
-	18600 11300 18600 11200
-Entry Wire Line
-	18900 11100 19000 11200
-Entry Wire Line
-	19000 11100 19100 11200
-Wire Wire Line
-	19100 11300 19100 11200
-Wire Wire Line
-	19000 11300 19000 11200
-Wire Wire Line
-	18900 11300 18900 11200
-Wire Wire Line
-	18800 11300 18800 11200
-Wire Wire Line
-	18700 11300 18700 11200
-Text Label 18300 11100 1    50   ~ 0
-DM[0]
-Text Label 18400 11100 1    50   ~ 0
-DM[1]
-Text Label 18500 11100 1    50   ~ 0
-DM[2]
-Text Label 18600 11100 1    50   ~ 0
-DM[3]
-Text Label 18700 11100 1    50   ~ 0
-DM[4]
-Text Label 18800 11100 1    50   ~ 0
-DM[5]
-Text Label 18900 11100 1    50   ~ 0
-DM[6]
-Text Label 19000 11100 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	18050 11550 17800 11550
 Wire Wire Line
@@ -1449,54 +1257,6 @@ F 3 "" H 18150 13550 50  0001 C CNN
 	1    18700 13250
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	18400 12600 18500 12700
-Entry Wire Line
-	18500 12600 18600 12700
-Entry Wire Line
-	18600 12600 18700 12700
-Entry Wire Line
-	18700 12600 18800 12700
-Entry Wire Line
-	18800 12600 18900 12700
-Entry Wire Line
-	18300 12600 18400 12700
-Wire Wire Line
-	18400 12700 18400 12800
-Wire Wire Line
-	18500 12700 18500 12800
-Wire Wire Line
-	18600 12800 18600 12700
-Entry Wire Line
-	18900 12600 19000 12700
-Entry Wire Line
-	19000 12600 19100 12700
-Wire Wire Line
-	19100 12800 19100 12700
-Wire Wire Line
-	19000 12800 19000 12700
-Wire Wire Line
-	18900 12800 18900 12700
-Wire Wire Line
-	18800 12800 18800 12700
-Wire Wire Line
-	18700 12800 18700 12700
-Text Label 18300 12600 1    50   ~ 0
-DM[0]
-Text Label 18400 12600 1    50   ~ 0
-DM[1]
-Text Label 18500 12600 1    50   ~ 0
-DM[2]
-Text Label 18600 12600 1    50   ~ 0
-DM[3]
-Text Label 18700 12600 1    50   ~ 0
-DM[4]
-Text Label 18800 12600 1    50   ~ 0
-DM[5]
-Text Label 18900 12600 1    50   ~ 0
-DM[6]
-Text Label 19000 12600 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	18050 13050 17800 13050
 Wire Wire Line
@@ -1532,54 +1292,6 @@ F 3 "" H 20700 12050 50  0001 C CNN
 	1    21250 11750
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	20950 11100 21050 11200
-Entry Wire Line
-	21050 11100 21150 11200
-Entry Wire Line
-	21150 11100 21250 11200
-Entry Wire Line
-	21250 11100 21350 11200
-Entry Wire Line
-	21350 11100 21450 11200
-Entry Wire Line
-	20850 11100 20950 11200
-Wire Wire Line
-	20950 11200 20950 11300
-Wire Wire Line
-	21050 11200 21050 11300
-Wire Wire Line
-	21150 11300 21150 11200
-Entry Wire Line
-	21450 11100 21550 11200
-Entry Wire Line
-	21550 11100 21650 11200
-Wire Wire Line
-	21650 11300 21650 11200
-Wire Wire Line
-	21550 11300 21550 11200
-Wire Wire Line
-	21450 11300 21450 11200
-Wire Wire Line
-	21350 11300 21350 11200
-Wire Wire Line
-	21250 11300 21250 11200
-Text Label 20850 11100 1    50   ~ 0
-DM[0]
-Text Label 20950 11100 1    50   ~ 0
-DM[1]
-Text Label 21050 11100 1    50   ~ 0
-DM[2]
-Text Label 21150 11100 1    50   ~ 0
-DM[3]
-Text Label 21250 11100 1    50   ~ 0
-DM[4]
-Text Label 21350 11100 1    50   ~ 0
-DM[5]
-Text Label 21450 11100 1    50   ~ 0
-DM[6]
-Text Label 21550 11100 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	20600 11550 20350 11550
 Wire Wire Line
@@ -1607,54 +1319,6 @@ F 3 "" H 20700 13550 50  0001 C CNN
 	1    21250 13250
 	1    0    0    -1  
 $EndComp
-Entry Wire Line
-	20950 12600 21050 12700
-Entry Wire Line
-	21050 12600 21150 12700
-Entry Wire Line
-	21150 12600 21250 12700
-Entry Wire Line
-	21250 12600 21350 12700
-Entry Wire Line
-	21350 12600 21450 12700
-Entry Wire Line
-	20850 12600 20950 12700
-Wire Wire Line
-	20950 12700 20950 12800
-Wire Wire Line
-	21050 12700 21050 12800
-Wire Wire Line
-	21150 12800 21150 12700
-Entry Wire Line
-	21450 12600 21550 12700
-Entry Wire Line
-	21550 12600 21650 12700
-Wire Wire Line
-	21650 12800 21650 12700
-Wire Wire Line
-	21550 12800 21550 12700
-Wire Wire Line
-	21450 12800 21450 12700
-Wire Wire Line
-	21350 12800 21350 12700
-Wire Wire Line
-	21250 12800 21250 12700
-Text Label 20850 12600 1    50   ~ 0
-DM[0]
-Text Label 20950 12600 1    50   ~ 0
-DM[1]
-Text Label 21050 12600 1    50   ~ 0
-DM[2]
-Text Label 21150 12600 1    50   ~ 0
-DM[3]
-Text Label 21250 12600 1    50   ~ 0
-DM[4]
-Text Label 21350 12600 1    50   ~ 0
-DM[5]
-Text Label 21450 12600 1    50   ~ 0
-DM[6]
-Text Label 21550 12600 1    50   ~ 0
-DM[7]
 Wire Wire Line
 	20600 13050 20350 13050
 Wire Wire Line
@@ -1836,20 +1500,212 @@ Text GLabel 20350 10300 0    50   Input ~ 0
 DD[6]
 Text GLabel 20350 10400 0    50   Input ~ 0
 DD[7]
-Wire Bus Line
-	18300 8150 19100 8150
-Wire Bus Line
-	18300 9650 19100 9650
-Wire Bus Line
-	20850 8150 21650 8150
-Wire Bus Line
-	20850 9650 21650 9650
-Wire Bus Line
-	18300 11100 19100 11100
-Wire Bus Line
-	18300 12600 19100 12600
-Wire Bus Line
-	20850 11100 21650 11100
-Wire Bus Line
-	20850 12600 21650 12600
+Text Label 20950 8250 1    50   ~ 0
+DM[0]
+Text Label 21050 8250 1    50   ~ 0
+DM[1]
+Text Label 21150 8250 1    50   ~ 0
+DM[2]
+Text Label 21250 8250 1    50   ~ 0
+DM[3]
+Text Label 21350 8250 1    50   ~ 0
+DM[4]
+Text Label 21450 8250 1    50   ~ 0
+DM[5]
+Text Label 21550 8250 1    50   ~ 0
+DM[6]
+Text Label 21650 8250 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18400 9750 18400 9850
+Wire Wire Line
+	18500 9750 18500 9850
+Wire Wire Line
+	18600 9850 18600 9750
+Wire Wire Line
+	19100 9850 19100 9750
+Wire Wire Line
+	19000 9850 19000 9750
+Wire Wire Line
+	18900 9850 18900 9750
+Wire Wire Line
+	18800 9850 18800 9750
+Wire Wire Line
+	18700 9850 18700 9750
+Text Label 18400 9750 1    50   ~ 0
+DM[0]
+Text Label 18500 9750 1    50   ~ 0
+DM[1]
+Text Label 18600 9750 1    50   ~ 0
+DM[2]
+Text Label 18700 9750 1    50   ~ 0
+DM[3]
+Text Label 18800 9750 1    50   ~ 0
+DM[4]
+Text Label 18900 9750 1    50   ~ 0
+DM[5]
+Text Label 19000 9750 1    50   ~ 0
+DM[6]
+Text Label 19100 9750 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20950 9750 20950 9850
+Wire Wire Line
+	21050 9750 21050 9850
+Wire Wire Line
+	21150 9850 21150 9750
+Wire Wire Line
+	21650 9850 21650 9750
+Wire Wire Line
+	21550 9850 21550 9750
+Wire Wire Line
+	21450 9850 21450 9750
+Wire Wire Line
+	21350 9850 21350 9750
+Wire Wire Line
+	21250 9850 21250 9750
+Text Label 20950 9750 1    50   ~ 0
+DM[0]
+Text Label 21050 9750 1    50   ~ 0
+DM[1]
+Text Label 21150 9750 1    50   ~ 0
+DM[2]
+Text Label 21250 9750 1    50   ~ 0
+DM[3]
+Text Label 21350 9750 1    50   ~ 0
+DM[4]
+Text Label 21450 9750 1    50   ~ 0
+DM[5]
+Text Label 21550 9750 1    50   ~ 0
+DM[6]
+Text Label 21650 9750 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18400 11200 18400 11300
+Wire Wire Line
+	18500 11200 18500 11300
+Wire Wire Line
+	18600 11300 18600 11200
+Wire Wire Line
+	19100 11300 19100 11200
+Wire Wire Line
+	19000 11300 19000 11200
+Wire Wire Line
+	18900 11300 18900 11200
+Wire Wire Line
+	18800 11300 18800 11200
+Wire Wire Line
+	18700 11300 18700 11200
+Text Label 18400 11200 1    50   ~ 0
+DM[0]
+Text Label 18500 11200 1    50   ~ 0
+DM[1]
+Text Label 18600 11200 1    50   ~ 0
+DM[2]
+Text Label 18700 11200 1    50   ~ 0
+DM[3]
+Text Label 18800 11200 1    50   ~ 0
+DM[4]
+Text Label 18900 11200 1    50   ~ 0
+DM[5]
+Text Label 19000 11200 1    50   ~ 0
+DM[6]
+Text Label 19100 11200 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20950 11200 20950 11300
+Wire Wire Line
+	21050 11200 21050 11300
+Wire Wire Line
+	21150 11300 21150 11200
+Wire Wire Line
+	21650 11300 21650 11200
+Wire Wire Line
+	21550 11300 21550 11200
+Wire Wire Line
+	21450 11300 21450 11200
+Wire Wire Line
+	21350 11300 21350 11200
+Wire Wire Line
+	21250 11300 21250 11200
+Text Label 20950 11200 1    50   ~ 0
+DM[0]
+Text Label 21050 11200 1    50   ~ 0
+DM[1]
+Text Label 21150 11200 1    50   ~ 0
+DM[2]
+Text Label 21250 11200 1    50   ~ 0
+DM[3]
+Text Label 21350 11200 1    50   ~ 0
+DM[4]
+Text Label 21450 11200 1    50   ~ 0
+DM[5]
+Text Label 21550 11200 1    50   ~ 0
+DM[6]
+Text Label 21650 11200 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	18400 12700 18400 12800
+Wire Wire Line
+	18500 12700 18500 12800
+Wire Wire Line
+	18600 12800 18600 12700
+Wire Wire Line
+	19100 12800 19100 12700
+Wire Wire Line
+	19000 12800 19000 12700
+Wire Wire Line
+	18900 12800 18900 12700
+Wire Wire Line
+	18800 12800 18800 12700
+Wire Wire Line
+	18700 12800 18700 12700
+Text Label 18400 12700 1    50   ~ 0
+DM[0]
+Text Label 18500 12700 1    50   ~ 0
+DM[1]
+Text Label 18600 12700 1    50   ~ 0
+DM[2]
+Text Label 18700 12700 1    50   ~ 0
+DM[3]
+Text Label 18800 12700 1    50   ~ 0
+DM[4]
+Text Label 18900 12700 1    50   ~ 0
+DM[5]
+Text Label 19000 12700 1    50   ~ 0
+DM[6]
+Text Label 19100 12700 1    50   ~ 0
+DM[7]
+Wire Wire Line
+	20950 12700 20950 12800
+Wire Wire Line
+	21050 12700 21050 12800
+Wire Wire Line
+	21150 12800 21150 12700
+Wire Wire Line
+	21650 12800 21650 12700
+Wire Wire Line
+	21550 12800 21550 12700
+Wire Wire Line
+	21450 12800 21450 12700
+Wire Wire Line
+	21350 12800 21350 12700
+Wire Wire Line
+	21250 12800 21250 12700
+Text Label 20950 12700 1    50   ~ 0
+DM[0]
+Text Label 21050 12700 1    50   ~ 0
+DM[1]
+Text Label 21150 12700 1    50   ~ 0
+DM[2]
+Text Label 21250 12700 1    50   ~ 0
+DM[3]
+Text Label 21350 12700 1    50   ~ 0
+DM[4]
+Text Label 21450 12700 1    50   ~ 0
+DM[5]
+Text Label 21550 12700 1    50   ~ 0
+DM[6]
+Text Label 21650 12700 1    50   ~ 0
+DM[7]
 $EndSCHEMATC

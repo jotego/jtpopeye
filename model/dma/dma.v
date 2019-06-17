@@ -17,7 +17,7 @@ module dma(
     
     // from CPU
     inout   [7:0] DD,
-    inout   [9:0] AD,
+    inout   [11:0] AD,
     input   CSBWn,
     input   DWRBKn,
     input   MEMWR0,
@@ -261,9 +261,11 @@ wire video1_WEn1;
 wire video3_AT11n;
 wire video3_BAKCK;
 
+
 `include "dma_model.v"
 
 assign VBn = ~VB;
 pullup p0(dma_DMCSpullup);
+assign video3_ROV[0]=1'b0;  // ROV[0] does not exist on real schematics
 
 endmodule

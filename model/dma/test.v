@@ -17,7 +17,7 @@ wire    VS;
 
 wire    ROHVCK;
 wire    ROHVS;
-wire    [9:0] AD;
+wire    [11:0] AD;
 reg     BUSAK_n;
 wire    BUSRQn;
 wire    DMCS;
@@ -75,7 +75,7 @@ always @(posedge clk)
 wire         DOTCK;
 wire   [7:0] DD;
 pullup p1[7:0](DD);
-pullup p0[9:0]( AD );
+pullup p0[11:0]( AD );
 
 wire   CSBWn=1'b1;
 wire   DWRBKn=1'b1;
@@ -85,6 +85,16 @@ wire   RVn=1'b1;
 // Background
 wire  [3:0] BAKC;
 wire  [28:0] DO;    
+
+// Fake RAM
+reg [7:0] ram[0:1023];
+assign DD = DMCS ? ram[AD[9:0] ] : 8'hzz;
+assign AD[11:10]=2'b11;
+
+initial begin : ram_init
+    integer cnt;
+    for( cnt=0; cnt<1024; cnt=cnt+1) ram[cnt]=cnt[7:0];
+end
 
 dma uut(
     .RESET      ( ~rst_n    ),
@@ -97,7 +107,7 @@ dma uut(
     .HBDn       ( HBDn      ),
     .HB         ( HB        ),
     .VB         ( VB        ),
-    .DOTCK      ( DOTCK     ),
+    .DOTCK      ( pxl_cen   ),
     // from CPU    
     .DD         ( DD        ),
     .AD         ( AD        ),

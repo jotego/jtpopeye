@@ -76,7 +76,7 @@ end
 
 always @(posedge clk) if(pxl_cen) begin
     if( ROH[1:0]==2'b11 && CSBW_n)
-        BAKC <= ROVl[7] ? ram_dout[3:0] : ram_dout[7:4];
+        BAKC <= !ROVl[7] ? ram_dout[3:0] : ram_dout[7:4];
 end
 
 reg [7:0] ram_din;
