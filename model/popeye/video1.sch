@@ -1792,4 +1792,131 @@ Text GLabel 5300 9550 2    50   Output ~ 0
 TXTCL
 Wire Wire Line
 	4400 9350 4450 9350
+$Comp
+L arcade:rpullup pu10
+U 1 1 5DB34EC5
+P 15400 2500
+F 0 "pu10" H 15478 2790 50  0000 L CNN
+F 1 "rpullup" H 15478 2699 50  0000 L CNN
+F 2 "" H 15200 2500 50  0001 C CNN
+F 3 "" H 15200 2500 50  0001 C CNN
+	1    15400 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu11
+U 1 1 5DB34ECC
+P 15500 2850
+F 0 "pu11" H 15578 3140 50  0000 L CNN
+F 1 "rpullup" H 15578 3049 50  0000 L CNN
+F 2 "" H 15300 2850 50  0001 C CNN
+F 3 "" H 15300 2850 50  0001 C CNN
+	1    15500 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu12
+U 1 1 5DB34ED3
+P 15600 2500
+F 0 "pu12" H 15678 2790 50  0000 L CNN
+F 1 "rpullup" H 15678 2699 50  0000 L CNN
+F 2 "" H 15400 2500 50  0001 C CNN
+F 3 "" H 15400 2500 50  0001 C CNN
+	1    15600 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu13
+U 1 1 5DB34EDA
+P 15750 2850
+F 0 "pu13" H 15828 3140 50  0000 L CNN
+F 1 "rpullup" H 15828 3049 50  0000 L CNN
+F 2 "" H 15550 2850 50  0001 C CNN
+F 3 "" H 15550 2850 50  0001 C CNN
+	1    15750 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu14
+U 1 1 5DB34EE1
+P 15850 2500
+F 0 "pu14" H 15928 2790 50  0000 L CNN
+F 1 "rpullup" H 15928 2699 50  0000 L CNN
+F 2 "" H 15650 2500 50  0001 C CNN
+F 3 "" H 15650 2500 50  0001 C CNN
+	1    15850 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu15
+U 1 1 5DB34EE8
+P 15950 2850
+F 0 "pu15" H 16028 3140 50  0000 L CNN
+F 1 "rpullup" H 16028 3049 50  0000 L CNN
+F 2 "" H 15750 2850 50  0001 C CNN
+F 3 "" H 15750 2850 50  0001 C CNN
+	1    15950 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu16
+U 1 1 5DB34EEF
+P 16050 2500
+F 0 "pu16" H 16128 2790 50  0000 L CNN
+F 1 "rpullup" H 16128 2699 50  0000 L CNN
+F 2 "" H 15850 2500 50  0001 C CNN
+F 3 "" H 15850 2500 50  0001 C CNN
+	1    16050 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu17
+U 1 1 5DB34EF6
+P 16200 2850
+F 0 "pu17" H 16278 3140 50  0000 L CNN
+F 1 "rpullup" H 16278 3049 50  0000 L CNN
+F 2 "" H 16000 2850 50  0001 C CNN
+F 3 "" H 16000 2850 50  0001 C CNN
+	1    16200 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L arcade:rpullup pu18
+U 1 1 5DB34EFD
+P 16300 2500
+F 0 "pu18" H 16378 2790 50  0000 L CNN
+F 1 "rpullup" H 16378 2699 50  0000 L CNN
+F 2 "" H 16100 2500 50  0001 C CNN
+F 3 "" H 16100 2500 50  0001 C CNN
+	1    16300 2500
+	1    0    0    -1  
+$EndComp
+Text Label 15400 2850 3    50   ~ 0
+DJI[0]
+Text Label 15500 2850 3    50   ~ 0
+DJI[1]
+Text Label 15600 2850 3    50   ~ 0
+DJI[2]
+Wire Wire Line
+	15600 2850 15600 2500
+Wire Wire Line
+	15400 2500 15400 2850
+Wire Wire Line
+	15850 2500 15850 2850
+Text Label 15750 2850 3    50   ~ 0
+DJI[3]
+Text Label 15850 2850 3    50   ~ 0
+DJI[4]
+Text Label 15950 2850 3    50   ~ 0
+DJI[5]
+Text Label 16050 2850 3    50   ~ 0
+DJI[6]
+Text Label 16200 2850 3    50   ~ 0
+DJI[7]
+Text Label 16300 2850 3    50   ~ 0
+DJI[8]
+Wire Wire Line
+	16300 2850 16300 2500
+Wire Wire Line
+	16050 2850 16050 2500
 $EndSCHEMATC
