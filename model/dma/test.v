@@ -18,12 +18,9 @@ wire    VS;
 wire    ROHVCK;
 wire    ROHVS;
 wire    [9:0] AD;
-wire    AIn = ~H[0];
-wire    BIn = ~H[1];
 reg     BUSAK_n;
 wire    BUSRQn;
 wire    DMCS;
-wire [3:0]   DMCSn;
 wire    [7:0] DM;
 wire    HBDn;
 wire    VB;
@@ -48,8 +45,14 @@ always @(posedge VB) begin
     if(blanks==2) $finish;
 end
 
-// initial #200_000 $finish;
-//initial #30_000_000 $finish;
+`ifdef SIMTIME
+real simtime = `SIMTIME;
+initial begin
+    $display("Simulation will finish after %.1f ms", simtime );
+    simtime = simtime * 1000_000;
+    #(simtime) $finish;
+end
+`endif
 
 initial begin
     $dumpfile("test.lxt");
@@ -69,25 +72,46 @@ jtpopeye_cen u_cen (
 always @(posedge clk)
     if(cpu_cen) BUSAK_n <= BUSRQn;
 
+wire         DOTCK;
+wire   [7:0] DD;
+pullup p1[7:0](DD);
 pullup p0[9:0]( AD );
+
+wire   CSBWn=1'b1;
+wire   DWRBKn=1'b1;
+wire   MEMWR0=1'b0;
+wire   RVn=1'b1;
+    
+// Background
+wire  [3:0] BAKC;
+wire  [28:0] DO;    
 
 dma uut(
     .RESET      ( ~rst_n    ),
     .ROHVCK     ( ROHVCK    ),
     .ROHVS      ( ROHVS     ),
-    .AD         ( AD        ),
-    .AIn        ( AIn       ),
-    .BIn        ( BIn       ),
-    .BUSAK_n    ( BUSAK_n   ),
-    .BUSRQn     ( BUSRQn    ),
-    .DMCS       ( DMCS      ),
-    .DMCS0n     ( DMCSn[0]  ),
-    .DMCS1n     ( DMCSn[1]  ),
-    .DMCS2n     ( DMCSn[2]  ),
-    .DMCS3n     ( DMCSn[3]  ),
-    .DM         ( DM        ),
+    // from timing
+    .H          ( H         ),
+    .H2O        ( H2O       ),
+    .V          ( V         ),
     .HBDn       ( HBDn      ),
-    .VB         ( VB        )
+    .HB         ( HB        ),
+    .VB         ( VB        ),
+    .DOTCK      ( DOTCK     ),
+    // from CPU    
+    .DD         ( DD        ),
+    .AD         ( AD        ),
+    .CSBWn      ( CSBWn     ),
+    .DWRBKn     ( DWRBKn    ),
+    .BUSAK_n    ( BUSAK_n   ),
+    .MEMWR0     ( MEMWR0    ),
+    .BUSRQn     ( BUSRQn    ),
+    .RVn        ( RVn       ),
+    
+    // Background
+    .BAKC       ( BAKC      ),
+    .DMCS       ( DMCS      ),
+    .DO         ( DO        )
 );
 
 
