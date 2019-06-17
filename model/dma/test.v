@@ -55,7 +55,7 @@ end
 `endif
 
 initial begin
-    $dumpfile("test.lxt");
+    $dumpfile("test.vcd");
     $dumpvars(0,test.uut);
     $dumpvars(0,test.u_dmanew);    
     $dumpvars(1,test);    

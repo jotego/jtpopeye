@@ -1,4 +1,4 @@
-update=mar 11 jun 2019 20:43:57 CEST
+update=lun 17 jun 2019 13:17:14 CEST
 version=1
 last_client=kicad
 [pcbnew]
@@ -28,3 +28,6 @@ version=1
 [eeschema]
 version=1
 LibDir=
+[eeschema/libraries]
+LibName1=/home/pi/jtpopeye/modules/jtframe/kicad/arcade
+LibName2=/home/pi/jtpopeye/modules/jtframe/kicad/jt74xx
