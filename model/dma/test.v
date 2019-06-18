@@ -55,10 +55,18 @@ end
 `endif
 
 initial begin
+    `ifdef VCD
     $dumpfile("test.vcd");
+    `else 
+    $dumpfile("test.lxt");
+    `endif
+    `ifdef DUMPALL
+    $dumpvars;
+    `else
     $dumpvars(0,test.uut);
     $dumpvars(0,test.u_dmanew);    
-    $dumpvars(1,test);    
+    $dumpvars(1,test);
+    `endif
     $dumpon;
 end
 

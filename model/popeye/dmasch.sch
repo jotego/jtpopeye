@@ -46,7 +46,7 @@ F 3 "" H 5250 5900 50  0000 C CNN
 $EndComp
 $Comp
 L popeye_model-rescue:74LS00 U1D?
-U 1 1 5D0A43BC
+U 1 2 5D0A43BC
 P 5150 4100
 AR Path="/5D0A43BC" Ref="U1D?"  Part="1" 
 AR Path="/5D094963/5D0A43BC" Ref="U1D1"  Part="1" 
@@ -76,7 +76,7 @@ F 3 "" H 6350 4700 50  0000 C CNN
 $EndComp
 $Comp
 L popeye_model-rescue:74LS00 U1B?
-U 3 1 5D0A43CA
+U 3 2 5D0A43CA
 P 11000 2700
 AR Path="/5D0A43CA" Ref="U1B?"  Part="3" 
 AR Path="/5D094963/5D0A43CA" Ref="U1B1"  Part="3" 
@@ -199,7 +199,7 @@ F 3 "" H 9450 3000 50  0000 C CNN
 $EndComp
 $Comp
 L popeye_model-rescue:74LS04 U?
-U 1 1 5D0A4404
+U 1 2 5D0A4404
 P 1600 7400
 AR Path="/5D0A4404" Ref="U?"  Part="1" 
 AR Path="/5D094963/5D0A4404" Ref="U1"  Part="1" 
@@ -214,7 +214,7 @@ F 3 "" H 1600 7400 50  0000 C CNN
 $EndComp
 $Comp
 L popeye_model-rescue:74LS04 U?
-U 2 1 5D0A440B
+U 2 2 5D0A440B
 P 1600 8000
 AR Path="/5D0A440B" Ref="U?"  Part="2" 
 AR Path="/5D094963/5D0A440B" Ref="U1"  Part="2" 
@@ -492,7 +492,7 @@ Text Label 15800 3150 0    60   ~ 0
 DMclr_n
 $Comp
 L popeye_model-rescue:74LS37 U?
-U 1 1 5D0A44A9
+U 1 2 5D0A44A9
 P 12900 11600
 AR Path="/5D0A44A9" Ref="U?"  Part="1" 
 AR Path="/5D094963/5D0A44A9" Ref="U4"  Part="1" 
