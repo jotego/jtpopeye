@@ -56,13 +56,15 @@ end
 // 74273
 reg ROHVCKl;
 wire posedge_ROHVCK = ROHVCK && !ROHVCKl;
+wire negedge_ROHVCK = ROHVCK && !ROHVCKl;
 always @(posedge clk) ROHVCKl <= ROHVCK;
 
 always @(posedge clk) begin
     if(!CSBW_n) begin
         ROVl <= 8'd0;
     end else
-    if(posedge_ROHVCK) begin
+    // this is a posedge on schematics but if I do that I'll sample wrong data
+    if( negedge_ROHVCK ) begin
         ROVl <= {~ROVI[8], ROVI[7:1] };
     end
 end

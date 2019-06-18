@@ -93,7 +93,11 @@ assign AD[11:10]=2'b11;
 
 initial begin : ram_init
     integer cnt;
-    for( cnt=0; cnt<1024; cnt=cnt+1) ram[cnt]=cnt[7:0];
+    for( cnt=0; cnt<1024; cnt=cnt+1) ram[cnt]=8'hff;
+    ram[0]=0;
+    ram[1]=1;
+    ram[2]=2;
+    ram[3]=3;
 end
 
 dma uut(
@@ -145,7 +149,7 @@ jtpopeye_dma u_dmanew (
     .H      (H[1:0] ),
     .HBD_n  (HBDn   ),
     .pre_HBDn( pre_HBDn ),
-    .DD_DMA (new_AD[7:0]  ),
+    .DD_DMA ( ram[new_AD]  ),
     .busak_n(new_busak_n),
     .ROHVS  (new_ROHVS  ),
     .ROHVCK (new_ROHVCK ),

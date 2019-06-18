@@ -132,13 +132,12 @@ jtpopeye_dma u_dma(
     .DO                 ( DO            )
 );
 `else
-assign DMA10 = 1'b0;
 assign AD_DMA = 10'd0;
 assign dma_cs = 1'b0;
 assign busrq_n = 1'b1;
 assign DO = 29'd0;
 assign ROHVS  = 1'b0;
-assign ROHVCK = 1'b0;
+assign ROHVCK = 1'b1;
 `endif
 
 wire [12:0] ADvideo;
