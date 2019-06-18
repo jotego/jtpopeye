@@ -147,9 +147,17 @@ jtpopeye_video_dec u_dec(
     .AD_dec ( ADvideo   )
 );
 
-// These are latched ny signal ROHVCK in video sheet 1/3
-assign OBJC[5:3] = DO[26:24];
-assign BAKC[4]   = DO[27];
+// These are latched by signal ROHVCK in video sheet 1/3
+reg [2:0] preOBJC;
+reg preBAKC;
+always @(posedge clk) if(pxl2_cen) begin
+    if( !ROHVCK) begin
+        preOBJC = DO[26:24];
+        preBAKC = DO[27];
+    end
+end
+assign OBJC[5:3] = preOBJC;
+assign BAKC[4]   = preBAKC;
 
 jtpopeye_txt u_txt(
     .rst_n              ( rst_n         ),
