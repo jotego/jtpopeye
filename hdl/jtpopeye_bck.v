@@ -20,6 +20,8 @@
 
 // 2^6 = 64 horizontal x4 units
 // 2^6 = 64 vertical   x4 units
+// The screen is divided in two halves: top and bottom
+// the nibbles of each memory separate these two halves
 
 module jtpopeye_bck(
     input               rst_n,
@@ -60,7 +62,7 @@ always @(posedge clk) begin
     if(!CSBW_n) begin
         ROVl <= 8'd0;
     end else
-    if(!ROHVCK) begin
+    if(posedge_ROHVCK) begin
         ROVl <= {~ROVI[8], ROVI[7:1] };
     end
 end
