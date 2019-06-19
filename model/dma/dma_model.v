@@ -1,3 +1,46 @@
+jt7404 u_1A1(
+    .in1       ( BIn                      ) /* pin 1*/ ,
+    .out2      ( dma_BI                   ) /* pin 2*/ ,
+    .in3       ( AIn                      ) /* pin 3*/ ,
+    .out4      ( dma_AI                   ) /* pin 4*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
+jt7400 u_1B1(
+    .in1       ( dma_BI                   ) /* pin 1*/ ,
+    .in2       ( dma_BI                   ) /* pin 2*/ ,
+    .out3      ( Net__1B1_Pad3_           ) /* pin 3*/ ,
+    .in4       ( dma_AI                   ) /* pin 4*/ ,
+    .in5       ( dma_AI                   ) /* pin 5*/ ,
+    .out6      ( Net__1B1_Pad6_           ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .out8      ( ROHVS                    ) /* pin 8*/ ,
+    .in9       ( dma_DMclr_n              ) /* pin 9*/ ,
+    .in10      ( Net__1B1_Pad10_          ) /* pin 10*/ ,
+    .out11     ( ROHVCK                   ) /* pin 11*/ ,
+    .in12      ( Net__1B1_Pad12_          ) /* pin 12*/ ,
+    .in13      ( dma_BI                   ) /* pin 13*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
+jt7474 u_1C1(
+    .cl1_b     ( Net__1C1_Pad1_           ) /* pin 1*/ ,
+    .d1        ( Net__1C1_Pad2_           ) /* pin 2*/ ,
+    .clk1      ( Net__1C1_Pad3_           ) /* pin 3*/ ,
+    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
+    .q1        ( Net__1C1_Pad5_           ) /* pin 5*/ ,
+    .q1_b      ( Net__1C1_Pad6_           ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .q2_b      ( Net__1B1_Pad12_          ) /* pin 8*/ ,
+    .q2        ( Net__1B1_Pad10_          ) /* pin 9*/ ,
+    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
+    .clk2      ( dma_AI                   ) /* pin 11*/ ,
+    .d2        ( dma_DMclr_n              ) /* pin 12*/ ,
+    .cl2_b     ( 1'b1                     ) /* pin 13*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
 jt7432 u_1D1(
     .out8      ( Net__1D1_Pad8_           ) /* pin 8*/ ,
     .in9       ( Net__1D1_Pad9_           ) /* pin 9*/ ,
@@ -5,6 +48,72 @@ jt7432 u_1D1(
     .out11     ( Net__1D1_Pad10_          ) /* pin 11*/ ,
     .in12      ( Net__1D1_Pad12_          ) /* pin 12*/ ,
     .in13      ( ROHVS                    ) /* pin 13*/ 
+);
+
+jt7400 u_1D2(
+    .in1       ( Net__1D2_Pad1_           ) /* pin 1*/ ,
+    .in2       ( HBDn                     ) /* pin 2*/ ,
+    .out3      ( Net__1C1_Pad2_           ) /* pin 3*/ ,
+    .in4       ( Net__1D2_Pad4_           ) /* pin 4*/ ,
+    .in5       ( Net__1C1_Pad3_           ) /* pin 5*/ ,
+    .out6      ( Net__1D2_Pad6_           ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .out8      ( Net__1C1_Pad1_           ) /* pin 8*/ ,
+    .in9       ( Net__1D2_Pad1_           ) /* pin 9*/ ,
+    .in10      ( dma_BUSRQ                ) /* pin 10*/ ,
+    .out11     ( dma_DMclr_n              ) /* pin 11*/ ,
+    .in12      ( Net__1C1_Pad2_           ) /* pin 12*/ ,
+    .in13      ( Net__1C1_Pad6_           ) /* pin 13*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
+jt74138 u_1E1(
+    .e1_b      ( Net__1D2_Pad1_           ) /* pin 4*/ ,
+    .e2_b      ( dma_DMEND                ) /* pin 5*/ ,
+    .e3        ( Net__1B1_Pad3_           ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .a         ({ 1'b0,
+                  Net__1E1_Pad2_,
+                  Net__1E1_Pad1_}),
+    .y_b       ({ Net__1E1_Pad7_,
+                  Net__1E1_Pad9_,
+                  Net__1E1_Pad10_,
+                  Net__1E1_Pad11_,
+                  dma_DMCSn[3],
+                  dma_DMCSn[2],
+                  dma_DMCSn[1],
+                  dma_DMCSn[0]})
+);
+
+jt74161 u_1F1(
+    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
+    .clk       ( Net__1B1_Pad6_           ) /* pin 2*/ ,
+    .cep       ( Net__1D2_Pad6_           ) /* pin 7*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
+    .cet       ( Net__1D2_Pad6_           ) /* pin 10*/ ,
+    .ca        ( Net__1F1_Pad15_          ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ Net__1F1_Pad6_,
+                  Net__1F1_Pad5_,
+                  Net__1F1_Pad4_,
+                  Net__1F1_Pad3_}),
+    .q         ({ Net__1F1_Pad11_,
+                  Net__1F1_Pad12_,
+                  Net__1F1_Pad13_,
+                  Net__1F1_Pad14_})
+);
+
+jt7474 u_1L1(
+    .cl1_b     ( Net__1L1_Pad1_           ) /* pin 1*/ ,
+    .d1        ( 1'b1                     ) /* pin 2*/ ,
+    .clk1      ( Net__1L1_Pad3_           ) /* pin 3*/ ,
+    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
+    .q1        ( dma_BUSRQ                ) /* pin 5*/ ,
+    .q1_b      ( BUSRQn                   ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
 );
 
 RAM_7063 u_1M1(
@@ -187,6 +296,91 @@ jt7408 u_2D1(
     .in10      ( DO[26]                   ) /* pin 10*/ 
 );
 
+jt7474 u_2D2(
+    .cl1_b     ( 1'b1                     ) /* pin 1*/ ,
+    .d1        ( dma_BI                   ) /* pin 2*/ ,
+    .clk1      ( dma_AI                   ) /* pin 3*/ ,
+    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
+    .q1        ( Net__1C1_Pad3_           ) /* pin 5*/ ,
+    .q1_b      ( Net__2D2_Pad6_           ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .q2_b      ( Net__1D2_Pad1_           ) /* pin 8*/ ,
+    .q2        ( Net__1D2_Pad4_           ) /* pin 9*/ ,
+    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
+    .clk2      ( Net__1B1_Pad3_           ) /* pin 11*/ ,
+    .d2        ( dma_BUSAK                ) /* pin 12*/ ,
+    .cl2_b     ( 1'b1                     ) /* pin 13*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
+jt74161 u_2E1(
+    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
+    .clk       ( Net__1B1_Pad6_           ) /* pin 2*/ ,
+    .cep       ( 1'b1                     ) /* pin 7*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
+    .cet       ( Net__2E1_Pad10_          ) /* pin 10*/ ,
+    .ca        ( Net__2E1_Pad15_          ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ Net__2E1_Pad6_,
+                  Net__2E1_Pad5_,
+                  Net__2E1_Pad4_,
+                  Net__2E1_Pad3_}),
+    .q         ({ Net__2E1_Pad11_,
+                  dma_DMEND,
+                  Net__1E1_Pad2_,
+                  Net__1E1_Pad1_})
+);
+
+jt74161 u_2F1(
+    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
+    .clk       ( Net__1B1_Pad6_           ) /* pin 2*/ ,
+    .cep       ( 1'b1                     ) /* pin 7*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
+    .cet       ( Net__1F1_Pad15_          ) /* pin 10*/ ,
+    .ca        ( Net__2E1_Pad10_          ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ Net__2F1_Pad6_,
+                  Net__2F1_Pad5_,
+                  Net__2F1_Pad4_,
+                  Net__2F1_Pad3_}),
+    .q         ({ Net__2F1_Pad11_,
+                  Net__2F1_Pad12_,
+                  Net__2F1_Pad13_,
+                  Net__2F1_Pad14_})
+);
+
+jt74367 u_2H1(
+    .oe1_b     ( 1'b0                     ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .oe2_b     ( 1'b0                     ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .A         ({ Net__2F1_Pad14_,
+                  Net__1F1_Pad13_,
+                  Net__1F1_Pad11_,
+                  Net__1F1_Pad14_,
+                  Net__2F1_Pad13_,
+                  Net__1F1_Pad12_}),
+    .Y         ({ dma_DM[4],
+                  dma_DM[1],
+                  dma_DM[3],
+                  dma_DM[0],
+                  dma_DM[5],
+                  dma_DM[2]})
+);
+
+jt7402 u_2K1(
+    .out1      ( Net__1L1_Pad3_           ) /* pin 1*/ ,
+    .in2       ( VBn                      ) /* pin 2*/ ,
+    .in3       ( VBn                      ) /* pin 3*/ ,
+    .out4      ( Net__1L1_Pad1_           ) /* pin 4*/ ,
+    .in5       ( RESET                    ) /* pin 5*/ ,
+    .in6       ( dma_DMEND                ) /* pin 6*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
+);
+
 RAM_5501 u_2R1(
     .WEn       ( dma_DMCSn[2]             ) /* pin 20*/ ,
     .A         ({ dma_DM[7],
@@ -282,6 +476,44 @@ jt7400 u_3A2(
     .out3      ( Net__3A2_Pad3_           ) /* pin 3*/ 
 );
 
+jt74367 u_3E1(
+    .oe1_b     ( dma_DMCSpullup           ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .oe2_b     ( dma_DMCSpullup           ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .A         ({ Net__1E1_Pad2_,
+                  Net__2F1_Pad11_,
+                  Net__1E1_Pad1_,
+                  Net__1F1_Pad12_,
+                  Net__1F1_Pad11_,
+                  Net__1F1_Pad14_}),
+    .Y         ({ AD[1],
+                  AD[5],
+                  AD[0],
+                  AD[3],
+                  AD[4],
+                  AD[2]})
+);
+
+jt74367 u_3H1(
+    .oe1_b     ( Net__3H1_Pad1_           ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .oe2_b     ( 1'b0                     ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .A         ({ Net__2F1_Pad11_,
+                  Net__2F1_Pad12_,
+                  Net__3H1_Pad10_,
+                  Net__3H1_Pad6_,
+                  Net__3H1_Pad4_,
+                  Net__3H1_Pad2_}),
+    .Y         ({ dma_DM[7],
+                  dma_DM[6],
+                  Net__3H1_Pad9_,
+                  Net__3H1_Pad7_,
+                  Net__3H1_Pad5_,
+                  Net__3H1_Pad3_})
+);
+
 RAM_7063 u_3M1(
     .WEn       ( video1_WEn1              ) /* pin 13*/ ,
     .CEn       ( video1_CEn1              ) /* pin 15*/ ,
@@ -368,6 +600,25 @@ jt7474 u_4B1(
     .clk2      ( DOTCK                    ) /* pin 11*/ ,
     .d2        ( Net__3A1_Pad3_           ) /* pin 12*/ ,
     .cl2_b     ( 1'b1                     ) /* pin 13*/ 
+);
+
+jt74365 u_4E1(
+    .oe1_b     ( Net__1D2_Pad1_           ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .oe2_b     ( dma_DMEND                ) /* pin 15*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .A         ({ 1'b0,
+                  1'b0,
+                  Net__1F1_Pad13_,
+                  Net__2F1_Pad14_,
+                  Net__2F1_Pad13_,
+                  Net__2F1_Pad12_}),
+    .Y         ({ dma_DMCSpullup,
+                  Net__4E1_Pad5_,
+                  AD[6],
+                  AD[7],
+                  AD[8],
+                  AD[9]})
 );
 
 jt74157 u_4M1(
@@ -457,6 +708,14 @@ jt7404 u_5A1(
     .in11      ( H[1]                     ) /* pin 11*/ ,
     .out12     ( Net__4A1_Pad11_          ) /* pin 12*/ ,
     .in13      ( H[1]                     ) /* pin 13*/ 
+);
+
+jt7437 u_5H1(
+    .in1       ( BUSAK_n                  ) /* pin 1*/ ,
+    .in2       ( BUSAK_n                  ) /* pin 2*/ ,
+    .out3      ( dma_BUSAK                ) /* pin 3*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
 );
 
 jt7404 u_5L1(
@@ -772,243 +1031,6 @@ jt74174 u_8U1(
                   BAKC[0]})
 );
 
-jt7404 U1(
-    .in1       ( BIn                      ) /* pin 1*/ ,
-    .out2      ( dma_BI                   ) /* pin 2*/ ,
-    .in3       ( AIn                      ) /* pin 3*/ ,
-    .out4      ( dma_AI                   ) /* pin 4*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt7400 U1B1(
-    .in1       ( dma_BI                   ) /* pin 1*/ ,
-    .in2       ( dma_BI                   ) /* pin 2*/ ,
-    .out3      ( Net__U1B1_Pad3_          ) /* pin 3*/ ,
-    .in4       ( dma_AI                   ) /* pin 4*/ ,
-    .in5       ( dma_AI                   ) /* pin 5*/ ,
-    .out6      ( Net__U1B1_Pad6_          ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .out8      ( ROHVS                    ) /* pin 8*/ ,
-    .in9       ( dma_DMclr_n              ) /* pin 9*/ ,
-    .in10      ( Net__U1B1_Pad10_         ) /* pin 10*/ ,
-    .out11     ( ROHVCK                   ) /* pin 11*/ ,
-    .in12      ( Net__U1B1_Pad12_         ) /* pin 12*/ ,
-    .in13      ( dma_BI                   ) /* pin 13*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt7400 U1D1(
-    .in1       ( Net__U1D1_Pad1_          ) /* pin 1*/ ,
-    .in2       ( HBDn                     ) /* pin 2*/ ,
-    .out3      ( Net__U1D1_Pad3_          ) /* pin 3*/ ,
-    .in4       ( Net__U1D1_Pad4_          ) /* pin 4*/ ,
-    .in5       ( Net__U1D1_Pad5_          ) /* pin 5*/ ,
-    .out6      ( Net__U1D1_Pad6_          ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .out8      ( Net__U1D1_Pad8_          ) /* pin 8*/ ,
-    .in9       ( Net__U1D1_Pad1_          ) /* pin 9*/ ,
-    .in10      ( dma_BUSRQ                ) /* pin 10*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt74138 U1E1(
-    .e1_b      ( Net__U1D1_Pad1_          ) /* pin 4*/ ,
-    .e2_b      ( dma_DMEND                ) /* pin 5*/ ,
-    .e3        ( Net__U1B1_Pad3_          ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .a         ({ 1'b0,
-                  Net__U1E1_Pad2_,
-                  Net__U1E1_Pad1_}),
-    .y_b       ({ Net__U1E1_Pad7_,
-                  Net__U1E1_Pad9_,
-                  Net__U1E1_Pad10_,
-                  Net__U1E1_Pad11_,
-                  dma_DMCSn[3],
-                  dma_DMCSn[2],
-                  dma_DMCSn[1],
-                  dma_DMCSn[0]})
-);
-
-jt74161 U1F1(
-    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
-    .clk       ( Net__U1B1_Pad6_          ) /* pin 2*/ ,
-    .cep       ( Net__U1D1_Pad6_          ) /* pin 7*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
-    .cet       ( Net__U1D1_Pad6_          ) /* pin 10*/ ,
-    .ca        ( Net__U1F1_Pad15_         ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ Net__U1F1_Pad6_,
-                  Net__U1F1_Pad5_,
-                  Net__U1F1_Pad4_,
-                  Net__U1F1_Pad3_}),
-    .q         ({ Net__U1F1_Pad11_,
-                  Net__U1F1_Pad12_,
-                  Net__U1F1_Pad13_,
-                  Net__U1F1_Pad14_})
-);
-
-jt7474 U1L1(
-    .cl1_b     ( Net__U1L1_Pad1_          ) /* pin 1*/ ,
-    .d1        ( 1'b1                     ) /* pin 2*/ ,
-    .clk1      ( Net__U1L1_Pad3_          ) /* pin 3*/ ,
-    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
-    .q1        ( dma_BUSRQ                ) /* pin 5*/ ,
-    .q1_b      ( BUSRQn                   ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt7474 U2(
-    .cl1_b     ( Net__U1D1_Pad8_          ) /* pin 1*/ ,
-    .d1        ( Net__U1D1_Pad3_          ) /* pin 2*/ ,
-    .clk1      ( Net__U1D1_Pad5_          ) /* pin 3*/ ,
-    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
-    .q1        ( Net__U2_Pad5_            ) /* pin 5*/ ,
-    .q1_b      ( Net__U2_Pad6_            ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .q2_b      ( Net__U1B1_Pad12_         ) /* pin 8*/ ,
-    .q2        ( Net__U1B1_Pad10_         ) /* pin 9*/ ,
-    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
-    .clk2      ( dma_AI                   ) /* pin 11*/ ,
-    .d2        ( dma_DMclr_n              ) /* pin 12*/ ,
-    .cl2_b     ( 1'b1                     ) /* pin 13*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt7474 U2D1(
-    .cl1_b     ( 1'b1                     ) /* pin 1*/ ,
-    .d1        ( dma_BI                   ) /* pin 2*/ ,
-    .clk1      ( dma_AI                   ) /* pin 3*/ ,
-    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
-    .q1        ( Net__U1D1_Pad5_          ) /* pin 5*/ ,
-    .q1_b      ( Net__U2D1_Pad6_          ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .q2_b      ( Net__U1D1_Pad1_          ) /* pin 8*/ ,
-    .q2        ( Net__U1D1_Pad4_          ) /* pin 9*/ ,
-    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
-    .clk2      ( Net__U1B1_Pad3_          ) /* pin 11*/ ,
-    .d2        ( dma_BUSAK                ) /* pin 12*/ ,
-    .cl2_b     ( 1'b1                     ) /* pin 13*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt74161 U2E1(
-    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
-    .clk       ( Net__U1B1_Pad6_          ) /* pin 2*/ ,
-    .cep       ( 1'b1                     ) /* pin 7*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
-    .cet       ( Net__U2E1_Pad10_         ) /* pin 10*/ ,
-    .ca        ( Net__U2E1_Pad15_         ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ Net__U2E1_Pad6_,
-                  Net__U2E1_Pad5_,
-                  Net__U2E1_Pad4_,
-                  Net__U2E1_Pad3_}),
-    .q         ({ Net__U2E1_Pad11_,
-                  dma_DMEND,
-                  Net__U1E1_Pad2_,
-                  Net__U1E1_Pad1_})
-);
-
-jt74161 U2F1(
-    .cl_b      ( dma_DMclr_n              ) /* pin 1*/ ,
-    .clk       ( Net__U1B1_Pad6_          ) /* pin 2*/ ,
-    .cep       ( 1'b1                     ) /* pin 7*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .ld_b      ( 1'b1                     ) /* pin 9*/ ,
-    .cet       ( Net__U1F1_Pad15_         ) /* pin 10*/ ,
-    .ca        ( Net__U2E1_Pad10_         ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ Net__U2F1_Pad6_,
-                  Net__U2F1_Pad5_,
-                  Net__U2F1_Pad4_,
-                  Net__U2F1_Pad3_}),
-    .q         ({ Net__U2F1_Pad11_,
-                  Net__U2F1_Pad12_,
-                  Net__U2F1_Pad13_,
-                  Net__U2F1_Pad14_})
-);
-
-jt74367 U2H1(
-    .oe1_b     ( 1'b0                     ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .oe2_b     ( 1'b0                     ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .A         ({ Net__U2F1_Pad14_,
-                  Net__U1F1_Pad13_,
-                  Net__U1F1_Pad11_,
-                  Net__U1F1_Pad14_,
-                  Net__U2F1_Pad13_,
-                  Net__U1F1_Pad12_}),
-    .Y         ({ dma_DM[4],
-                  dma_DM[1],
-                  dma_DM[3],
-                  dma_DM[0],
-                  dma_DM[5],
-                  dma_DM[2]})
-);
-
-jt7402 U2K1(
-    .out1      ( Net__U1L1_Pad3_          ) /* pin 1*/ ,
-    .in2       ( VBn                      ) /* pin 2*/ ,
-    .in3       ( VBn                      ) /* pin 3*/ ,
-    .out4      ( Net__U1L1_Pad1_          ) /* pin 4*/ ,
-    .in5       ( RESET                    ) /* pin 5*/ ,
-    .in6       ( dma_DMEND                ) /* pin 6*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt7400 U3(
-    .in1       ( Net__U1D1_Pad3_          ) /* pin 1*/ ,
-    .in2       ( Net__U2_Pad6_            ) /* pin 2*/ ,
-    .out3      ( dma_DMclr_n              ) /* pin 3*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt74367 U3E1(
-    .oe1_b     ( dma_DMCSpullup           ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .oe2_b     ( dma_DMCSpullup           ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .A         ({ Net__U1E1_Pad2_,
-                  Net__U2F1_Pad11_,
-                  Net__U1E1_Pad1_,
-                  Net__U1F1_Pad12_,
-                  Net__U1F1_Pad11_,
-                  Net__U1F1_Pad14_}),
-    .Y         ({ AD[1],
-                  AD[5],
-                  AD[0],
-                  AD[3],
-                  AD[4],
-                  AD[2]})
-);
-
-jt74367 U3H1(
-    .oe1_b     ( Net__U3H1_Pad1_          ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .oe2_b     ( 1'b0                     ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .A         ({ Net__U2F1_Pad11_,
-                  Net__U2F1_Pad12_,
-                  Net__U3H1_Pad10_,
-                  Net__U3H1_Pad6_,
-                  Net__U3H1_Pad4_,
-                  Net__U3H1_Pad2_}),
-    .Y         ({ dma_DM[7],
-                  dma_DM[6],
-                  Net__U3H1_Pad9_,
-                  Net__U3H1_Pad7_,
-                  Net__U3H1_Pad5_,
-                  Net__U3H1_Pad3_})
-);
-
 jt74283 U3R1(
     .cin       ( Net__U3R1_Pad7_          ) /* pin 7*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
@@ -1064,33 +1086,6 @@ jt74283 U3T1(
                   Net__U3T1_Pad13_,
                   Net__U3T1_Pad1_,
                   Net__U3T1_Pad4_})
-);
-
-jt7437 U4(
-    .in1       ( BUSAK_n                  ) /* pin 1*/ ,
-    .in2       ( BUSAK_n                  ) /* pin 2*/ ,
-    .out3      ( dma_BUSAK                ) /* pin 3*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
-jt74365 U4E1(
-    .oe1_b     ( Net__U1D1_Pad1_          ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .oe2_b     ( dma_DMEND                ) /* pin 15*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .A         ({ 1'b0,
-                  1'b0,
-                  Net__U1F1_Pad13_,
-                  Net__U2F1_Pad14_,
-                  Net__U2F1_Pad13_,
-                  Net__U2F1_Pad12_}),
-    .Y         ({ dma_DMCSpullup,
-                  Net__U4E1_Pad5_,
-                  AD[6],
-                  AD[7],
-                  AD[8],
-                  AD[9]})
 );
 
 jt74174 U5(
@@ -1228,6 +1223,10 @@ rpullup pu17(
 
 rpullup pu18(
     .x         ( video1_DJI[8]            ) /* pin 1*/ 
+);
+
+rpullup pu19(
+    .x         ( dma_DMCSpullup           ) /* pin 1*/ 
 );
 
 rpullup pu2(
