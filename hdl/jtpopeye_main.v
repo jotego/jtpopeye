@@ -229,11 +229,11 @@ always @(posedge clk) begin
             end
             2'd2: begin // 2P input
                 cabinet_input[7:5] <= 3'b111;
-                cabinet_input[4:0] <= joystick2[4:0]; // 2P
+                cabinet_input[4:0] <= {joystick2[4], joystick2[2],joystick2[3], joystick2[1:0]}; // 2P
             end
             2'd3: begin // 1P input
                 cabinet_input[7:5] <= 3'b111;
-                cabinet_input[4:0] <= joystick1[4:0]; // 2P
+                cabinet_input[4:0] <= {joystick1[4], joystick1[2],joystick1[3], joystick1[1:0]}; // 2P
             end
         endcase
     end
