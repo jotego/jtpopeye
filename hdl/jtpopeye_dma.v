@@ -79,7 +79,7 @@ module jtpopeye_dma(
     output reg [9:0]    AD_DMA,
     output reg          dma_cs, // tell main memory to get data out for DMA
     output reg          busrq_n,
-    output     [28:0]   DO
+    output     [28:0]   DO /* synthesis keep */
 );
 
 reg [10:0] DM;
@@ -96,16 +96,17 @@ wire VB_posedge = VB && !VBl;
 
 // Address bus is obfuscated
 always @(*) begin
-    AD_DMA[2] = DM[0];
     AD_DMA[6] = DM[1];
-    AD_DMA[3] = DM[2];
-    AD_DMA[4] = DM[3];
     AD_DMA[7] = DM[4];
     AD_DMA[8] = DM[5];
     AD_DMA[9] = DM[6];
-    AD_DMA[5] = DM[7];
-    AD_DMA[0] = DM[8];
-    AD_DMA[1] = DM[9];
+
+    AD_DMA[0] = ~DM[8];
+    AD_DMA[1] = ~DM[9];
+    AD_DMA[2] = ~DM[0];
+    AD_DMA[3] = ~DM[2];
+    AD_DMA[4] = ~DM[3];
+    AD_DMA[5] = ~DM[7];
 end
 
 reg [ 3:0] DMCS;
