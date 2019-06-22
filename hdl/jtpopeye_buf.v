@@ -24,6 +24,7 @@ module jtpopeye_buf(
     input               rst_n,
     input               clk,
     input               H0_cen,
+    input               pxl_cen,
 
     input               ROHVS,
     input               ROHVCK,
@@ -43,7 +44,6 @@ reg ROVI_hc; // half carry
 reg [3:0] nc;
 
 always @(*) begin // do not latch
-    // ROVI <= { 1'b0, ~V[7],V[6:0] };
     ROVI =  { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
         + { 8'd0, ~RV_n ^ ROHVCK }; // carry in
 end
@@ -54,9 +54,7 @@ end
 
 wire [2:0] adder_data = {3{DO[27]}} ^ ROVI[2:0];
 
-wire [17:0] ram_din = { DO[28], DO[26:24]&{3{~V[0]}}, 
-        DO[1:0], DO[23:21], DO[20:16], 
-        adder_data, DO[27] };
+reg [17:0] ram0_din, ram1_din;
 
 wire [5:0] scan_addr = { H[7:3], H2O };
 wire [5:0] wr_addr   = DO[7:2];
@@ -68,21 +66,27 @@ wire line_sel = V[0];
 reg we0, we1;
 reg [1:0] we_v0;
 
-always @(*) begin
-    ADR0 = !line_sel ? scan_addr : wr_addr;
-    ADR1 =  line_sel ? scan_addr : wr_addr;
+always @(posedge clk) if(pxl_cen) begin
+    ADR0 <= !line_sel ? scan_addr : wr_addr;
+    ADR1 <=  line_sel ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
-    we_v0[0] = ~H[0];   // active-low logic on schematics
-    we_v0[1] = H[0] & H[1] & ~HB; // active-low logic on schematics
-    we0      = we_v0[ V[0]];
-    we1      = we_v0[~V[0]];
+    we_v0[0] <= ~H[0];   // active-low logic on schematics
+    we_v0[1] <= H[0] & H[1] & ~HB; // active-low logic on schematics
+    we0      <= we_v0[ V[0]];
+    we1      <= we_v0[~V[0]];
+    ram0_din <= { DO[28], DO[26:24]&{3{V[0]}}, // ram0 uses V[0]
+            DO[1:0], DO[23:21], DO[20:16], 
+            adder_data, DO[27] };
+    ram1_din <= { DO[28], DO[26:24]&{3{~V[0]}}, // ram1 uses ~V[0]
+            DO[1:0], DO[23:21], DO[20:16], 
+            adder_data, DO[27] };
 end
 
 // 1M and 3M memories in schematic
 jtgng_ram #(.aw(6), .dw(18)) u_ram0(
     .clk    ( clk            ),
-    .cen    ( H0_cen         ),
-    .data   ( ram_din        ),
+    .cen    ( 1'b1           ),
+    .data   ( ram0_din       ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
     .q      ( DJ0            )
@@ -91,8 +95,8 @@ jtgng_ram #(.aw(6), .dw(18)) u_ram0(
 // 1P and 3P memories in schematic
 jtgng_ram #(.aw(6), .dw(18)) u_ram1(
     .clk    ( clk            ),
-    .cen    ( H0_cen         ),
-    .data   ( ram_din        ),
+    .cen    ( 1'b1           ),
+    .data   ( ram1_din       ),
     .addr   ( ADR1           ),
     .we     ( we1            ),
     .q      ( DJ1            )

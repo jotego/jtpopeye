@@ -42,11 +42,11 @@ jt7474 u_1C1(
 );
 
 jt7432 u_1D1(
-    .out8      ( Net__1D1_Pad8_           ) /* pin 8*/ ,
-    .in9       ( Net__1D1_Pad9_           ) /* pin 9*/ ,
-    .in10      ( Net__1D1_Pad10_          ) /* pin 10*/ ,
-    .out11     ( Net__1D1_Pad10_          ) /* pin 11*/ ,
-    .in12      ( Net__1D1_Pad12_          ) /* pin 12*/ ,
+    .out8      ( video1_DJ_CEn            ) /* pin 8*/ ,
+    .in9       ( video1_carry             ) /* pin 9*/ ,
+    .in10      ( video1_train             ) /* pin 10*/ ,
+    .out11     ( video1_train             ) /* pin 11*/ ,
+    .in12      ( video1_H0H0or            ) /* pin 12*/ ,
     .in13      ( ROHVS                    ) /* pin 13*/ 
 );
 
@@ -279,7 +279,7 @@ jt7408 u_2C1(
     .out8      ( Net__2C1_Pad8_           ) /* pin 8*/ ,
     .in9       ( Net__2C1_Pad1_           ) /* pin 9*/ ,
     .in10      ( DO[26]                   ) /* pin 10*/ ,
-    .out11     ( Net__1D1_Pad12_          ) /* pin 11*/ ,
+    .out11     ( video1_H0H0or            ) /* pin 11*/ ,
     .in12      ( AIn                      ) /* pin 12*/ ,
     .in13      ( video1_H0ln              ) /* pin 13*/ 
 );
@@ -463,9 +463,9 @@ RAM_5501 u_2U1(
 
 jt7400 u_3A1(
     .in1       ( Net__3A1_Pad1_           ) /* pin 1*/ ,
-    .in2       ( Net__3A1_Pad2_           ) /* pin 2*/ ,
+    .in2       ( video1_HBn               ) /* pin 2*/ ,
     .out3      ( Net__3A1_Pad3_           ) /* pin 3*/ ,
-    .out8      ( Net__3A1_Pad8_           ) /* pin 8*/ ,
+    .out8      ( video1_preWEx            ) /* pin 8*/ ,
     .in9       ( Net__3A1_Pad10_          ) /* pin 9*/ ,
     .in10      ( Net__3A1_Pad10_          ) /* pin 10*/ 
 );
@@ -473,7 +473,7 @@ jt7400 u_3A1(
 jt7400 u_3A2(
     .in1       ( H[0]                     ) /* pin 1*/ ,
     .in2       ( Net__3A2_Pad2_           ) /* pin 2*/ ,
-    .out3      ( Net__3A2_Pad3_           ) /* pin 3*/ 
+    .out3      ( video1_H0H0n             ) /* pin 3*/ 
 );
 
 jt74367 u_3E1(
@@ -575,14 +575,14 @@ RAM_7063 u_3M2(
 jt7411 u_4A1(
     .in1       ( H[2]                     ) /* pin 1*/ ,
     .in2       ( H[1]                     ) /* pin 2*/ ,
-    .in3       ( Net__3A1_Pad2_           ) /* pin 3*/ ,
+    .in3       ( video1_HBn               ) /* pin 3*/ ,
     .in4       ( H[1]                     ) /* pin 4*/ ,
-    .in5       ( Net__3A2_Pad3_           ) /* pin 5*/ ,
+    .in5       ( video1_H0H0n             ) /* pin 5*/ ,
     .out6      ( Net__3A1_Pad10_          ) /* pin 6*/ ,
-    .out8      ( Net__4A1_Pad8_           ) /* pin 8*/ ,
+    .out8      ( video1_DJ_latch_clk      ) /* pin 8*/ ,
     .in9       ( video1_H0ln              ) /* pin 9*/ ,
     .in10      ( H[0]                     ) /* pin 10*/ ,
-    .in11      ( Net__4A1_Pad11_          ) /* pin 11*/ ,
+    .in11      ( video1_H1n               ) /* pin 11*/ ,
     .out12     ( Net__3A1_Pad1_           ) /* pin 12*/ ,
     .in13      ( H[0]                     ) /* pin 13*/ 
 );
@@ -683,14 +683,14 @@ jt74157 u_4P2(
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
     .Gn        ( 1'b0                     ) /* pin 15*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .A         ({ Net__4P2_Pad10_,
-                  Net__3A1_Pad8_,
-                  Net__1D1_Pad8_,
+    .A         ({ video1_preWEy,
+                  video1_preWEx,
+                  video1_DJ_CEn,
                   1'b0}),
-    .B         ({ Net__3A1_Pad8_,
-                  Net__4P2_Pad10_,
+    .B         ({ video1_preWEx,
+                  video1_preWEy,
                   1'b0,
-                  Net__1D1_Pad8_}),
+                  video1_DJ_CEn}),
     .Y         ({ video1_WEn1,
                   video1_WEn0,
                   video1_CEn1,
@@ -701,12 +701,12 @@ jt7404 u_5A1(
     .in1       ( H[0]                     ) /* pin 1*/ ,
     .out2      ( AIn                      ) /* pin 2*/ ,
     .in5       ( HB                       ) /* pin 5*/ ,
-    .out6      ( Net__3A1_Pad2_           ) /* pin 6*/ ,
+    .out6      ( video1_HBn               ) /* pin 6*/ ,
     .out8      ( Net__2C1_Pad1_           ) /* pin 8*/ ,
     .in9       ( V[0]                     ) /* pin 9*/ ,
     .out10     ( BIn                      ) /* pin 10*/ ,
     .in11      ( H[1]                     ) /* pin 11*/ ,
-    .out12     ( Net__4A1_Pad11_          ) /* pin 12*/ ,
+    .out12     ( video1_H1n               ) /* pin 12*/ ,
     .in13      ( H[1]                     ) /* pin 13*/ 
 );
 
@@ -742,6 +742,14 @@ jt7404 u_5U1(
     .in11      ( AD[1]                    ) /* pin 11*/ ,
     .out12     ( video3_ADx[2]            ) /* pin 12*/ ,
     .in13      ( AD[2]                    ) /* pin 13*/ 
+);
+
+jt7402 u_6C1(
+    .out1      ( DMCS                     ) /* pin 1*/ ,
+    .in2       ( dma_DMCSpullup           ) /* pin 2*/ ,
+    .in3       ( dma_DMCSpullup           ) /* pin 3*/ ,
+    .VSS       ( 1'b0                     ) /* pin 7*/ ,
+    .VDD       ( 1'b1                     ) /* pin 14*/ 
 );
 
 jt7404 u_6T1(
@@ -916,7 +924,7 @@ jt74257 u_7U1(
 );
 
 jt7404 u_8L1(
-    .in1       ( Net__3A2_Pad3_           ) /* pin 1*/ ,
+    .in1       ( video1_H0H0n             ) /* pin 1*/ ,
     .out2      ( Net__8L1_Pad2_           ) /* pin 2*/ 
 );
 
@@ -942,7 +950,7 @@ jt7404 u_8L5(
 
 jt7404 u_8L6(
     .in1       ( Net__8L5_Pad2_           ) /* pin 1*/ ,
-    .out2      ( Net__4P2_Pad10_          ) /* pin 2*/ 
+    .out2      ( video1_preWEy            ) /* pin 2*/ 
 );
 
 RAM_2016 u_8P1(
@@ -1072,7 +1080,7 @@ jt74283 U3S1(
 jt74283 U3T1(
     .cin       ( ROVI[3]                  ) /* pin 7*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cout      ( Net__1D1_Pad9_           ) /* pin 9*/ ,
+    .cout      ( video1_carry             ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .a         ({ ROVI[7],
                   ROVI[6],
@@ -1091,7 +1099,7 @@ jt74283 U3T1(
 jt74174 U5(
     .clk       ( 1'b1                     ) /* pin 1*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( Net__4A1_Pad8_           ) /* pin 9*/ ,
+    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .d         ({ video1_DJI[5],
                   video1_DJI[4],
@@ -1110,7 +1118,7 @@ jt74174 U5(
 jt74174 U6(
     .clk       ( 1'b1                     ) /* pin 1*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( Net__4A1_Pad8_           ) /* pin 9*/ ,
+    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .d         ({ video1_DJI[11],
                   video1_DJI[10],
@@ -1126,18 +1134,10 @@ jt74174 U6(
                   DJ[6]})
 );
 
-jt7402 U6C1(
-    .out1      ( DMCS                     ) /* pin 1*/ ,
-    .in2       ( dma_DMCSpullup           ) /* pin 2*/ ,
-    .in3       ( dma_DMCSpullup           ) /* pin 3*/ ,
-    .VSS       ( 1'b0                     ) /* pin 7*/ ,
-    .VDD       ( 1'b1                     ) /* pin 14*/ 
-);
-
 jt74174 U7(
     .clk       ( 1'b1                     ) /* pin 1*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( Net__4A1_Pad8_           ) /* pin 9*/ ,
+    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .d         ({ video1_DJI[17],
                   video1_DJI[16],

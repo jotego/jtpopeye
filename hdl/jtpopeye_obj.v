@@ -33,14 +33,20 @@ module jtpopeye_obj(
     input      [ 7:0]   H,
     input      [17:0]   DJ,
     // SDRAM interface
-    output     [12:0]   obj_addr,
+    output reg [12:0]   obj_addr,
     input      [31:0]   objrom_data,
     // pixel data
     output reg [ 2:0]   OBJC,
     output reg [ 1:0]   OBJV
 );
 
-assign obj_addr = { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
+// always @(posedge clk)
+//     obj_addr <= { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
+
+always @(posedge clk) if(pxl_cen) begin
+    //if( H[1:0]==2'b11)
+        obj_addr <= 0;//{H,H[4:0]}; //{ DJ[17], DJ[10:1], DJ[0]^~INITEO   };
+end
 
 reg hflip;
 reg [15:0] objd0, objd1;
@@ -70,7 +76,7 @@ end
 
 always @(posedge clk) if(pxl2_cen) begin
     if(VB) begin
-        OBJV <= 2'b00;
+        OBJV <= 2'b00;      // Low outputs during blank as per LS157 behaviour
     end else if(cnt[4]) begin
         OBJC <= objc;
         OBJV <= hflip ? { objd1[15], objd0[15] } : { objd1[0], objd0[0] };

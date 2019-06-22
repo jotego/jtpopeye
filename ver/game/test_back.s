@@ -4,6 +4,7 @@
     LD SP,IX
     LD IX,$A000
 
+MAIN:
     CALL CLR_SCREEN
     LD A,0
     LD IX,$C000     ; lower nibbles
@@ -22,7 +23,8 @@ ZERO_TXT:
     JP  NZ,EXT_LOOP
 
 END_LOOP:
-    JP END_LOOP
+    ;JP END_LOOP
+    JP MAIN
 
 ;**************************************
 ;** Clear text memory with $FF

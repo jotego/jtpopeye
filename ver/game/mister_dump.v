@@ -26,6 +26,7 @@ module mister_dump(
             $dumpvars(0,mister_test);
         `else
             $dumpvars(1,mister_test.UUT.u_game.u_main);
+            $dumpvars(0,mister_test.UUT.u_game.u_rom);
         `endif
         $dumpon;
     end

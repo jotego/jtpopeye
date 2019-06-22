@@ -187,6 +187,7 @@ jtpopeye_buf u_buf(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
     .H0_cen             ( H0_cen        ),
+    .pxl_cen            ( pxl_cen       ),
 
     .ROHVS              ( ROHVS         ),
     .ROHVCK             ( ROHVCK        ),

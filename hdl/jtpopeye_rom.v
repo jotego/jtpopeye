@@ -51,8 +51,9 @@ wire [14:0] main_addr_req;
 wire [12:0] obj_addr_req;
 wire obj_ok;
 
-always @(posedge clk)
-    refresh_en <= &{ main_cs&main_ok, obj_ok };
+always @(posedge clk) begin
+    refresh_en <= main_cs & main_ok & obj_ok;
+end
 
 jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .rst_n    ( rst_n           ),
@@ -68,7 +69,7 @@ jtframe_romrq #(.AW(15),.INVERT_A0(1)) u_main(
     .we       ( data_sel[0]     )
 );
 
-//`define TRYOBJ
+`define TRYOBJ
 `ifdef TRYOBJ
 jtframe_romrq #(.AW(13),.DW(32)) u_obj(
     .rst_n    ( rst_n           ),
@@ -110,13 +111,13 @@ end else begin
         sdram_req <= |valid_req;
         data_sel <= 2'b0;
         case( 1'b1 )
+            valid_req[0]: begin
+                sdram_addr  <= { 8'd0, main_addr_req[14:1] };
+                data_sel[0] <= 1'b1;
+            end
             valid_req[1]: begin
                 sdram_addr  <= obj_offset + { 8'b0, obj_addr_req, 1'b0 };
                 data_sel[1] <= 1'b1;
-            end
-            valid_req[0]: begin
-                sdram_addr <= { 8'd0, main_addr_req[14:1] };
-                data_sel[0] <= 1'b1;
             end
         endcase
     end

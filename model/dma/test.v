@@ -80,7 +80,6 @@ jtpopeye_cen u_cen (
 always @(posedge clk)
     if(cpu_cen) BUSAK_n <= BUSRQn;
 
-wire         DOTCK;
 wire   [7:0] DD;
 pullup p1[7:0](DD);
 pullup p0[11:0]( AD );
@@ -108,6 +107,8 @@ initial begin : ram_init
     ram[3]=3;
 end
 
+wire DOTCK = pxl_cen & clk;
+
 dma uut(
     .RESET      ( ~rst_n    ),
     .ROHVCK     ( ROHVCK    ),
@@ -119,7 +120,7 @@ dma uut(
     .HBDn       ( HBDn      ),
     .HB         ( HB        ),
     .VB         ( VB        ),
-    .DOTCK      ( pxl_cen   ),
+    .DOTCK      ( DOTCK     ),
     // from CPU    
     .DD         ( DD        ),
     .AD         ( AD        ),
