@@ -1,8 +1,10 @@
 EESchema Schematic File Version 4
+LIBS:arcade
+LIBS:jt74xx
 LIBS:popeye_model-cache
 EELAYER 26 0
 EELAYER END
-$Descr A2 23386 16535
+$Descr A4 11693 8268
 encoding utf-8
 Sheet 1 4
 Title ""

@@ -29,5 +29,5 @@ version=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=/home/pi/jtpopeye/modules/jtframe/kicad/arcade
-LibName2=/home/pi/jtpopeye/modules/jtframe/kicad/jt74xx
+LibName1=../../modules/jtframe/kicad/arcade
+LibName2=../../modules/jtframe/kicad/jt74xx

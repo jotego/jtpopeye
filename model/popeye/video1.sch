@@ -1,4 +1,6 @@
 EESchema Schematic File Version 4
+LIBS:arcade
+LIBS:jt74xx
 LIBS:popeye_model-cache
 EELAYER 26 0
 EELAYER END
@@ -1175,7 +1177,7 @@ Text Label 18100 5800 2    50   ~ 0
 DJI[12]
 Text Label 3700 7100 0    50   ~ 0
 H0ln
-Text Label 3900 11600 2    50   ~ 0
+Text Label 3750 11600 2    50   ~ 0
 H0ln
 Wire Wire Line
 	5700 7200 5700 14050
@@ -1919,4 +1921,26 @@ Wire Wire Line
 	16300 2850 16300 2500
 Wire Wire Line
 	16050 2850 16050 2500
+Text Label 17700 4850 1    50   ~ 0
+DJ_latch_clk
+Text Label 7900 13200 0    50   ~ 0
+DJ_CEn
+Text Label 5550 6550 0    50   ~ 0
+H0H0n
+Text Label 4500 8700 0    50   ~ 0
+HBn
+Text Label 6750 11500 0    50   ~ 0
+preWEx
+Text Label 6750 12000 0    50   ~ 0
+preWEy
+Wire Wire Line
+	3900 11600 3750 11600
+Text Label 4500 12300 0    50   ~ 0
+H0H0or
+Text Label 9500 5550 0    50   ~ 0
+carry
+Text Label 10100 5700 0    50   ~ 0
+train
+Text Label 3800 7300 0    50   ~ 0
+H1n
 $EndSCHEMATC

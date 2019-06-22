@@ -1,4 +1,6 @@
 EESchema Schematic File Version 4
+LIBS:arcade
+LIBS:jt74xx
 LIBS:popeye_model-cache
 EELAYER 26 0
 EELAYER END
