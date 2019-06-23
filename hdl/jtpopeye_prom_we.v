@@ -29,18 +29,22 @@ module jtpopeye_prom_we(
     output reg [ 7:0]    prog_data,
     output reg [ 1:0]    prog_mask, // active low
     output reg           prog_we,
-    output reg [ 5:0]    prom_we,   // update prom_we0 below if prom_we is edited!
+    output reg [13:0]    prom_we,   // update prom_we0 below if prom_we is edited!
     // signal whether the CPU data is encrypted or not
     output               encrypted
 );
 
+`ifndef MISTER
 localparam PROM_ADDR = 8192*8;
+`else
+localparam PROM_ADDR = 0;
+`endif
 
 reg set_strobe, set_done;
-reg [5:0] prom_we0;
+reg [13:0] prom_we0;
 
 always @(posedge clk_rgb) begin
-    prom_we <= 'd0;
+    prom_we <= 14'd0;
     if( set_strobe ) begin
         prom_we <= prom_we0;
         set_done <= 1'b1;
@@ -58,23 +62,30 @@ always @(posedge clk_rom) begin
             prog_addr <= { 1'b0, ioctl_addr[21:1] };
             prog_we   <= 1'b1;
             prog_mask <= {ioctl_addr[0], ~ioctl_addr[0]};
-            prom_we0  <= 'd0;
+            prom_we0  <= 14'd0;
         end
         else begin // PROMs
             prog_mask <= 2'b11;
             prog_addr <= ioctl_addr;
-            if( ioctl_addr[12:11] == 2'b01 )
-                prom_we0 <= 6'h20; // 5N TXT, throw away the 1st half of the file
-            else if(ioctl_addr[12]) begin
-                case(ioctl_addr[9:8])
-                    2'h0: prom_we0 <= 6'h01;    // 7J, timing
-                    2'h1: prom_we0 <= 6'h02;    // 5B OBJ PAL
-                    2'h2: prom_we0 <= 6'h04;    // 5A OBJ PAL
-                    2'h3: prom_we0 <= ioctl_addr[5] ?6'h10 : 6'h08; // 3A, 4A TXT/BACK PAL
-                    default: prom_we0 <= 6'h0;  //
-                endcase
+            prom_we0  <= 14'd0;
+            if( !ioctl_addr[16] ) begin
+                prom_we0[ ioctl_addr[15:13] ] <= 1'b1;
+            end else begin
+                if( ioctl_addr[12:11] == 2'b01 )
+                    prom_we0[5] <= 1'b1; // 5N TXT, throw away the 1st half of the file
+                else if(ioctl_addr[12]) begin
+                    case(ioctl_addr[9:8])
+                        2'h0: prom_we0[0] <= 1'b1;    // 7J, timing
+                        2'h1: prom_we0[1] <= 1'b1;    // 5B OBJ PAL
+                        2'h2: prom_we0[2] <= 1'b1;    // 5A OBJ PAL
+                        2'h3: if( ioctl_addr[5] )
+                            prom_we0[4] <= 1'b1;
+                        else
+                            prom_we0[3] <= 1'b1; // 3A, 4A TXT/BACK PAL
+                    endcase
+                end
+                set_strobe <= 1'b1;
             end
-            set_strobe <= 1'b1;
         end
     end
 end

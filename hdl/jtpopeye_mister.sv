@@ -114,6 +114,18 @@ localparam CONF_STR = {
 
 assign VGA_F1 = 0;
 
+/// SDRAM is not used:
+assign SDRAM_DQ = 16'hzzzz;
+assign SDRAM_CLK =  1'b0;
+assign SDRAM_CKE =  1'b0;
+assign SDRAM_A   = 13'b0;
+assign SDRAM_BA  =  2'b0;
+assign SDRAM_DQML=  1'b1;
+assign SDRAM_DQMH=  1'b1;
+assign SDRAM_nCS =  1'b1;
+assign SDRAM_nCAS=  1'b1;
+assign SDRAM_nRAS=  1'b1;
+assign SDRAM_nWE =  1'b1;
 ////////////////////   CLOCKS   ///////////////////
 
 wire clk_sys;

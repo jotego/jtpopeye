@@ -94,7 +94,7 @@ wire          cpu_cen, ay_cen;
 wire [12:0]   obj_addr;
 wire [31:0]   obj_data;
 // PROM
-wire [ 5:0]   prom_we;  
+wire [13:0]   prom_we;  
 wire          prom_7j_we = prom_we[0];     // timing
 wire          prom_5b_we = prom_we[1];
 wire          prom_5a_we = prom_we[2];
@@ -178,19 +178,19 @@ jtpopeye_rom u_rom(
 );
 `else
 jtpopeye_bram u_rom(
-    .rst_n       ( rst_n           ),
     .clk         ( clk             ),
+    // ROM loading
+    .prog_addr   ( prog_addr[14:0] ),
+    .prog_data   ( prog_data       ),
+    .prog_mask   ( prog_mask       ), // active low
+    .prom_we     ( prom_we[13:6]   ),
 
     .main_addr   ( main_addr       ), // 32 kB, addressed as 8-bit words
     .obj_addr    ( obj_addr        ), // 32 kB
 
     .main_dout   ( main_data       ),
     .main_cs     ( main_cs         ),
-    .obj_dout    ( obj_data        ),
-    .prog_addr   ( prog_addr[14:0] ),
-    .prog_data   ( prog_data       ),
-    .prog_mask   ( prog_mask       ), // active low
-    .prog_we     ( prog_we         )     
+    .obj_dout    ( obj_data        )
 );
 assign main_ok = 1'b1;
 assign ready   = 1'b1;

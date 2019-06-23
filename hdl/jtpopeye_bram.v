@@ -19,94 +19,133 @@
 `timescale 1ns/1ps
 
 module jtpopeye_bram(
-    input               rst_n,
     input               clk,
-
+    // ROM loading
+    input       [14:0]  prog_addr,
+    input       [ 7:0]  prog_data,
+    input       [ 1:0]  prog_mask,
+    input       [ 7:0]  prom_we,
+    // ROM access
     input       [14:0]  main_addr, // 32 kB, addressed as 8-bit words
     input       [12:0]  obj_addr,  // 32 kB
 
     output reg  [ 7:0]  main_dout,
     output reg  [31:0]  obj_dout,
-    input               main_cs,
-    // ROM loading
-    input               prog_we,    // strobe
-    input       [14:0]  prog_addr,
-    input       [ 7:0]  prog_data,
-    input       [ 1:0]  prog_mask
+    input               main_cs
 );
 
-reg [7:0] main_mem[0:32767];
-reg [7:0] obj0_mem[0:8191];
-reg [7:0] obj1_mem[0:8191];
-reg [7:0] obj2_mem[0:8191];
-reg [7:0] obj3_mem[0:8191];
+wire [7:0] main0_data, main1_data, main2_data, main3_data;
+wire [7:0] obj0_data, obj1_data, obj2_data, obj3_data;
 
-reg [14:0] wr_addr;
+wire prom_7a_we = prom_we[0];
+wire prom_7b_we = prom_we[1];
+wire prom_7c_we = prom_we[2];
+wire prom_7e_we = prom_we[3];
 
-reg [7:0] data_in;
+wire prom_1e_we = prom_we[4];
+wire prom_1f_we = prom_we[5];
+wire prom_1j_we = prom_we[6];
+wire prom_1k_we = prom_we[7];
 
-reg main_we;
-reg [3:0] obj_we;
-wire addr0 = prog_mask[0];
-
-always @(posedge clk or negedge rst_n) 
-    if( !rst_n ) begin
-        wr_addr  <= 15'd0;
-        data_in  <= 8'd0;
-        main_we  <= 1'b0;
-        obj_we   <= 4'd0;
-    end else begin
-        if( prog_we ) begin
-            wr_addr <= { prog_addr[13:0], addr0 };
-            data_in      <= prog_data;
-            main_we <= ~prog_addr[14];
-            obj_we[0] <=  prog_addr[14:12] == 3'b100;
-            obj_we[1] <=  prog_addr[14:12] == 3'b101;
-            obj_we[2] <=  prog_addr[14:12] == 3'b110;
-            obj_we[3] <=  prog_addr[14:12] == 3'b111;
-        end
-        else begin
-            main_we <= 1'b0;
-            obj_we  <= 4'b0;
-        end
-    end
-
-always @(posedge clk or negedge rst_n) 
-    if( !rst_n ) begin
-        main_dout <= 8'd0;
-    end else begin
-        if( main_we ) 
-            main_mem[wr_addr] <= data_in;
-        else if(main_cs)
-            main_dout <= main_mem[main_addr];
-    end
+always @(posedge clk) if(main_cs) begin
+    case( main_addr[14:13] )
+        2'd0: main_dout <= main0_data;
+        2'd1: main_dout <= main1_data;
+        2'd2: main_dout <= main2_data;
+        2'd3: main_dout <= main3_data;
+    endcase
+end
 
 always @(posedge clk) begin
-    if( obj_we[0] ) obj0_mem[ wr_addr[11:0] ] <= data_in;
-    if( obj_we[1] ) obj1_mem[ wr_addr[11:0] ] <= data_in;
-    if( obj_we[2] ) obj2_mem[ wr_addr[11:0] ] <= data_in;
-    if( obj_we[3] ) obj3_mem[ wr_addr[11:0] ] <= data_in;
     obj_dout <= {
-        obj3_mem[obj_addr],
-        obj2_mem[obj_addr],
-        obj1_mem[obj_addr],
-        obj0_mem[obj_addr]
+        obj3_data,
+        obj2_data,
+        obj1_data,
+        obj0_data
     };
 end
 
-`ifdef SIMULATION
-initial begin : load
-    integer f;
-    f=$fopen("../../rom/tpp2-c.7a", "rb"); $fread( main_mem, f,     0, 8192 ); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7b", "rb"); $fread( main_mem, f,  8192, 8192 ); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7c", "rb"); $fread( main_mem, f, 16384, 8192 ); $fclose(f);
-    f=$fopen("../../rom/tpp2-c.7e", "rb"); $fread( main_mem, f, 24576, 8192 ); $fclose(f);
+// Object ROMs
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( obj_addr[12:0]  ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_1e_we      ),
+    .q      ( obj0_data       )
+);
 
-    f=$fopen("../../rom/tpp2-v.1e", "rb"); $fread( obj0_mem, f); $fclose(f);
-    f=$fopen("../../rom/tpp2-v.1f", "rb"); $fread( obj1_mem, f); $fclose(f);
-    f=$fopen("../../rom/tpp2-v.1j", "rb"); $fread( obj2_mem, f); $fclose(f);
-    f=$fopen("../../rom/tpp2-v.1k", "rb"); $fread( obj3_mem, f); $fclose(f);
-end
-`endif
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( obj_addr[12:0]  ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_1f_we      ),
+    .q      ( obj1_data       )
+);
+
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( obj_addr[12:0]  ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_1j_we      ),
+    .q      ( obj2_data       )
+);
+
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( obj_addr[12:0]  ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_1k_we      ),
+    .q      ( obj3_data       )
+);
+
+// Main CPU ROMs
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7a")) u_main0(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( main_addr[12:0] ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_7a_we      ),
+    .q      ( main0_data      )
+);
+
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7b")) u_main1(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( main_addr[12:0] ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_7b_we      ),
+    .q      ( main1_data      )
+);
+
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7c")) u_main2(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( main_addr[12:0] ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_7c_we      ),
+    .q      ( main2_data      )
+);
+
+jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7e")) u_main3(
+    .clk    ( clk             ),
+    .cen    ( 1'b1            ),
+    .data   ( prog_data       ),
+    .rd_addr( main_addr[12:0] ),
+    .wr_addr( prog_addr[12:0] ),
+    .we     ( prom_7e_we      ),
+    .q      ( main3_data      )
+);
+
 
 endmodule // jtgng_rom
