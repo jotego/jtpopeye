@@ -35,7 +35,7 @@ module jtpopeye_prom_we(
 );
 
 `ifndef MISTER
-localparam PROM_ADDR = 8192*8;
+localparam PROM_ADDR = 8192*4;
 `else
 localparam PROM_ADDR = 0;
 `endif
@@ -69,7 +69,18 @@ always @(posedge clk_rom) begin
             prog_addr <= ioctl_addr;
             prom_we0  <= 14'd0;
             if( !ioctl_addr[16] ) begin
-                prom_we0[ ioctl_addr[15:13] ] <= 1'b1;
+                case( ioctl_addr[15:13] )
+                    // MAIN is also a prom, only for MISTer
+                    3'd0: prom_we0[6]  <= 1'b1;
+                    3'd1: prom_we0[7]  <= 1'b1;
+                    3'd2: prom_we0[8]  <= 1'b1;
+                    3'd3: prom_we0[9]  <= 1'b1;
+                    // OBJ is a prom, both MiST and MiSTer
+                    3'd4: prom_we0[10] <= 1'b1;
+                    3'd5: prom_we0[11] <= 1'b1;
+                    3'd6: prom_we0[12] <= 1'b1;
+                    3'd7: prom_we0[13] <= 1'b1;
+                endcase
             end else begin
                 if( ioctl_addr[12:11] == 2'b01 )
                     prom_we0[5] <= 1'b1; // 5N TXT, throw away the 1st half of the file

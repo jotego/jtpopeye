@@ -286,7 +286,7 @@ wire [1:0] game_start     = { m_start2, m_start1 };
 wire pxl2_cen, pxl_cen;
 wire game_pause = m_pause;
 wire game_service = 1'b0;
-wire rst_n = ~RESET;
+wire rst_n = ~(RESET | status[0] | buttons[1]);
 
 assign VGA_CE = pxl_cen;
 

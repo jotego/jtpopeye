@@ -159,12 +159,10 @@ jtpopeye_rom u_rom(
     .clk         ( clk           ),
 
     .main_addr   ( main_addr     ), // 32 kB, addressed as 8-bit words
-    .obj_addr    ( obj_addr      ), // 32 kB
 
     .main_dout   ( main_data     ),
     .main_cs     ( main_cs       ),
     .main_ok     ( main_ok       ),
-    .obj_dout    ( obj_data      ),
     .ready       ( ready         ),
     // SDRAM interface
     .downloading ( downloading   ),
@@ -175,6 +173,18 @@ jtpopeye_rom u_rom(
     .sdram_addr  ( sdram_addr    ),
     .data_read   ( data_read     ),
     .refresh_en  ( refresh_en    )
+);
+
+jtpopeye_objrom u_objrom(
+    .clk         ( clk             ),
+    // ROM loading
+    .prog_addr   ( prog_addr[14:0] ),
+    .prog_data   ( prog_data       ),
+    .prog_mask   ( prog_mask       ), // active low
+    .prom_we     ( prom_we[13:10]  ),
+
+    .obj_addr    ( obj_addr        ), // 32 kB
+    .obj_dout    ( obj_data        )
 );
 `else
 jtpopeye_bram u_rom(

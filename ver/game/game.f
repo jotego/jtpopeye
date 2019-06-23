@@ -18,6 +18,7 @@
 ../../hdl/jtpopeye_video.v
 ../../hdl/jtpopeye_video_dec.v
 ../../hdl/jtpopeye_obj.v
+../../hdl/jtpopeye_objrom.v
 ../../hdl/jtpopeye_txt.v
 ../../hdl/jtpopeye_game.v
 ../../hdl/jtpopeye_prom_we.v
