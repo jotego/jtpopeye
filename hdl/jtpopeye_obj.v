@@ -28,6 +28,7 @@ module jtpopeye_obj(
     input               ROHVCK,
     input               RV_n,
     input               INITEO,
+    input               HB,
     input               VB,
 
     input      [ 7:0]   H,
@@ -40,13 +41,8 @@ module jtpopeye_obj(
     output reg [ 1:0]   OBJV
 );
 
-// always @(posedge clk)
-//     obj_addr <= { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
-
-always @(posedge clk) if(pxl_cen) begin
-    //if( H[1:0]==2'b11)
-        obj_addr <= 0;//{H,H[4:0]}; //{ DJ[17], DJ[10:1], DJ[0]^~INITEO   };
-end
+always @(posedge clk)
+    obj_addr <= { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
 
 reg hflip;
 reg [15:0] objd0, objd1;
@@ -54,32 +50,54 @@ reg [15:0] objd0, objd1;
 reg [2:0] objc;
 reg [4:0] cnt;  // device 5E, video sheet 2/3
 
-always @(posedge clk) if( pxl_cen ) begin
-    if( H[2:0]==3'd7 ) begin
-        objc   <= DJ[16:14];
-        cnt    <= { 1'b0, DJ[13:12] ^ {2{RV_n}}, 1'b1, ~&DJ[16:14] };
-        hflip  <= DJ[11] ^ RV_n;
-    end else begin
-        cnt    <= { 1'b0, cnt[3:0] }+5'd1;
+wire RV = ~RV_n;
+wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
+
+always @(posedge clk) if( pxl_cen ) begin // 5E
+    if( HB )
+        cnt <= 4'd0;
+    else begin
+        if( H[1:0]==2'b11 )
+            cnt <= { &pload, pload };
+        else
+            cnt <= { 1'b0, cnt[3:0] }+5'd1;
     end
 end
+
+always @(posedge clk) if( pxl_cen ) begin // 3C
+    if( H[1:0]==2'b11 ) begin
+        objc   <= DJ[16:14];
+        hflip  <= DJ[11] ^ RV;
+    end
+end
+
+reg HFLIP;
+reg last_carry;
+wire carry_posedge = cnt[4] && !last_carry;
 
 // devices 4K, 4L, 4J, 5K, 4F, 4H, 4E and 5F, video sheet 2/3
 always @(posedge clk) if(pxl2_cen) begin : shift_register
-    if( !cnt[4] ) begin
+    if( carry_posedge ) begin
         { objd1, objd0 } <= objrom_data;
     end else begin
-        objd1 <= hflip ? { objd1[14:0], 1'b0 } : { 1'b0, objd1[15:1] }; // pink
-        objd0 <= hflip ? { objd0[14:0], 1'b0 } : { 1'b0, objd0[15:1] }; // green
+        objd1 <= HFLIP ? { objd1[14:0], 1'b0 } : { 1'b0, objd1[15:1] }; // pink
+        objd0 <= HFLIP ? { objd0[14:0], 1'b0 } : { 1'b0, objd0[15:1] }; // green
     end
 end
 
-always @(posedge clk) if(pxl2_cen) begin
+always @(posedge clk) if(pxl_cen) begin : u_4C
+    last_carry <= cnt[4];
+    if( carry_posedge ) begin
+        OBJC <= objc;
+        HFLIP <= hflip;
+    end
+end
+
+always @(posedge clk) begin : u_5J
     if(VB) begin
         OBJV <= 2'b00;      // Low outputs during blank as per LS157 behaviour
-    end else if(cnt[4]) begin
-        OBJC <= objc;
-        OBJV <= hflip ? { objd1[15], objd0[15] } : { objd1[0], objd0[0] };
+    end else begin
+        OBJV <= HFLIP ? { objd1[15], objd0[15] } : { objd1[0], objd0[0] };
     end
 end
 

@@ -219,7 +219,6 @@ jtpopeye_bck u_bak(
     .BAKC               ( BAKC[3:0]     )
 );
 
-`ifndef NOOBJ
 jtpopeye_obj u_obj(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -241,11 +240,6 @@ jtpopeye_obj u_obj(
     .OBJC               ( OBJC[2:0]     ),
     .OBJV               ( OBJV          )
 );
-`else
-assign OBJV     =  2'd0;
-assign OBJC[2:0]=  3'd0;
-assign obj_addr = 13'd0;
-`endif
 
 jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),
