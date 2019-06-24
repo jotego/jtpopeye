@@ -109,18 +109,21 @@ end
 
 wire DOTCK = pxl_cen & clk;
 
+reg clk20;
+initial begin
+    clk20 = 1'b0;
+    forever clk20 = #25 ~clk20;
+end
+
 dma uut(
+    .CLK20      ( clk20     ),
     .RESET      ( ~rst_n    ),
     .ROHVCK     ( ROHVCK    ),
     .ROHVS      ( ROHVS     ),
     // from timing
-    .H          ( H         ),
-    .H2O        ( H2O       ),
     .V          ( V         ),
     .HBDn       ( HBDn      ),
-    .HB         ( HB        ),
     .VB         ( VB        ),
-    .DOTCK      ( DOTCK     ),
     // from CPU    
     .DD         ( DD        ),
     .AD         ( AD        ),

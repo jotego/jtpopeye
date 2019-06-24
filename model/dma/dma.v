@@ -2,18 +2,15 @@
 
 module dma(
     input   RESET,
+    input   CLK20,
     output  ROHVCK,
     output  ROHVS,
     
     
     // from timing
-    input   H2O,
-    input   [7:0] H,
     input   [7:0] V,
     input   HBDn,
-    input   HB,
     input   VB,
-    input   DOTCK,
     
     // from CPU
     inout   [7:0] DD,
@@ -27,46 +24,47 @@ module dma(
     
     // Background
     output  [3:0] BAKC,
+    // Objects
+    output  [2:0] OBJC,
+    output  [1:0] OBJV,
     
     output  DMCS,
     output  [28:0] DO
 );
 
 wire [17:0] DJ;
+wire [7:0] H;
 wire [8:0] ROVI;
+wire AIn;
+wire BIn;
+wire BUSAK_n;
+wire BUSRQn;
+wire CSBWn;
+wire DMCS;
+wire DOTCK;
+wire DWRBKn;
+wire H2O;
+wire HB;
+wire INIT_EOn;
+wire MEMWR0;
+wire RVn;
+wire TXTCL;
+wire TXT_SHIFTn;
+wire VBn;
+
 wire [7:0] dma_DM;
 wire [3:0] dma_DMCSn;
 wire [5:0] video1_ADR0;
 wire [5:0] video1_ADR1;
 wire [17:0] video1_DJI;
 wire [2:0] video1_ROVIalt;
-wire [12:0] video3_AD;
+wire [1:0] video2_S;
+wire [3:0] video2_objcnt_start;
 wire [5:0] video3_ADx;
 wire [11:0] video3_AT;
 wire [7:0] video3_BK;
 wire [7:0] video3_ROH;
 wire [8:0] video3_ROV;
-
-wire AIn;
-wire BIn;
-
-wire TXTCL;
-wire VBn;
-wire dma_AI;
-wire dma_BI;
-wire dma_BUSAK;
-wire dma_BUSRQ;
-wire dma_DMCSpullup;
-wire dma_DMEND;
-wire dma_DMclr_n;
-wire video1_CEn0;
-wire video1_CEn1;
-wire video1_H0ln;
-wire video1_RV;
-wire video1_WEn0;
-wire video1_WEn1;
-wire video3_AT11n;
-wire video3_BAKCK;
 
 
 `include "dma_model.v"
