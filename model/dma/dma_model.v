@@ -116,6 +116,25 @@ jt7474 u_1L1(
     .VDD       ( 1'b1                     ) /* pin 14*/ 
 );
 
+jt74174 u_1L2(
+    .cl_b      ( 1'b1                     ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .clk       ( video1_DJ_latch_clk      ) /* pin 9*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ video1_DJI[5],
+                  video1_DJI[4],
+                  video1_DJI[3],
+                  video1_DJI[2],
+                  video1_DJI[1],
+                  video1_DJI[0]}),
+    .q         ({ DJ[5],
+                  DJ[4],
+                  DJ[3],
+                  DJ[2],
+                  DJ[1],
+                  DJ[0]})
+);
+
 RAM_7063 u_1M2(
     .WEn       ( video1_WEn0              ) /* pin 13*/ ,
     .CEn       ( video1_CEn0              ) /* pin 15*/ ,
@@ -381,6 +400,25 @@ jt7402 u_2K1(
     .VDD       ( 1'b1                     ) /* pin 14*/ 
 );
 
+jt74174 u_2L1(
+    .cl_b      ( 1'b1                     ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .clk       ( video1_DJ_latch_clk      ) /* pin 9*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ video1_DJI[11],
+                  video1_DJI[10],
+                  video1_DJI[9],
+                  video1_DJI[8],
+                  video1_DJI[7],
+                  video1_DJI[6]}),
+    .q         ({ DJ[11],
+                  DJ[10],
+                  DJ[9],
+                  DJ[8],
+                  DJ[7],
+                  DJ[6]})
+);
+
 RAM_5501 u_2R1(
     .WEn       ( dma_DMCSn[2]             ) /* pin 20*/ ,
     .A         ({ dma_DM[7],
@@ -464,7 +502,7 @@ RAM_5501 u_2U1(
 jt7400 u_3A1(
     .in1       ( Net__3A1_Pad1_           ) /* pin 1*/ ,
     .in2       ( video1_HBn               ) /* pin 2*/ ,
-    .out3      ( Net__3A1_Pad3_           ) /* pin 3*/ ,
+    .out3      ( TXT_SHIFTn               ) /* pin 3*/ ,
     .out8      ( video1_preWEx            ) /* pin 8*/ ,
     .in9       ( Net__3A1_Pad10_          ) /* pin 9*/ ,
     .in10      ( Net__3A1_Pad10_          ) /* pin 10*/ 
@@ -512,6 +550,25 @@ jt74367 u_3H1(
                   Net__3H1_Pad7_,
                   Net__3H1_Pad5_,
                   Net__3H1_Pad3_})
+);
+
+jt74174 u_3L1(
+    .cl_b      ( 1'b1                     ) /* pin 1*/ ,
+    .VSS       ( 1'b0                     ) /* pin 8*/ ,
+    .clk       ( video1_DJ_latch_clk      ) /* pin 9*/ ,
+    .VDD       ( 1'b1                     ) /* pin 16*/ ,
+    .d         ({ video1_DJI[17],
+                  video1_DJI[16],
+                  video1_DJI[15],
+                  video1_DJI[14],
+                  video1_DJI[13],
+                  video1_DJI[12]}),
+    .q         ({ DJ[17],
+                  DJ[16],
+                  DJ[15],
+                  DJ[14],
+                  DJ[13],
+                  DJ[12]})
 );
 
 RAM_7063 u_3M2(
@@ -598,7 +655,7 @@ jt7474 u_4B1(
     .q2        ( Net__4B1_Pad9_           ) /* pin 9*/ ,
     .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
     .clk2      ( DOTCK                    ) /* pin 11*/ ,
-    .d2        ( Net__3A1_Pad3_           ) /* pin 12*/ ,
+    .d2        ( TXT_SHIFTn               ) /* pin 12*/ ,
     .cl2_b     ( 1'b1                     ) /* pin 13*/ 
 );
 
@@ -1021,9 +1078,9 @@ jt74157 u_8T1(
 );
 
 jt74174 u_8U1(
-    .clk       ( 1'b1                     ) /* pin 1*/ ,
+    .cl_b      ( 1'b1                     ) /* pin 1*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( video3_BAKCK             ) /* pin 9*/ ,
+    .clk       ( video3_BAKCK             ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .d         ({ 1'b0,
                   1'b0,
@@ -1040,7 +1097,7 @@ jt74174 u_8U1(
 );
 
 jt74283 U3R1(
-    .cin       ( Net__U3R1_Pad7_          ) /* pin 7*/ ,
+    .cin       ( video1_v_halfcarry       ) /* pin 7*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
     .cout      ( ROVI[8]                  ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
@@ -1061,7 +1118,7 @@ jt74283 U3R1(
 jt74283 U3S1(
     .cin       ( Net__2A1_Pad3_           ) /* pin 7*/ ,
     .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cout      ( Net__U3R1_Pad7_          ) /* pin 9*/ ,
+    .cout      ( video1_v_halfcarry       ) /* pin 9*/ ,
     .VDD       ( 1'b1                     ) /* pin 16*/ ,
     .a         ({ DO[11],
                   DO[10],
@@ -1094,63 +1151,6 @@ jt74283 U3T1(
                   Net__U3T1_Pad13_,
                   Net__U3T1_Pad1_,
                   Net__U3T1_Pad4_})
-);
-
-jt74174 U5(
-    .clk       ( 1'b1                     ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ video1_DJI[5],
-                  video1_DJI[4],
-                  video1_DJI[3],
-                  video1_DJI[2],
-                  video1_DJI[1],
-                  video1_DJI[0]}),
-    .q         ({ DJ[5],
-                  DJ[4],
-                  DJ[3],
-                  DJ[2],
-                  DJ[1],
-                  DJ[0]})
-);
-
-jt74174 U6(
-    .clk       ( 1'b1                     ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ video1_DJI[11],
-                  video1_DJI[10],
-                  video1_DJI[9],
-                  video1_DJI[8],
-                  video1_DJI[7],
-                  video1_DJI[6]}),
-    .q         ({ DJ[11],
-                  DJ[10],
-                  DJ[9],
-                  DJ[8],
-                  DJ[7],
-                  DJ[6]})
-);
-
-jt74174 U7(
-    .clk       ( 1'b1                     ) /* pin 1*/ ,
-    .VSS       ( 1'b0                     ) /* pin 8*/ ,
-    .cl_b      ( video1_DJ_latch_clk      ) /* pin 9*/ ,
-    .VDD       ( 1'b1                     ) /* pin 16*/ ,
-    .d         ({ video1_DJI[17],
-                  video1_DJI[16],
-                  video1_DJI[15],
-                  video1_DJI[14],
-                  video1_DJI[13],
-                  video1_DJI[12]}),
-    .q         ({ DJ[17],
-                  DJ[16],
-                  DJ[15],
-                  DJ[14],
-                  DJ[13],
-                  DJ[12]})
 );
 
 jt74273 U8(
