@@ -6,7 +6,6 @@ module dma(
     output  ROHVCK,
     output  ROHVS,
     
-    
     // from timing
     input   [7:0] V,
     input   HBDn,

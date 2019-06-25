@@ -6,7 +6,7 @@ EXTRA2=-lxt
 echo "Importing netlist"
 ../../modules/jtframe/cc/pcb2ver ../popeye/popeye_model.net \
     --lib ../../modules/jtframe/hdl/jt74.v \
-    --ports dma.v \
+    --ports dma.v --wires \
     > dma_model.v
 
 while [ $# -gt 0 ]; do
