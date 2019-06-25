@@ -400,7 +400,8 @@ jt74138 u_1E1(
                   _dma_DMCSn[0]})
 );
 
-ROM_2764 u_1E2(
+ROM_2764 #(.simfile("../../rom/tpp2-v.1e") 
+) u_1E2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
     .P         ( 1'b1                     ) /* pin 27*/ ,
@@ -444,7 +445,8 @@ jt74161 u_1F1(
                   Net__1F1_Pad14_})
 );
 
-ROM_2764 u_1F2(
+ROM_2764 #(.simfile("../../rom/tpp2-v.1f") 
+) u_1F2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
     .P         ( 1'b1                     ) /* pin 27*/ ,
@@ -471,7 +473,8 @@ ROM_2764 u_1F2(
                   Net__1F2_Pad11_})
 );
 
-ROM_2764 u_1J1(
+ROM_2764 #(.simfile("../../rom/tpp2-v.1j") 
+) u_1J1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
     .P         ( 1'b1                     ) /* pin 27*/ ,
@@ -498,7 +501,8 @@ ROM_2764 u_1J1(
                   Net__1J1_Pad11_})
 );
 
-ROM_2764 u_1K1(
+ROM_2764 #(.simfile("../../rom/tpp2-v.1k") 
+) u_1K1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
     .P         ( 1'b1                     ) /* pin 27*/ ,
