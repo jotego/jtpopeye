@@ -60,6 +60,15 @@
 // 0x8E00 - 0x8E9E
 // 0x8F00 - 0x8F9E
 
+// DO[15:8] - object's Y
+// DO[ 7:0] - object's X, DO[7:3] used to address the object buffer
+
+// DJ[2:0] - object's Y (mod 8)
+// { DJ[17], DJ[10:3] } - object ID
+// DJ[16:15] - object's palette
+// DJ[11] - hflip
+// DJ[13:12] - count start
+
 
 module jtpopeye_dma(
     input               rst_n,

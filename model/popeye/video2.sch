@@ -961,10 +961,10 @@ Wire Wire Line
 	9950 6050 10250 6050
 Connection ~ 9950 5450
 $Comp
-L jt74xx:74LS161 U2
+L jt74xx:74LS161 5E1
 U 1 1 5D2A7693
 P 12700 5850
-F 0 "U2" H 12700 5850 50  0000 C CNN
+F 0 "5E1" H 12700 5850 50  0000 C CNN
 F 1 "74LS161" H 12850 5350 50  0000 C CNN
 F 2 "" H 12700 5850 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS161" H 12700 5850 50  0001 C CNN
@@ -1907,8 +1907,6 @@ ROMclk
 Wire Wire Line
 	13200 8400 13300 8400
 Wire Wire Line
-	13300 8400 13300 8150
-Wire Wire Line
 	4000 9950 3800 9950
 Wire Wire Line
 	3800 9950 3800 7300
@@ -2160,4 +2158,33 @@ Text Label 10500 9900 1    50   ~ 0
 ROMclk_base
 Text Label 10500 8400 0    50   ~ 0
 ROMclk_filtered
+Wire Wire Line
+	12200 5850 11850 5850
+Wire Wire Line
+	11850 5850 11850 7950
+Wire Wire Line
+	11850 7950 13300 7950
+Wire Wire Line
+	13300 7950 13300 8400
+Wire Wire Line
+	12000 4100 11850 4100
+Wire Wire Line
+	11850 4100 11850 5850
+Connection ~ 11850 5850
+Wire Wire Line
+	13300 5350 13200 5350
+Wire Wire Line
+	13300 5450 13200 5450
+Wire Wire Line
+	13300 5550 13200 5550
+Wire Wire Line
+	13300 5650 13200 5650
+Text Label 13300 5650 0    50   ~ 0
+objcnt[3]
+Text Label 13300 5550 0    50   ~ 0
+objcnt[2]
+Text Label 13300 5450 0    50   ~ 0
+objcnt[1]
+Text Label 13300 5350 0    50   ~ 0
+objcnt[0]
 $EndSCHEMATC
