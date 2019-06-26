@@ -341,7 +341,7 @@ jt74138 u_1E1(
                   _dma_DMCSn[0]})
 );
 
-ROM_2764 #(.simfile( "../../rom/tpp2-v.1e") 
+ROM_2764 #(.simfile("../../rom/tpp2-v.1e") 
 ) u_1E2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -386,7 +386,7 @@ jt74161 u_1F1(
                   Net__1F1_Pad14_})
 );
 
-ROM_2764 #(.simfile( "../../rom/tpp2-v.1f") 
+ROM_2764 #(.simfile("../../rom/tpp2-v.1f") 
 ) u_1F2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -414,7 +414,7 @@ ROM_2764 #(.simfile( "../../rom/tpp2-v.1f")
                   _video2_objrom[16]})
 );
 
-ROM_2764 #(.simfile( "../../rom/tpp2-v.1j") 
+ROM_2764 #(.simfile("../../rom/tpp2-v.1j") 
 ) u_1J1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -442,7 +442,7 @@ ROM_2764 #(.simfile( "../../rom/tpp2-v.1j")
                   _video2_objrom[8]})
 );
 
-ROM_2764 #(.simfile( "../../rom/tpp2-v.1k") 
+ROM_2764 #(.simfile("../../rom/tpp2-v.1k") 
 ) u_1K1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -1900,7 +1900,7 @@ jt74161 U2(
                   Net__U2_Pad14_})
 );
 
-delay #(.delay_time( 40) 
+delay #(.delay_time(40) 
 ) U3(
     .a         ( _video2_ROMclk_base      ) /* pin 1*/ ,
     .y         ( _video2_ROMclk_filtered  ) /* pin 2*/ 
