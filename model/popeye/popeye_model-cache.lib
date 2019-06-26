@@ -233,6 +233,21 @@ X A1 9 -500 500 100 R 50 50 1 1 I
 ENDDRAW
 ENDDEF
 #
+# arcade_delay
+#
+DEF arcade_delay U 0 40 Y Y 1 F N
+F0 "U" 0 50 50 H V C CNN
+F1 "arcade_delay" 0 -100 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+F4 "40" 200 100 50 H V C CNN "delay_time"
+DRAW
+S -200 150 250 -150 0 1 0 f
+X a 1 -300 0 100 R 50 50 1 1 I
+X y 2 350 0 100 L 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
 # arcade_rpullup
 #
 DEF arcade_rpullup pu 0 40 Y Y 1 F N

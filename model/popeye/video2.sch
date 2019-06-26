@@ -162,7 +162,7 @@ F 0 "1K1" H 2950 2715 50  0000 C CNN
 F 1 "ROM_2764" H 2950 2624 50  0000 C CNN
 F 2 "" H 2950 1850 50  0001 C CNN
 F 3 "" H 2950 1850 50  0001 C CNN
-F 4 "../../rom/tpp2-v.1k" H 2950 1850 50  0001 C CNN "simfile"
+F 4 "\"../../rom/tpp2-v.1k\"" H 2950 1850 50  0001 C CNN "simfile"
 	1    2950 1850
 	1    0    0    -1  
 $EndComp
@@ -194,10 +194,10 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS194" H 6200 4100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L jt74xx:74LS377 3K2
+L jt74xx:74LS377 3J1
 U 1 1 5D12A882
 P 4500 4400
-F 0 "3K2" H 4500 4400 50  0000 C CNN
+F 0 "3J1" H 4500 4400 50  0000 C CNN
 F 1 "74LS377" H 4600 3900 50  0000 C CNN
 F 2 "" H 4500 4400 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74LS377" H 4500 4400 50  0001 C CNN
@@ -271,7 +271,7 @@ F 0 "1J1" H 2950 5365 50  0000 C CNN
 F 1 "ROM_2764" H 2950 5274 50  0000 C CNN
 F 2 "" H 2950 4500 50  0001 C CNN
 F 3 "" H 2950 4500 50  0001 C CNN
-F 4 "../../rom/tpp2-v.1j" H 2950 4500 50  0001 C CNN "simfile"
+F 4 "\"../../rom/tpp2-v.1j\"" H 2950 4500 50  0001 C CNN "simfile"
 	1    2950 4500
 	1    0    0    -1  
 $EndComp
@@ -416,8 +416,6 @@ Wire Wire Line
 	1900 1250 2450 1250
 Wire Wire Line
 	1300 1150 1150 1150
-Text GLabel 1150 1150 0    50   Input ~ 0
-INIT_EOn
 Text GLabel 2350 2450 0    50   Input ~ 0
 DJ[16]
 Text Label 2000 1250 0    50   ~ 0
@@ -587,7 +585,7 @@ F 0 "1F2" H 2950 7865 50  0000 C CNN
 F 1 "ROM_2764" H 2950 7774 50  0000 C CNN
 F 2 "" H 2950 7000 50  0001 C CNN
 F 3 "" H 2950 7000 50  0001 C CNN
-F 4 "../../rom/tpp2-v.1f" H 2950 7000 50  0001 C CNN "simfile"
+F 4 "\"../../rom/tpp2-v.1f\"" H 2950 7000 50  0001 C CNN "simfile"
 	1    2950 7000
 	1    0    0    -1  
 $EndComp
@@ -696,7 +694,7 @@ F 0 "1E2" H 2950 10515 50  0000 C CNN
 F 1 "ROM_2764" H 2950 10424 50  0000 C CNN
 F 2 "" H 2950 9650 50  0001 C CNN
 F 3 "" H 2950 9650 50  0001 C CNN
-F 4 "../../rom/tpp2-v.1e" H 2950 9650 50  0001 C CNN "simfile"
+F 4 "\"../../rom/tpp2-v.1e\"" H 2950 9650 50  0001 C CNN "simfile"
 	1    2950 9650
 	1    0    0    -1  
 $EndComp
@@ -1901,7 +1899,7 @@ Connection ~ 12050 9850
 Wire Wire Line
 	12050 9850 12050 10000
 Wire Wire Line
-	10500 9950 10500 8400
+	10500 9950 10500 9400
 Wire Wire Line
 	10500 8400 12200 8400
 Text Label 13300 8150 3    50   ~ 0
@@ -1952,4 +1950,214 @@ Text Label 16650 10050 2    50   ~ 0
 Hcnt_rstn
 Text Label 12350 9450 2    50   ~ 0
 Hclk
+Text Label 3550 1250 0    50   ~ 0
+objrom[0]
+Text Label 3550 1350 0    50   ~ 0
+objrom[1]
+Text Label 3550 1450 0    50   ~ 0
+objrom[2]
+Text Label 3550 1550 0    50   ~ 0
+objrom[3]
+Text Label 3550 1650 0    50   ~ 0
+objrom[4]
+Text Label 3550 1750 0    50   ~ 0
+objrom[5]
+Text Label 3550 1850 0    50   ~ 0
+objrom[6]
+Text Label 3550 1950 0    50   ~ 0
+objrom[7]
+Text Label 3550 3900 0    50   ~ 0
+objrom[8]
+Text Label 3550 4000 0    50   ~ 0
+objrom[9]
+Text Label 3550 4100 0    50   ~ 0
+objrom[10]
+Text Label 3550 4200 0    50   ~ 0
+objrom[11]
+Text Label 3550 4300 0    50   ~ 0
+objrom[12]
+Text Label 3550 4400 0    50   ~ 0
+objrom[13]
+Text Label 3550 4600 0    50   ~ 0
+objrom[15]
+Text Label 3550 6400 0    50   ~ 0
+objrom[16]
+Text Label 3550 6500 0    50   ~ 0
+objrom[17]
+Text Label 3550 6600 0    50   ~ 0
+objrom[18]
+Text Label 3550 6700 0    50   ~ 0
+objrom[19]
+Text Label 3550 6800 0    50   ~ 0
+objrom[20]
+Text Label 3550 6900 0    50   ~ 0
+objrom[21]
+Text Label 3550 7000 0    50   ~ 0
+objrom[22]
+Text Label 3550 7100 0    50   ~ 0
+objrom[23]
+Text Label 3550 9050 0    50   ~ 0
+objrom[24]
+Text Label 3550 9150 0    50   ~ 0
+objrom[25]
+Text Label 3550 9250 0    50   ~ 0
+objrom[26]
+Text Label 3550 9350 0    50   ~ 0
+objrom[27]
+Text Label 3550 9450 0    50   ~ 0
+objrom[28]
+Text Label 3550 9550 0    50   ~ 0
+objrom[29]
+Text Label 3550 9750 0    50   ~ 0
+objrom[31]
+Text Label 3550 9650 0    50   ~ 0
+objrom[30]
+Text Label 3550 4500 0    50   ~ 0
+objrom[14]
+Text Label 5000 1250 0    50   ~ 0
+objlatch[0]
+Text Label 5000 1350 0    50   ~ 0
+objlatch[1]
+Text Label 5000 1450 0    50   ~ 0
+objlatch[2]
+Text Label 5000 1550 0    50   ~ 0
+objlatch[3]
+Text Label 5000 1650 0    50   ~ 0
+objlatch[4]
+Text Label 5000 1750 0    50   ~ 0
+objlatch[5]
+Text Label 5000 1850 0    50   ~ 0
+objlatch[6]
+Text Label 5000 1950 0    50   ~ 0
+objlatch[7]
+Text Label 5000 3900 0    50   ~ 0
+objlatch[8]
+Text Label 5000 4000 0    50   ~ 0
+objlatch[9]
+Text Label 5000 4100 0    50   ~ 0
+objlatch[10]
+Text Label 5000 4200 0    50   ~ 0
+objlatch[11]
+Text Label 5000 4300 0    50   ~ 0
+objlatch[12]
+Text Label 5000 4400 0    50   ~ 0
+objlatch[13]
+Text Label 5000 4500 0    50   ~ 0
+objlatch[14]
+Text Label 5000 4600 0    50   ~ 0
+objlatch[15]
+Text Label 5000 6400 0    50   ~ 0
+objlatch[16]
+Text Label 5000 6500 0    50   ~ 0
+objlatch[17]
+Text Label 5000 6600 0    50   ~ 0
+objlatch[18]
+Text Label 5000 6700 0    50   ~ 0
+objlatch[19]
+Text Label 5000 6800 0    50   ~ 0
+objlatch[20]
+Text Label 5000 6900 0    50   ~ 0
+objlatch[21]
+Text Label 5000 7000 0    50   ~ 0
+objlatch[22]
+Text Label 5000 7100 0    50   ~ 0
+objlatch[23]
+Text Label 5000 9050 0    50   ~ 0
+objlatch[24]
+Text Label 5000 9150 0    50   ~ 0
+objlatch[25]
+Text Label 5000 9250 0    50   ~ 0
+objlatch[26]
+Text Label 5000 9350 0    50   ~ 0
+objlatch[27]
+Text Label 5000 9450 0    50   ~ 0
+objlatch[28]
+Text Label 5000 9550 0    50   ~ 0
+objlatch[29]
+Text Label 5000 9650 0    50   ~ 0
+objlatch[30]
+Text Label 5000 9750 0    50   ~ 0
+objlatch[31]
+$Comp
+L jt74xx:74LS04 6A1
+U 6 1 5D17AC8D
+P 20350 3950
+F 0 "6A1" H 20350 4267 50  0000 C CNN
+F 1 "74LS04" H 20350 4176 50  0000 C CNN
+F 2 "" H 20350 3950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS04" H 20350 3950 50  0001 C CNN
+	6    20350 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	20650 3950 20800 3950
+Text Label 20800 3950 0    50   ~ 0
+INIT_EOn
+Text Label 1150 1150 2    50   ~ 0
+INIT_EOn
+$Comp
+L jt74xx:74LS86 8C1
+U 3 1 5D1BC1AA
+P 19650 3950
+F 0 "8C1" H 19650 3633 50  0000 C CNN
+F 1 "74LS86" H 19650 3724 50  0000 C CNN
+F 2 "" H 19650 3950 50  0001 C CNN
+F 3 "74xx/74ls86.pdf" H 19650 3950 50  0001 C CNN
+	3    19650 3950
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	19950 3950 20050 3950
+$Comp
+L jt74xx:74LS74 5C1
+U 1 1 5D23E319
+P 18250 3950
+F 0 "5C1" H 18250 4428 50  0000 C CNN
+F 1 "74LS74" H 18250 4337 50  0000 C CNN
+F 2 "" H 18250 3950 50  0001 C CNN
+F 3 "74xx/74hc_hct74.pdf" H 18250 3950 50  0001 C CNN
+	1    18250 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	18550 4050 19350 4050
+Wire Wire Line
+	19350 3850 19200 3850
+Text Label 19200 3850 0    50   ~ 0
+RV
+NoConn ~ 18550 3850
+Wire Wire Line
+	17950 3850 17800 3850
+Text Label 17800 3850 2    50   ~ 0
+HB
+Wire Wire Line
+	17950 3950 17800 3950
+Text GLabel 17800 3950 0    50   Input ~ 0
+VB
+Wire Wire Line
+	18250 3650 18700 3650
+Wire Wire Line
+	18700 3650 18700 4250
+Wire Wire Line
+	18700 4250 18250 4250
+Text Label 18250 4250 0    50   ~ 0
+VDD
+$Comp
+L arcade:delay U3
+U 1 1 5D3CB60D
+P 10500 9100
+F 0 "U3" V 10616 8922 50  0000 R CNN
+F 1 "delay" V 10525 8922 50  0000 R CNN
+F 2 "" H 10500 9100 50  0001 C CNN
+F 3 "" H 10500 9100 50  0001 C CNN
+F 4 "40" V 10434 8922 50  0000 R CNN "delay_time"
+	1    10500 9100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	10500 8750 10500 8400
+Text Label 10500 9900 1    50   ~ 0
+ROMclk_base
+Text Label 10500 8400 0    50   ~ 0
+ROMclk_filtered
 $EndSCHEMATC

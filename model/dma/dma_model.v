@@ -9,6 +9,8 @@ wire [17:0] _video1_DJI;
 wire [2:0] _video1_ROVIalt;
 wire [1:0] _video2_S;
 wire [3:0] _video2_objcnt_start;
+wire [31:0] _video2_objlatch;
+wire [31:0] _video2_objrom;
 wire [5:0] _video3_ADx;
 wire [11:0] _video3_AT;
 wire [7:0] _video3_BK;
@@ -20,7 +22,6 @@ wire DOTCK;
 wire GND;
 wire H2O;
 wire HB;
-wire INIT_EOn;
 wire Net__1B1_Pad10_;
 wire Net__1B1_Pad12_;
 wire Net__1B1_Pad3_;
@@ -39,14 +40,6 @@ wire Net__1E1_Pad1_;
 wire Net__1E1_Pad2_;
 wire Net__1E1_Pad7_;
 wire Net__1E1_Pad9_;
-wire Net__1E2_Pad11_;
-wire Net__1E2_Pad12_;
-wire Net__1E2_Pad13_;
-wire Net__1E2_Pad15_;
-wire Net__1E2_Pad16_;
-wire Net__1E2_Pad17_;
-wire Net__1E2_Pad18_;
-wire Net__1E2_Pad19_;
 wire Net__1F1_Pad11_;
 wire Net__1F1_Pad12_;
 wire Net__1F1_Pad13_;
@@ -56,30 +49,6 @@ wire Net__1F1_Pad3_;
 wire Net__1F1_Pad4_;
 wire Net__1F1_Pad5_;
 wire Net__1F1_Pad6_;
-wire Net__1F2_Pad11_;
-wire Net__1F2_Pad12_;
-wire Net__1F2_Pad13_;
-wire Net__1F2_Pad15_;
-wire Net__1F2_Pad16_;
-wire Net__1F2_Pad17_;
-wire Net__1F2_Pad18_;
-wire Net__1F2_Pad19_;
-wire Net__1J1_Pad11_;
-wire Net__1J1_Pad12_;
-wire Net__1J1_Pad13_;
-wire Net__1J1_Pad15_;
-wire Net__1J1_Pad16_;
-wire Net__1J1_Pad17_;
-wire Net__1J1_Pad18_;
-wire Net__1J1_Pad19_;
-wire Net__1K1_Pad11_;
-wire Net__1K1_Pad12_;
-wire Net__1K1_Pad13_;
-wire Net__1K1_Pad15_;
-wire Net__1K1_Pad16_;
-wire Net__1K1_Pad17_;
-wire Net__1K1_Pad18_;
-wire Net__1K1_Pad19_;
 wire Net__1L1_Pad1_;
 wire Net__1L1_Pad3_;
 wire Net__1U1_Pad12_;
@@ -121,23 +90,6 @@ wire Net__3C1_Pad7_;
 wire Net__3C1_Pad9_;
 wire Net__3D1_Pad10_;
 wire Net__3D1_Pad11_;
-wire Net__3D1_Pad8_;
-wire Net__3E2_Pad12_;
-wire Net__3E2_Pad15_;
-wire Net__3E2_Pad16_;
-wire Net__3E2_Pad19_;
-wire Net__3E2_Pad2_;
-wire Net__3E2_Pad5_;
-wire Net__3E2_Pad6_;
-wire Net__3E2_Pad9_;
-wire Net__3F1_Pad12_;
-wire Net__3F1_Pad15_;
-wire Net__3F1_Pad16_;
-wire Net__3F1_Pad19_;
-wire Net__3F1_Pad2_;
-wire Net__3F1_Pad5_;
-wire Net__3F1_Pad6_;
-wire Net__3F1_Pad9_;
 wire Net__3H1_Pad10_;
 wire Net__3H1_Pad1_;
 wire Net__3H1_Pad2_;
@@ -147,22 +99,6 @@ wire Net__3H1_Pad5_;
 wire Net__3H1_Pad6_;
 wire Net__3H1_Pad7_;
 wire Net__3H1_Pad9_;
-wire Net__3K1_Pad12_;
-wire Net__3K1_Pad15_;
-wire Net__3K1_Pad16_;
-wire Net__3K1_Pad19_;
-wire Net__3K1_Pad2_;
-wire Net__3K1_Pad5_;
-wire Net__3K1_Pad6_;
-wire Net__3K1_Pad9_;
-wire Net__3K2_Pad12_;
-wire Net__3K2_Pad15_;
-wire Net__3K2_Pad16_;
-wire Net__3K2_Pad19_;
-wire Net__3K2_Pad2_;
-wire Net__3K2_Pad5_;
-wire Net__3K2_Pad6_;
-wire Net__3K2_Pad9_;
 wire Net__4B1_Pad9_;
 wire Net__4C1_Pad10_;
 wire Net__4C1_Pad13_;
@@ -199,6 +135,8 @@ wire Net__4K1_Pad15_;
 wire Net__4K1_Pad2_;
 wire Net__4L1_Pad13_;
 wire Net__4L1_Pad14_;
+wire Net__5C1_Pad5_;
+wire Net__5C1_Pad6_;
 wire Net__5F1_Pad13_;
 wire Net__5F1_Pad14_;
 wire Net__5J1_Pad12_;
@@ -208,6 +146,7 @@ wire Net__5K1_Pad13_;
 wire Net__5K1_Pad14_;
 wire Net__5L1_Pad2_;
 wire Net__5L1_Pad8_;
+wire Net__6A1_Pad13_;
 wire Net__6C2_Pad10_;
 wire Net__6C2_Pad13_;
 wire Net__6C2_Pad14_;
@@ -309,7 +248,10 @@ wire _video2_DJEO;
 wire _video2_HBn;
 wire _video2_Hclk;
 wire _video2_Hcnt_rstn;
+wire _video2_INIT_EOn;
 wire _video2_ROMclk;
+wire _video2_ROMclk_base;
+wire _video2_ROMclk_filtered;
 wire _video2_RV;
 wire _video2_RVx;
 wire _video2_hflip;
@@ -399,7 +341,7 @@ jt74138 u_1E1(
                   _dma_DMCSn[0]})
 );
 
-ROM_2764 #(.simfile("../../rom/tpp2-v.1e") 
+ROM_2764 #(.simfile( "../../rom/tpp2-v.1e") 
 ) u_1E2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -417,14 +359,14 @@ ROM_2764 #(.simfile("../../rom/tpp2-v.1e")
                   DJ[2],
                   DJ[1],
                   _video2_DJEO}),
-    .D         ({ Net__1E2_Pad19_,
-                  Net__1E2_Pad18_,
-                  Net__1E2_Pad17_,
-                  Net__1E2_Pad16_,
-                  Net__1E2_Pad15_,
-                  Net__1E2_Pad13_,
-                  Net__1E2_Pad12_,
-                  Net__1E2_Pad11_})
+    .D         ({ _video2_objrom[31],
+                  _video2_objrom[30],
+                  _video2_objrom[29],
+                  _video2_objrom[28],
+                  _video2_objrom[27],
+                  _video2_objrom[26],
+                  _video2_objrom[25],
+                  _video2_objrom[24]})
 );
 
 jt74161 u_1F1(
@@ -444,7 +386,7 @@ jt74161 u_1F1(
                   Net__1F1_Pad14_})
 );
 
-ROM_2764 #(.simfile("../../rom/tpp2-v.1f") 
+ROM_2764 #(.simfile( "../../rom/tpp2-v.1f") 
 ) u_1F2(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -462,17 +404,17 @@ ROM_2764 #(.simfile("../../rom/tpp2-v.1f")
                   DJ[2],
                   DJ[1],
                   _video2_DJEO}),
-    .D         ({ Net__1F2_Pad19_,
-                  Net__1F2_Pad18_,
-                  Net__1F2_Pad17_,
-                  Net__1F2_Pad16_,
-                  Net__1F2_Pad15_,
-                  Net__1F2_Pad13_,
-                  Net__1F2_Pad12_,
-                  Net__1F2_Pad11_})
+    .D         ({ _video2_objrom[23],
+                  _video2_objrom[22],
+                  _video2_objrom[21],
+                  _video2_objrom[20],
+                  _video2_objrom[19],
+                  _video2_objrom[18],
+                  _video2_objrom[17],
+                  _video2_objrom[16]})
 );
 
-ROM_2764 #(.simfile("../../rom/tpp2-v.1j") 
+ROM_2764 #(.simfile( "../../rom/tpp2-v.1j") 
 ) u_1J1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -490,17 +432,17 @@ ROM_2764 #(.simfile("../../rom/tpp2-v.1j")
                   DJ[2],
                   DJ[1],
                   _video2_DJEO}),
-    .D         ({ Net__1J1_Pad19_,
-                  Net__1J1_Pad18_,
-                  Net__1J1_Pad17_,
-                  Net__1J1_Pad16_,
-                  Net__1J1_Pad15_,
-                  Net__1J1_Pad13_,
-                  Net__1J1_Pad12_,
-                  Net__1J1_Pad11_})
+    .D         ({ _video2_objrom[15],
+                  _video2_objrom[14],
+                  _video2_objrom[13],
+                  _video2_objrom[12],
+                  _video2_objrom[11],
+                  _video2_objrom[10],
+                  _video2_objrom[9],
+                  _video2_objrom[8]})
 );
 
-ROM_2764 #(.simfile("../../rom/tpp2-v.1k") 
+ROM_2764 #(.simfile( "../../rom/tpp2-v.1k") 
 ) u_1K1(
     .CEn       ( 1'b0                     ) /* pin 20*/ ,
     .OEn       ( 1'b0                     ) /* pin 22*/ ,
@@ -518,14 +460,14 @@ ROM_2764 #(.simfile("../../rom/tpp2-v.1k")
                   DJ[2],
                   DJ[1],
                   _video2_DJEO}),
-    .D         ({ Net__1K1_Pad19_,
-                  Net__1K1_Pad18_,
-                  Net__1K1_Pad17_,
-                  Net__1K1_Pad16_,
-                  Net__1K1_Pad15_,
-                  Net__1K1_Pad13_,
-                  Net__1K1_Pad12_,
-                  Net__1K1_Pad11_})
+    .D         ({ _video2_objrom[7],
+                  _video2_objrom[6],
+                  _video2_objrom[5],
+                  _video2_objrom[4],
+                  _video2_objrom[3],
+                  _video2_objrom[2],
+                  _video2_objrom[1],
+                  _video2_objrom[0]})
 );
 
 jt7474 u_1L1(
@@ -939,7 +881,7 @@ jt74174 u_3C1(
 );
 
 jt7410 u_3D1(
-    .Yc        ( Net__3D1_Pad8_           ) /* pin 8*/ ,
+    .Yc        ( _video2_ROMclk_base      ) /* pin 8*/ ,
     .C         ({ Net__3D1_Pad11_,
                   Net__3D1_Pad10_,
                   _video2_Hclk})
@@ -965,43 +907,43 @@ jt74367 u_3E1(
 jt74377 u_3E2(
     .cen_b     ( 1'b0                     ) /* pin 1*/ ,
     .clk       ( _video2_ROMclk           ) /* pin 11*/ ,
-    .D         ({ Net__1E2_Pad19_,
-                  Net__1E2_Pad18_,
-                  Net__1E2_Pad17_,
-                  Net__1E2_Pad16_,
-                  Net__1E2_Pad15_,
-                  Net__1E2_Pad13_,
-                  Net__1E2_Pad12_,
-                  Net__1E2_Pad11_}),
-    .Q         ({ Net__3E2_Pad19_,
-                  Net__3E2_Pad16_,
-                  Net__3E2_Pad15_,
-                  Net__3E2_Pad12_,
-                  Net__3E2_Pad9_,
-                  Net__3E2_Pad6_,
-                  Net__3E2_Pad5_,
-                  Net__3E2_Pad2_})
+    .D         ({ _video2_objrom[31],
+                  _video2_objrom[30],
+                  _video2_objrom[29],
+                  _video2_objrom[28],
+                  _video2_objrom[27],
+                  _video2_objrom[26],
+                  _video2_objrom[25],
+                  _video2_objrom[24]}),
+    .Q         ({ _video2_objlatch[31],
+                  _video2_objlatch[30],
+                  _video2_objlatch[29],
+                  _video2_objlatch[28],
+                  _video2_objlatch[27],
+                  _video2_objlatch[26],
+                  _video2_objlatch[25],
+                  _video2_objlatch[24]})
 );
 
 jt74377 u_3F1(
     .cen_b     ( 1'b0                     ) /* pin 1*/ ,
     .clk       ( _video2_ROMclk           ) /* pin 11*/ ,
-    .D         ({ Net__1F2_Pad19_,
-                  Net__1F2_Pad18_,
-                  Net__1F2_Pad17_,
-                  Net__1F2_Pad16_,
-                  Net__1F2_Pad15_,
-                  Net__1F2_Pad13_,
-                  Net__1F2_Pad12_,
-                  Net__1F2_Pad11_}),
-    .Q         ({ Net__3F1_Pad19_,
-                  Net__3F1_Pad16_,
-                  Net__3F1_Pad15_,
-                  Net__3F1_Pad12_,
-                  Net__3F1_Pad9_,
-                  Net__3F1_Pad6_,
-                  Net__3F1_Pad5_,
-                  Net__3F1_Pad2_})
+    .D         ({ _video2_objrom[23],
+                  _video2_objrom[22],
+                  _video2_objrom[21],
+                  _video2_objrom[20],
+                  _video2_objrom[19],
+                  _video2_objrom[18],
+                  _video2_objrom[17],
+                  _video2_objrom[16]}),
+    .Q         ({ _video2_objlatch[23],
+                  _video2_objlatch[22],
+                  _video2_objlatch[21],
+                  _video2_objlatch[20],
+                  _video2_objlatch[19],
+                  _video2_objlatch[18],
+                  _video2_objlatch[17],
+                  _video2_objlatch[16]})
 );
 
 jt74367 u_3H1(
@@ -1021,46 +963,46 @@ jt74367 u_3H1(
                   Net__3H1_Pad3_})
 );
 
+jt74377 u_3J1(
+    .cen_b     ( 1'b0                     ) /* pin 1*/ ,
+    .clk       ( _video2_ROMclk           ) /* pin 11*/ ,
+    .D         ({ _video2_objrom[15],
+                  _video2_objrom[14],
+                  _video2_objrom[13],
+                  _video2_objrom[12],
+                  _video2_objrom[11],
+                  _video2_objrom[10],
+                  _video2_objrom[9],
+                  _video2_objrom[8]}),
+    .Q         ({ _video2_objlatch[15],
+                  _video2_objlatch[14],
+                  _video2_objlatch[13],
+                  _video2_objlatch[12],
+                  _video2_objlatch[11],
+                  _video2_objlatch[10],
+                  _video2_objlatch[9],
+                  _video2_objlatch[8]})
+);
+
 jt74377 u_3K1(
     .cen_b     ( 1'b0                     ) /* pin 1*/ ,
     .clk       ( _video2_ROMclk           ) /* pin 11*/ ,
-    .D         ({ Net__1K1_Pad19_,
-                  Net__1K1_Pad18_,
-                  Net__1K1_Pad17_,
-                  Net__1K1_Pad16_,
-                  Net__1K1_Pad15_,
-                  Net__1K1_Pad13_,
-                  Net__1K1_Pad12_,
-                  Net__1K1_Pad11_}),
-    .Q         ({ Net__3K1_Pad19_,
-                  Net__3K1_Pad16_,
-                  Net__3K1_Pad15_,
-                  Net__3K1_Pad12_,
-                  Net__3K1_Pad9_,
-                  Net__3K1_Pad6_,
-                  Net__3K1_Pad5_,
-                  Net__3K1_Pad2_})
-);
-
-jt74377 u_3K2(
-    .cen_b     ( 1'b0                     ) /* pin 1*/ ,
-    .clk       ( _video2_ROMclk           ) /* pin 11*/ ,
-    .D         ({ Net__1J1_Pad19_,
-                  Net__1J1_Pad18_,
-                  Net__1J1_Pad17_,
-                  Net__1J1_Pad16_,
-                  Net__1J1_Pad15_,
-                  Net__1J1_Pad13_,
-                  Net__1J1_Pad12_,
-                  Net__1J1_Pad11_}),
-    .Q         ({ Net__3K2_Pad19_,
-                  Net__3K2_Pad16_,
-                  Net__3K2_Pad15_,
-                  Net__3K2_Pad12_,
-                  Net__3K2_Pad9_,
-                  Net__3K2_Pad6_,
-                  Net__3K2_Pad5_,
-                  Net__3K2_Pad2_})
+    .D         ({ _video2_objrom[7],
+                  _video2_objrom[6],
+                  _video2_objrom[5],
+                  _video2_objrom[4],
+                  _video2_objrom[3],
+                  _video2_objrom[2],
+                  _video2_objrom[1],
+                  _video2_objrom[0]}),
+    .Q         ({ _video2_objlatch[7],
+                  _video2_objlatch[6],
+                  _video2_objlatch[5],
+                  _video2_objlatch[4],
+                  _video2_objlatch[3],
+                  _video2_objlatch[2],
+                  _video2_objlatch[1],
+                  _video2_objlatch[0]})
 );
 
 jt74174 u_3L1(
@@ -1222,10 +1164,10 @@ jt74194 u_4E2(
     .R         ( Net__4E2_Pad2_           ) /* pin 2*/ ,
     .L         ( Net__4E2_Pad7_           ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3E2_Pad2_,
-                  Net__3E2_Pad5_,
-                  Net__3E2_Pad6_,
-                  Net__3E2_Pad9_}),
+    .D         ({ _video2_objlatch[24],
+                  _video2_objlatch[25],
+                  _video2_objlatch[26],
+                  _video2_objlatch[27]}),
     .Q         ({ Net__4E2_Pad12_,
                   Net__4E2_Pad13_,
                   Net__4E2_Pad14_,
@@ -1239,10 +1181,10 @@ jt74194 u_4F1(
     .R         ( Net__4F1_Pad2_           ) /* pin 2*/ ,
     .L         ( 1'b0                     ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3F1_Pad2_,
-                  Net__3F1_Pad5_,
-                  Net__3F1_Pad6_,
-                  Net__3F1_Pad9_}),
+    .D         ({ _video2_objlatch[16],
+                  _video2_objlatch[17],
+                  _video2_objlatch[18],
+                  _video2_objlatch[19]}),
     .Q         ({ _video2_objv1_msb,
                   Net__4F1_Pad13_,
                   Net__4F1_Pad14_,
@@ -1256,10 +1198,10 @@ jt74194 u_4H1(
     .R         ( Net__4E2_Pad12_          ) /* pin 2*/ ,
     .L         ( Net__4F1_Pad15_          ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3F1_Pad12_,
-                  Net__3F1_Pad15_,
-                  Net__3F1_Pad16_,
-                  Net__3F1_Pad19_}),
+    .D         ({ _video2_objlatch[20],
+                  _video2_objlatch[21],
+                  _video2_objlatch[22],
+                  _video2_objlatch[23]}),
     .Q         ({ Net__4F1_Pad2_,
                   Net__4H1_Pad13_,
                   Net__4H1_Pad14_,
@@ -1273,10 +1215,10 @@ jt74194 u_4J1(
     .R         ( Net__4J1_Pad2_           ) /* pin 2*/ ,
     .L         ( Net__4J1_Pad7_           ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3K2_Pad2_,
-                  Net__3K2_Pad5_,
-                  Net__3K2_Pad6_,
-                  Net__3K2_Pad9_}),
+    .D         ({ _video2_objlatch[8],
+                  _video2_objlatch[9],
+                  _video2_objlatch[10],
+                  _video2_objlatch[11]}),
     .Q         ({ Net__4J1_Pad12_,
                   Net__4J1_Pad13_,
                   Net__4J1_Pad14_,
@@ -1290,10 +1232,10 @@ jt74194 u_4K1(
     .R         ( Net__4K1_Pad2_           ) /* pin 2*/ ,
     .L         ( 1'b0                     ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3K1_Pad2_,
-                  Net__3K1_Pad5_,
-                  Net__3K1_Pad6_,
-                  Net__3K1_Pad9_}),
+    .D         ({ _video2_objlatch[0],
+                  _video2_objlatch[1],
+                  _video2_objlatch[2],
+                  _video2_objlatch[3]}),
     .Q         ({ _video2_objv0_msb,
                   Net__4K1_Pad13_,
                   Net__4K1_Pad14_,
@@ -1307,10 +1249,10 @@ jt74194 u_4L1(
     .R         ( Net__4J1_Pad12_          ) /* pin 2*/ ,
     .L         ( Net__4K1_Pad15_          ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3K1_Pad12_,
-                  Net__3K1_Pad15_,
-                  Net__3K1_Pad16_,
-                  Net__3K1_Pad19_}),
+    .D         ({ _video2_objlatch[4],
+                  _video2_objlatch[5],
+                  _video2_objlatch[6],
+                  _video2_objlatch[7]}),
     .Q         ({ Net__4K1_Pad2_,
                   Net__4L1_Pad13_,
                   Net__4L1_Pad14_,
@@ -1400,11 +1342,20 @@ jt7404 u_5A1(
     .in13      ( H[1]                     ) /* pin 13*/ 
 );
 
+jt7474 u_5C1(
+    .cl1_b     ( 1'b1                     ) /* pin 1*/ ,
+    .d1        ( HB                       ) /* pin 2*/ ,
+    .clk1      ( VB                       ) /* pin 3*/ ,
+    .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
+    .q1        ( Net__5C1_Pad5_           ) /* pin 5*/ ,
+    .q1_b      ( Net__5C1_Pad6_           ) /* pin 6*/ 
+);
+
 jt7486 u_5D1(
     .in1       ( _video2_hflip            ) /* pin 1*/ ,
     .in2       ( _video2_RV               ) /* pin 2*/ ,
     .out3      ( Net__4C1_Pad13_          ) /* pin 3*/ ,
-    .in4       ( INIT_EOn                 ) /* pin 4*/ ,
+    .in4       ( _video2_INIT_EOn         ) /* pin 4*/ ,
     .in5       ( DJ[0]                    ) /* pin 5*/ ,
     .out6      ( _video2_DJEO             ) /* pin 6*/ ,
     .out8      ( _video2_objcnt_start[0]  ) /* pin 8*/ ,
@@ -1420,10 +1371,10 @@ jt74194 u_5F1(
     .R         ( 1'b0                     ) /* pin 2*/ ,
     .L         ( Net__4E2_Pad15_          ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3E2_Pad12_,
-                  Net__3E2_Pad15_,
-                  Net__3E2_Pad16_,
-                  Net__3E2_Pad19_}),
+    .D         ({ _video2_objlatch[28],
+                  _video2_objlatch[29],
+                  _video2_objlatch[30],
+                  _video2_objlatch[31]}),
     .Q         ({ Net__4E2_Pad2_,
                   Net__5F1_Pad13_,
                   Net__5F1_Pad14_,
@@ -1460,10 +1411,10 @@ jt74194 u_5K1(
     .R         ( 1'b0                     ) /* pin 2*/ ,
     .L         ( Net__4J1_Pad15_          ) /* pin 7*/ ,
     .clk       ( _video2_phi2             ) /* pin 11*/ ,
-    .D         ({ Net__3K2_Pad12_,
-                  Net__3K2_Pad15_,
-                  Net__3K2_Pad16_,
-                  Net__3K2_Pad19_}),
+    .D         ({ _video2_objlatch[12],
+                  _video2_objlatch[13],
+                  _video2_objlatch[14],
+                  _video2_objlatch[15]}),
     .Q         ({ Net__4J1_Pad2_,
                   Net__5K1_Pad13_,
                   Net__5K1_Pad14_,
@@ -1498,6 +1449,11 @@ jt7404 u_5U1(
     .in13      ( AD[2]                    ) /* pin 13*/ 
 );
 
+jt7404 u_6A1(
+    .out12     ( _video2_INIT_EOn         ) /* pin 12*/ ,
+    .in13      ( Net__6A1_Pad13_          ) /* pin 13*/ 
+);
+
 jt7402 u_6C1(
     .out1      ( DMCS                     ) /* pin 1*/ ,
     .in2       ( _dma_DMCSpullup          ) /* pin 2*/ ,
@@ -1528,7 +1484,7 @@ jt74367 u_6D1(
                   Net__3D1_Pad11_,
                   Net__3D1_Pad10_,
                   _video2_Hclk,
-                  Net__3D1_Pad8_,
+                  _video2_ROMclk_filtered,
                   Net__6D1_Pad2_}),
     .Y         ({ H[2],
                   H[1],
@@ -1783,6 +1739,9 @@ jt7486 u_8C1(
     .in4       ( 1'b0                     ) /* pin 4*/ ,
     .in5       ( _video2_RVx              ) /* pin 5*/ ,
     .out6      ( _video2_RV               ) /* pin 6*/ ,
+    .out8      ( Net__6A1_Pad13_          ) /* pin 8*/ ,
+    .in9       ( Net__5C1_Pad6_           ) /* pin 9*/ ,
+    .in10      ( _video2_RV               ) /* pin 10*/ ,
     .out11     ( Net__8B1_Pad3_           ) /* pin 11*/ ,
     .in12      ( _video2_Hcnt_rstn        ) /* pin 12*/ ,
     .in13      ( 1'b1                     ) /* pin 13*/ 
@@ -1939,6 +1898,12 @@ jt74161 U2(
                   Net__U2_Pad12_,
                   Net__U2_Pad13_,
                   Net__U2_Pad14_})
+);
+
+delay #(.delay_time( 40) 
+) U3(
+    .a         ( _video2_ROMclk_base      ) /* pin 1*/ ,
+    .y         ( _video2_ROMclk_filtered  ) /* pin 2*/ 
 );
 
 jt74283 U3R1(
