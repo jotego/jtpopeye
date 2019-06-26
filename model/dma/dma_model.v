@@ -122,7 +122,6 @@ wire Net__3C1_Pad9_;
 wire Net__3D1_Pad10_;
 wire Net__3D1_Pad11_;
 wire Net__3D1_Pad8_;
-wire Net__3D1_Pad9_;
 wire Net__3E2_Pad12_;
 wire Net__3E2_Pad15_;
 wire Net__3E2_Pad16_;
@@ -255,9 +254,7 @@ wire Net__7M1_Pad15_;
 wire Net__8B1_Pad12_;
 wire Net__8B1_Pad2_;
 wire Net__8B1_Pad3_;
-wire Net__8C1_Pad12_;
 wire Net__8C1_Pad2_;
-wire Net__8H1_Pad9_;
 wire Net__8L1_Pad2_;
 wire Net__8L2_Pad2_;
 wire Net__8L3_Pad2_;
@@ -310,6 +307,8 @@ wire _video1_train;
 wire _video1_v_halfcarry;
 wire _video2_DJEO;
 wire _video2_HBn;
+wire _video2_Hclk;
+wire _video2_Hcnt_rstn;
 wire _video2_ROMclk;
 wire _video2_RV;
 wire _video2_RVx;
@@ -943,7 +942,7 @@ jt7410 u_3D1(
     .Yc        ( Net__3D1_Pad8_           ) /* pin 8*/ ,
     .C         ({ Net__3D1_Pad11_,
                   Net__3D1_Pad10_,
-                  Net__3D1_Pad9_})
+                  _video2_Hclk})
 );
 
 jt74367 u_3E1(
@@ -1513,7 +1512,7 @@ jt74368 u_6C2(
                   Net__6C2_Pad3_,
                   Net__4D1_Pad10_}),
     .B         ({ Net__6C2_Pad14_,
-                  Net__3D1_Pad9_}),
+                  _video2_Hclk}),
     .Ya        ({ Net__6C2_Pad9_,
                   DOTCK,
                   Net__6C2_Pad5_,
@@ -1528,7 +1527,7 @@ jt74367 u_6D1(
     .A         ({ Net__6D1_Pad14_,
                   Net__3D1_Pad11_,
                   Net__3D1_Pad10_,
-                  Net__3D1_Pad9_,
+                  _video2_Hclk,
                   Net__3D1_Pad8_,
                   Net__6D1_Pad2_}),
     .Y         ({ H[2],
@@ -1541,7 +1540,7 @@ jt74367 u_6D1(
 
 jt74161 u_6E1(
     .cl_b      ( 1'b1                     ) /* pin 1*/ ,
-    .clk       ( Net__3D1_Pad9_           ) /* pin 2*/ ,
+    .clk       ( _video2_Hclk             ) /* pin 2*/ ,
     .cep       ( 1'b1                     ) /* pin 7*/ ,
     .ld_b      ( 1'b1                     ) /* pin 9*/ ,
     .cet       ( 1'b1                     ) /* pin 10*/ ,
@@ -1607,8 +1606,8 @@ jt7404 u_7D1(
 
 jt74161 u_7E1(
     .cl_b      ( 1'b1                     ) /* pin 1*/ ,
-    .clk       ( 1'b1                     ) /* pin 2*/ ,
-    .cep       ( CLK20                    ) /* pin 7*/ ,
+    .clk       ( CLK20                    ) /* pin 2*/ ,
+    .cep       ( 1'b1                     ) /* pin 7*/ ,
     .ld_b      ( 1'b1                     ) /* pin 9*/ ,
     .cet       ( 1'b1                     ) /* pin 10*/ ,
     .ca        ( Net__7E1_Pad15_          ) /* pin 15*/ ,
@@ -1618,7 +1617,7 @@ jt74161 u_7E1(
                   Net__7E1_Pad3_}),
     .q         ({ Net__7E1_Pad11_,
                   Net__7E1_Pad12_,
-                  Net__3D1_Pad9_,
+                  _video2_Hclk,
                   Net__7D1_Pad11_})
 );
 
@@ -1772,7 +1771,7 @@ jt7474 u_8B1(
     .q2_b      ( _video2_HBn              ) /* pin 8*/ ,
     .q2        ( HB                       ) /* pin 9*/ ,
     .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
-    .clk2      ( Net__3D1_Pad9_           ) /* pin 11*/ ,
+    .clk2      ( _video2_Hclk             ) /* pin 11*/ ,
     .d2        ( Net__8B1_Pad12_          ) /* pin 12*/ ,
     .cl2_b     ( 1'b1                     ) /* pin 13*/ 
 );
@@ -1780,20 +1779,20 @@ jt7474 u_8B1(
 jt7486 u_8C1(
     .in1       ( 1'b1                     ) /* pin 1*/ ,
     .in2       ( Net__8C1_Pad2_           ) /* pin 2*/ ,
-    .out3      ( Net__8C1_Pad12_          ) /* pin 3*/ ,
+    .out3      ( _video2_Hcnt_rstn        ) /* pin 3*/ ,
     .in4       ( 1'b0                     ) /* pin 4*/ ,
     .in5       ( _video2_RVx              ) /* pin 5*/ ,
     .out6      ( _video2_RV               ) /* pin 6*/ ,
     .out11     ( Net__8B1_Pad3_           ) /* pin 11*/ ,
-    .in12      ( Net__8C1_Pad12_          ) /* pin 12*/ ,
+    .in12      ( _video2_Hcnt_rstn        ) /* pin 12*/ ,
     .in13      ( 1'b1                     ) /* pin 13*/ 
 );
 
 jt74161 u_8H1(
     .cl_b      ( 1'b1                     ) /* pin 1*/ ,
-    .clk       ( Net__3D1_Pad9_           ) /* pin 2*/ ,
+    .clk       ( _video2_Hclk             ) /* pin 2*/ ,
     .cep       ( 1'b1                     ) /* pin 7*/ ,
-    .ld_b      ( Net__8H1_Pad9_           ) /* pin 9*/ ,
+    .ld_b      ( _video2_Hcnt_rstn        ) /* pin 9*/ ,
     .cet       ( Net__6E1_Pad15_          ) /* pin 10*/ ,
     .ca        ( Net__8C1_Pad2_           ) /* pin 15*/ ,
     .d         ({ Net__8B1_Pad12_,

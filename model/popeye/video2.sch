@@ -1031,28 +1031,19 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS161" H 9350 8650 50  0001 C CNN
 	1    9350 8650
 	1    0    0    -1  
 $EndComp
-Text GLabel 8650 8750 0    50   Input ~ 0
+Text GLabel 8600 8950 0    50   Input ~ 0
 CLK20
-Wire Wire Line
-	8650 8750 8850 8750
 Wire Wire Line
 	8850 8650 8750 8650
 Wire Wire Line
-	8750 8650 8750 8850
+	8750 8650 8750 8750
 Wire Wire Line
 	8750 8850 8850 8850
-Wire Wire Line
-	8750 8850 8750 8950
-Wire Wire Line
-	8750 8950 8850 8950
 Connection ~ 8750 8850
 Text Label 8850 8650 2    50   ~ 0
 VDD
 Wire Wire Line
-	8750 8950 8750 9150
-Wire Wire Line
 	8750 9150 8850 9150
-Connection ~ 8750 8950
 NoConn ~ 9850 8650
 NoConn ~ 9850 8450
 NoConn ~ 9850 8350
@@ -1742,7 +1733,7 @@ Wire Wire Line
 Text Label 16600 10900 2    50   ~ 0
 VDD
 Wire Wire Line
-	17200 10800 17350 10800
+	17200 10800 17250 10800
 $Comp
 L jt74xx:74LS74 8B1
 U 1 1 5E63135A
@@ -1937,4 +1928,28 @@ Wire Wire Line
 Connection ~ 3800 4800
 Text Label 4000 2150 2    50   ~ 0
 ROMclk
+Wire Wire Line
+	8750 8850 8750 9150
+Wire Wire Line
+	8600 8950 8850 8950
+Wire Wire Line
+	8850 8750 8750 8750
+Connection ~ 8750 8750
+Wire Wire Line
+	8750 8750 8750 8850
+Wire Wire Line
+	17250 10800 17250 10050
+Wire Wire Line
+	17250 10050 13500 10050
+Wire Wire Line
+	13500 10050 13500 10700
+Wire Wire Line
+	13500 10700 13600 10700
+Connection ~ 17250 10800
+Wire Wire Line
+	17250 10800 17350 10800
+Text Label 16650 10050 2    50   ~ 0
+Hcnt_rstn
+Text Label 12350 9450 2    50   ~ 0
+Hclk
 $EndSCHEMATC
