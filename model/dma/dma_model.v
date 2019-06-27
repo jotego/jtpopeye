@@ -549,7 +549,8 @@ RAM_7063 u_1P1(
                   _video1_DJI[0]})
 );
 
-RAM_5501 u_1R1(
+RAM_5501 #(.simfile("dma21.bin") 
+) u_1R1(
     .WEn       ( _dma_DMCSn[2]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -569,7 +570,8 @@ RAM_5501 u_1R1(
                   DO[20]})
 );
 
-RAM_5501 u_1S1(
+RAM_5501 #(.simfile("dma11.bin") 
+) u_1S1(
     .WEn       ( _dma_DMCSn[1]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -589,7 +591,8 @@ RAM_5501 u_1S1(
                   DO[12]})
 );
 
-RAM_5501 u_1T1(
+RAM_5501 #(.simfile("dma01.bin") 
+) u_1T1(
     .WEn       ( _dma_DMCSn[0]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -609,7 +612,8 @@ RAM_5501 u_1T1(
                   DO[4]})
 );
 
-RAM_5501 u_1U1(
+RAM_5501 #(.simfile("dma31.bin") 
+) u_1U1(
     .WEn       ( _dma_DMCSn[3]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -763,7 +767,8 @@ jt74174 u_2L1(
                   DJ[6]})
 );
 
-RAM_5501 u_2R1(
+RAM_5501 #(.simfile("dma20.bin") 
+) u_2R1(
     .WEn       ( _dma_DMCSn[2]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -783,7 +788,8 @@ RAM_5501 u_2R1(
                   DO[16]})
 );
 
-RAM_5501 u_2S1(
+RAM_5501 #(.simfile("dma10.bin") 
+) u_2S1(
     .WEn       ( _dma_DMCSn[1]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -803,7 +809,8 @@ RAM_5501 u_2S1(
                   DO[8]})
 );
 
-RAM_5501 u_2T1(
+RAM_5501 #(.simfile("dma00.bin") 
+) u_2T1(
     .WEn       ( _dma_DMCSn[0]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],
@@ -823,7 +830,8 @@ RAM_5501 u_2T1(
                   DO[0]})
 );
 
-RAM_5501 u_2U1(
+RAM_5501 #(.simfile("dma30.bin") 
+) u_2U1(
     .WEn       ( _dma_DMCSn[3]            ) /* pin 20*/ ,
     .A         ({ _dma_DM[7],
                   _dma_DM[6],

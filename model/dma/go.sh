@@ -9,6 +9,15 @@ echo "Importing netlist"
     --ports dma.v --wires \
     > dma_model.v
 
+# create blank rom files if they don't exist
+for i in 0 1; do
+    for j in 0 1 2 3; do
+        if [ ! -e dma${j}${i}.bin ]; then
+            dd if=/dev/zero of=dma${j}${i}.bin bs=256 count=1
+        fi
+    done
+done
+
 while [ $# -gt 0 ]; do
     case $1 in
         -time) 
