@@ -1175,7 +1175,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74ls00" H 13750 5950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	13450 5850 13200 5850
+	13450 5850 13400 5850
 $Comp
 L jt74xx:74LS00 4D1
 U 4 1 5D637E54
@@ -2187,4 +2187,11 @@ Text Label 13300 5450 0    50   ~ 0
 objcnt[1]
 Text Label 13300 5350 0    50   ~ 0
 objcnt[0]
+Text Label 13400 5750 2    50   ~ 0
+obj_carry
+Wire Wire Line
+	13400 5750 13400 5850
+Connection ~ 13400 5850
+Wire Wire Line
+	13400 5850 13200 5850
 $EndSCHEMATC

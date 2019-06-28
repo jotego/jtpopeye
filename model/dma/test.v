@@ -100,7 +100,7 @@ assign AD[11:10]=2'b11;
 
 initial begin : ram_init
     integer cnt;
-    for( cnt=0; cnt<1024; cnt=cnt+1) ram[cnt]=8'hff;
+    for( cnt=0; cnt<1024; cnt=cnt+1) ram[cnt]=8'h55;
     ram[0]=0;
     ram[1]=1;
     ram[2]=2;

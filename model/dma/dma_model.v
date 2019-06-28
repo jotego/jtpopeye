@@ -109,7 +109,6 @@ wire Net__4C1_Pad7_;
 wire Net__4C1_Pad9_;
 wire Net__4D1_Pad10_;
 wire Net__4D1_Pad13_;
-wire Net__4D1_Pad9_;
 wire Net__4E1_Pad5_;
 wire Net__4E2_Pad12_;
 wire Net__4E2_Pad13_;
@@ -250,6 +249,7 @@ wire _video2_ROMclk_filtered;
 wire _video2_RV;
 wire _video2_RVx;
 wire _video2_hflip;
+wire _video2_obj_carry;
 wire _video2_objcnt_clk;
 wire _video2_objv0_lsb;
 wire _video2_objv0_msb;
@@ -1138,7 +1138,7 @@ jt7400 u_4D1(
     .in5       ( Net__4D1_Pad13_          ) /* pin 5*/ ,
     .out6      ( Net__4C1_Pad9_           ) /* pin 6*/ ,
     .out8      ( Net__4D1_Pad13_          ) /* pin 8*/ ,
-    .in9       ( Net__4D1_Pad9_           ) /* pin 9*/ ,
+    .in9       ( _video2_obj_carry        ) /* pin 9*/ ,
     .in10      ( Net__4D1_Pad10_          ) /* pin 10*/ ,
     .out11     ( _video2_S[0]             ) /* pin 11*/ ,
     .in12      ( Net__4C1_Pad14_          ) /* pin 12*/ ,
@@ -1375,7 +1375,7 @@ jt74161 u_5E1(
     .cep       ( 1'b1                     ) /* pin 7*/ ,
     .ld_b      ( _video2_ROMclk           ) /* pin 9*/ ,
     .cet       ( 1'b1                     ) /* pin 10*/ ,
-    .ca        ( Net__4D1_Pad9_           ) /* pin 15*/ ,
+    .ca        ( _video2_obj_carry        ) /* pin 15*/ ,
     .d         ({ _video2_objcnt_start[3],
                   _video2_objcnt_start[2],
                   _video2_objcnt_start[1],
