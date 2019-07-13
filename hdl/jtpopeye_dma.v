@@ -65,7 +65,7 @@
 
 // DJ[2:0] - object's Y (mod 8)
 // { DJ[17], DJ[10:3] } - object ID
-// DJ[16:15] - object's palette
+// DJ[16:14] - object's palette
 // DJ[11] - hflip
 // DJ[13:12] - count start
 

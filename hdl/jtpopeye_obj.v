@@ -41,6 +41,12 @@ module jtpopeye_obj(
     output reg [ 1:0]   OBJV
 );
 
+// DJ[2:0] - object's Y (mod 8)
+// { DJ[17], DJ[10:3] } - object ID
+// DJ[16:14] - object's palette
+// DJ[11] - hflip
+// DJ[13:12] - count start
+
 always @(posedge clk)
     obj_addr <= { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
 
@@ -60,7 +66,7 @@ always @(posedge clk) if( pxl_cen ) begin // 5E
         if( H[1:0]==2'b11 )
             cnt <= { &pload, pload };
         else
-            cnt <= { 1'b0, cnt[3:0] }+5'd1;
+            cnt <= { cnt[3:0]==4'b1110, cnt[3:0]+4'd1 };
     end
 end
 

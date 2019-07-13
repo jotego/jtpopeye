@@ -72,8 +72,13 @@ always @(posedge clk) if(pxl_cen) begin
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
     we_v0[0] <= ~H[0];   // active-low logic on schematics
     we_v0[1] <= H[0] & H[1] & ~HB; // active-low logic on schematics
+    `ifndef OBJTEST
     we0      <= we_v0[ V[0]];
     we1      <= we_v0[~V[0]];
+    `else 
+    we0 <= 1'b0;
+    we1 <= 1'b0;
+    `endif
     ram0_din <= { DO[28], DO[26:24]&{3{V[0]}}, // ram0 uses V[0]
             DO[1:0], DO[23:21], DO[20:16], 
             adder_data, DO[27] };
@@ -82,25 +87,41 @@ always @(posedge clk) if(pxl_cen) begin
             adder_data, DO[27] };
 end
 
+// DJ[2:0] - object's Y (mod 8)
+// { DJ[17], DJ[10:3] } - object ID
+// DJ[16:14] - object's palette
+// DJ[11] - hflip
+// DJ[13:12] - count start
+
 // 1M and 3M memories in schematic
-jtgng_ram #(.aw(6), .dw(18)) u_ram0(
+wire [2:0] objy0, objy1;
+
+jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
     .cen    ( 1'b1           ),
     .data   ( ram0_din       ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
-    .q      ( DJ0            )
+    .q      ( { DJ0[17:3], objy0 } )
 );
 
 // 1P and 3P memories in schematic
-jtgng_ram #(.aw(6), .dw(18)) u_ram1(
+jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
     .cen    ( 1'b1           ),
     .data   ( ram1_din       ),
     .addr   ( ADR1           ),
     .we     ( we1            ),
-    .q      ( DJ1            )
+    .q      ( { DJ1[17:3], objy1 } )
 );
+
+`ifdef OBJTEST
+    assign DJ0[2:0] = V[2:0];
+    assign DJ1[2:0] = V[2:0];
+`else 
+    assign DJ0[2:0] = objy0;
+    assign DJ1[2:0] = objy1;
+`endif
 
 always @(posedge clk)
     if( H[1:0]==2'b11 ) DJ <= line_sel ? DJ1 : DJ0;

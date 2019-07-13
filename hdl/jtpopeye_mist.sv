@@ -76,7 +76,7 @@ localparam CONF_STR = {
 };
 
 
-localparam CONF_STR_LEN = 10+16+6+42+20+18+24+15+30;
+localparam CONF_STR_LEN = $size(CONF_STR)/8;
 
 wire          rst, clk_sys;
 wire [31:0]   status, joystick1, joystick2;
