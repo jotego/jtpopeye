@@ -64,17 +64,29 @@ wire [17:0] DJ0, DJ1;
 wire line_sel = V[0];
 // wire DJ_sel;
 reg we0, we1;
-reg [1:0] we_v0;
+
+// DO[15:8] - object's Y
+// DO[ 7:0] - object's X, DO[7:3] used to address the object buffer
+
+wire [7:0] objy   = ~DO[15:8];
+`ifdef SIMULATION
+wire [7:0] objx   = DO[ 7:0];
+wire    objbank   = DO[28];
+wire [2:0] objpal = DO[26:24];
+wire    hflip     = DO[23];
+wire    vflip     = DO[27];
+wire [6:0] objid  = DO[22:16];
+`endif
+
+wire we_cmp = H[0]==1'b0 && (objy >= V && (objy+8'd8)<V );
 
 always @(posedge clk) if(pxl_cen) begin
     ADR0 <= !line_sel ? scan_addr : wr_addr;
     ADR1 <=  line_sel ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
-    we_v0[0] <= ~H[0];   // active-low logic on schematics
-    we_v0[1] <= H[0] & H[1] & ~HB; // active-low logic on schematics
     `ifndef OBJTEST
-    we0      <= we_v0[ V[0]];
-    we1      <= we_v0[~V[0]];
+    we0      <=  V[0] ? we_cmp : H[1:0]==2'b11;
+    we1      <= !V[0] ? we_cmp : H[1:0]==2'b11;
     `else 
     we0 <= 1'b0;
     we1 <= 1'b0;
@@ -87,8 +99,9 @@ always @(posedge clk) if(pxl_cen) begin
             adder_data, DO[27] };
 end
 
-// DJ[2:0] - object's Y (mod 8)
-// { DJ[17], DJ[10:3] } - object ID
+// DJ[0] - object's Y LSB (interlaced)
+// DJ[3:1] - object's Y (mod 8)
+// { DJ[17], DJ[10:4] } - object ID
 // DJ[16:14] - object's palette
 // DJ[11] - hflip
 // DJ[13:12] - count start
@@ -98,7 +111,7 @@ wire [2:0] objy0, objy1;
 
 jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
-    .cen    ( 1'b1           ),
+    .cen    ( pxl_cen        ),
     .data   ( ram0_din       ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
@@ -108,7 +121,7 @@ jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram0(
 // 1P and 3P memories in schematic
 jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
-    .cen    ( 1'b1           ),
+    .cen    ( pxl_cen        ),
     .data   ( ram1_din       ),
     .addr   ( ADR1           ),
     .we     ( we1            ),
@@ -123,7 +136,7 @@ jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram1(
     assign DJ1[2:0] = objy1;
 `endif
 
-always @(posedge clk)
+always @(posedge clk) if(pxl_cen)
     if( H[1:0]==2'b11 ) DJ <= line_sel ? DJ1 : DJ0;
 
 endmodule // jtpopeye_dma

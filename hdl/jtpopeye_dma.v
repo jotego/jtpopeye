@@ -63,8 +63,9 @@
 // DO[15:8] - object's Y
 // DO[ 7:0] - object's X, DO[7:3] used to address the object buffer
 
-// DJ[2:0] - object's Y (mod 8)
-// { DJ[17], DJ[10:3] } - object ID
+// DJ[0] - object's Y LSB (interlaced)
+// DJ[3:1] - object's Y (mod 8)
+// { DJ[17], DJ[10:4] } - object ID
 // DJ[16:14] - object's palette
 // DJ[11] - hflip
 // DJ[13:12] - count start
@@ -172,7 +173,7 @@ always @(posedge clk or negedge rst_n)
         endcase
     end
 
-jtgng_ram #(.aw(8), .dw(8)) u_ram0(
+jtgng_ram #(.aw(8), .dw(8),.synfile("dma_ram0.hex")) u_ram0(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
@@ -181,7 +182,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram0(
     .q      ( DO[7:0]        )
 );
 
-jtgng_ram #(.aw(8), .dw(8)) u_ram1(
+jtgng_ram #(.aw(8), .dw(8),.synfile("dma_ram1.hex")) u_ram1(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
@@ -190,7 +191,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram1(
     .q      ( DO[15:8]       )
 );
 
-jtgng_ram #(.aw(8), .dw(8)) u_ram2(
+jtgng_ram #(.aw(8), .dw(8),.synfile("dma_ram2.hex")) u_ram2(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA         ),
@@ -201,7 +202,7 @@ jtgng_ram #(.aw(8), .dw(8)) u_ram2(
 
 
 // Bits 7-5 are not used for the last RAM as the DO bus has only 29 bits
-jtgng_ram #(.aw(8), .dw(5)) u_ram3(
+jtgng_ram #(.aw(8), .dw(5),.synfile("dma_ram3.hex")) u_ram3(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( DD_DMA[4:0]    ),
