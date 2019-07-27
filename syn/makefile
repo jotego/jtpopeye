@@ -8,7 +8,7 @@ SOURCE_FILES= \
 	../hdl/jtpopeye_dma.v		\
 	../hdl/jtpopeye_game.v		\
 	../hdl/jtpopeye_main.v		\
-	../hdl/jtpopeye_mist.v		\
+	../hdl/jtpopeye_mist.sv		\
 	../hdl/jtpopeye_obj.v		\
 	../hdl/jtpopeye_prom_we.v	\
 	../hdl/jtpopeye_rom.v		\

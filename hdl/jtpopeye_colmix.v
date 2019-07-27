@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -51,17 +51,17 @@ reg txt_cs, obj_cs, bak_cs;
 // latch priorities to process on the next clock edge
 always @(posedge clk) if(pxl2_cen) begin
     txt_cs <= !txtv; // txtv low -> text selected
-    obj_cs <= |objv & txtv;
-    bak_cs <= ~|objv & txtv & VB_n & HBD_n;
+    obj_cs <= |objv;
+    bak_cs <= VB_n & HBD_n;
 end
 
 // merge the colours!
 always @(posedge clk) if(pxl2_cen) begin
     if( !VB_n || !HBD_n) { red, green, blue } <= 8'd0;
     else
-    case( {txt_cs, obj_cs, bak_cs} )
-        3'b100: {blue, green, red } <= ~txt_rgb;
-        3'b010: {blue, green, red } <= ~obj_rgb;
+    casez( {txt_cs, obj_cs, bak_cs} )
+        3'b1??: {blue, green, red } <= ~txt_rgb;
+        3'b01?: {blue, green, red } <= ~obj_rgb;
         3'b001: {blue, green, red } <= ~bak_rgb;
         default:{blue, green, red } <= 8'd0;
     endcase

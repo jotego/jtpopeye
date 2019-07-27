@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -392,6 +392,14 @@ wire bc = (iowr & AD[0]) | ay_cs;
 // Each audio output has a different filter on it!
 // To do: proper filter stage
 
+wire [9:0] pre_snd;
+
+`ifndef NOSOUND
+assign snd = pre_snd;
+`else 
+assign snd = 10'd0;
+`endif
+
 jt49_bus u_ay( // note that input ports are not multiplexed
     .rst_n  ( rst_n     ),
     .clk    ( clk       ),
@@ -401,7 +409,7 @@ jt49_bus u_ay( // note that input ports are not multiplexed
     .din    ( cpu_dout  ),
     .sel    ( 1'b0      ),
     .dout   ( ay_dout   ),
-    .sound  ( snd       ),
+    .sound  ( pre_snd   ),
     .IOA_in ( dip_data  ),
     .IOB_out( IOB       ),
     // unused outputs

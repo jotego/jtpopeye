@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -44,7 +44,8 @@ module jtpopeye_video(
     input               busak_n,
     // SDRAM interface
     output     [12:0]   obj_addr,
-    input      [31:0]   objrom_data,    
+    input      [15:0]   obj_data0,    
+    input      [15:0]   obj_data1,    
     // PROM
     input      [10:0]   prog_addr,
     input      [ 7:0]   prom_din,    
@@ -183,6 +184,22 @@ jtpopeye_txt u_txt(
     .TXTV               ( TXTV          )
 );
 
+jtpopeye_bck u_bak(
+    .rst_n              ( rst_n         ),
+    .clk                ( clk           ),
+    .cpu_cen            ( cpu_cen       ),
+    .pxl_cen            ( pxl_cen       ),
+
+    .ROHVCK             ( ROHVCK        ),
+    .CSBW_n             ( CSBW_n        ),
+    .DWRBK              ( DWRBK         ),
+    .AD                 ( ADvideo       ),
+    .DD                 ( DD            ),
+    .ROVI               ( ROVI          ),
+    .DO                 ( DO            ), // gfx buffer
+    .BAKC               ( BAKC[3:0]     )
+);
+
 jtpopeye_buf u_buf(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -203,22 +220,6 @@ jtpopeye_buf u_buf(
     .DJ                 ( DJ            )
 );
 
-jtpopeye_bck u_bak(
-    .rst_n              ( rst_n         ),
-    .clk                ( clk           ),
-    .cpu_cen            ( cpu_cen       ),
-    .pxl_cen            ( pxl_cen       ),
-
-    .ROHVCK             ( ROHVCK        ),
-    .CSBW_n             ( CSBW_n        ),
-    .DWRBK              ( DWRBK         ),
-    .AD                 ( ADvideo       ),
-    .DD                 ( DD            ),
-    .ROVI               ( ROVI          ),
-    .DO                 ( DO            ), // gfx buffer
-    .BAKC               ( BAKC[3:0]     )
-);
-
 jtpopeye_obj u_obj(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
@@ -235,7 +236,8 @@ jtpopeye_obj u_obj(
     .DJ                 ( DJ            ),
     // SDRAM interface
     .obj_addr           ( obj_addr      ),
-    .objrom_data        ( objrom_data   ),
+    .obj_data0          ( obj_data0     ),
+    .obj_data1          ( obj_data1     ),
     // pixel data
     .OBJC               ( OBJC[2:0]     ),
     .OBJV               ( OBJV          )

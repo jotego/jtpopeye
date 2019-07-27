@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -130,7 +130,7 @@ wire [31:0] data_read;
 wire        data_rdy;
 wire        refresh_en;
 wire        pll_locked;
-wire        pxl_cen, pxl2_cen;
+wire        pxl_cen, pxl2_cen, pxl4_cen;
 
 // play level. Latch all inputs to game module
 always @(posedge clk_sys) begin
@@ -157,7 +157,7 @@ pll_game_mist u_pll_game(
 );
 
 `ifdef SIMULATION
-assign sim_pxl_cen = pxl2_cen;
+assign sim_pxl_cen = pxl4_cen;
 assign sim_pxl_clk = clk_sys;
 assign sim_vs = VS;
 assign sim_hs = HS;
@@ -170,11 +170,11 @@ wire [5:0] bluex2  = {3{rgbx2[1:0]}};
 
 wire HSx2;
 
-jtframe_scan2x #(.DW(8), .HLEN(256+64)) u_scan2x(
+jtframe_scan2x #(.DW(8), .HLEN( (256+64)*2) ) u_scan2x(
     .rst_n      ( rst_n     ),
     .clk        ( clk_sys   ),
-    .base_cen   ( pxl_cen   ),
-    .basex2_cen ( pxl2_cen  ),
+    .base_cen   ( pxl2_cen  ),
+    .basex2_cen ( pxl4_cen  ),
     .base_pxl   ( {red, green, blue } ),
     .x2_pxl     ( rgbx2     ),
     .HS         ( HS        ),
@@ -277,6 +277,7 @@ jtpopeye_game u_game(
     .clk            ( clk_sys               ),   // 40 MHz
     .pxl_cen        ( pxl_cen               ),   //  5.04 MHz, pixel clock
     .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
+    .pxl4_cen       ( pxl4_cen              ),   // 20.16 MHz, pixel clock
 
     .red            ( red                   ),
     .green          ( green                 ),

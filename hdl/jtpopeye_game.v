@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -23,6 +23,7 @@ module jtpopeye_game(
     input           clk,        // 20 MHz
     output          pxl_cen,    //  5.04MHz  TXT pixel clock
     output          pxl2_cen,   // 10.08MHz  OBJ pixel clock
+    output          pxl4_cen,   // 20.16MHz  OBJ pixel clock x2
 
     output   [2:0]  red,
     output   [2:0]  green,
@@ -92,7 +93,7 @@ wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
 // SDRAM interface
 wire [12:0]   obj_addr;
-wire [31:0]   obj_data;
+wire [15:0]   obj_data0, obj_data1;
 // PROM
 wire [13:0]   prom_we;  
 wire          prom_7j_we = prom_we[0];     // timing
@@ -133,7 +134,8 @@ jtpopeye_cen u_cen(
     .cpu_cen    ( cpu_cen       ),
     .ay_cen     ( ay_cen        ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
-    .pxl2_cen   ( pxl2_cen      )   // OBJ pixel clock
+    .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
+    .pxl4_cen   ( pxl4_cen      )   // OBJ pixel clock x 2
 );
 
 assign sample = ay_cen;
@@ -184,9 +186,10 @@ jtpopeye_objrom u_objrom(
     .prom_we     ( prom_we[13:10]  ),
 
     .obj_addr    ( obj_addr        ), // 32 kB
-    .obj_dout    ( obj_data        )
+    .obj_dout0   ( obj_data0       ),
+    .obj_dout1   ( obj_data1       )
 );
-`else
+`else 
 jtpopeye_bram u_rom(
     .clk         ( clk             ),
     // ROM loading
@@ -286,7 +289,8 @@ jtpopeye_video u_video(
     .busak_n    ( busak_n       ),
     // SDRAM interface
     .obj_addr   ( obj_addr      ),
-    .objrom_data( obj_data      ),    
+    .obj_data0  ( obj_data0     ), 
+    .obj_data1  ( obj_data1     ), 
     // PROM
     .prog_addr  ( prog_addr[10:0]),
     .prom_din   ( prog_data     ),    

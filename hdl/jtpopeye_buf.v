@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -68,7 +68,7 @@ reg we0, we1;
 // DO[15:8] - object's Y
 // DO[ 7:0] - object's X, DO[7:3] used to address the object buffer
 
-wire [7:0] objy   = ~DO[15:8];
+wire [8:0] objy   = DO[15:8];
 `ifdef SIMULATION
 wire [7:0] objx   = DO[ 7:0];
 wire    objbank   = DO[28];
@@ -78,7 +78,16 @@ wire    vflip     = DO[27];
 wire [6:0] objid  = DO[22:16];
 `endif
 
-wire we_cmp = H[0]==1'b0 && (objy >= V && (objy+8'd8)<V );
+reg [7:0] inzone0;
+reg [3:0] inzone1;
+reg       inzone_b;
+
+always @(*) begin
+    inzone0 = objy + V;
+    { inzone_b, inzone1 } = { 1'b0, inzone0[7:4] } + 5'hf + {4'h0, inzone0[3] };
+end
+
+wire we_cmp = H[0]==1'b0 && !inzone_b;
 
 always @(posedge clk) if(pxl_cen) begin
     ADR0 <= !line_sel ? scan_addr : wr_addr;
@@ -94,9 +103,15 @@ always @(posedge clk) if(pxl_cen) begin
     ram0_din <= { DO[28], DO[26:24]&{3{V[0]}}, // ram0 uses V[0]
             DO[1:0], DO[23:21], DO[20:16], 
             adder_data, DO[27] };
-    ram1_din <= { DO[28], DO[26:24]&{3{~V[0]}}, // ram1 uses ~V[0]
-            DO[1:0], DO[23:21], DO[20:16], 
-            adder_data, DO[27] };
+    // ram1 uses ~V[0]
+    ram1_din <= { 
+            DO[28],    // obj ID MSB (or sprite bank as MAME calls it)
+            DO[26:24]&{3{~V[0]}}, // palette, (set to 0 to clear data after reading)
+            DO[1:0],   // sub H
+            DO[23],    // h flip
+            DO[22:16], // obj ID 
+            adder_data, // sub V
+            DO[27] };  // v flip
 end
 
 // DJ[0] - object's Y LSB (interlaced)
@@ -109,7 +124,7 @@ end
 // 1M and 3M memories in schematic
 wire [2:0] objy0, objy1;
 
-jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram0(
+jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( ram0_din       ),
@@ -119,7 +134,7 @@ jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram0(
 );
 
 // 1P and 3P memories in schematic
-jtgng_ram #(.aw(6), .dw(18),.synfile("objtest.hex")) u_ram1(
+jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( ram1_din       ),

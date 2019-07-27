@@ -81,6 +81,7 @@ always @(posedge clk_rom) begin
                     3'd6: prom_we0[12] <= 1'b1;
                     3'd7: prom_we0[13] <= 1'b1;
                 endcase
+                set_strobe <= 1'b1;
             end else begin
                 if( ioctl_addr[12:11] == 2'b01 )
                     prom_we0[5] <= 1'b1; // 5N TXT, throw away the 1st half of the file

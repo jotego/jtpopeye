@@ -6,7 +6,7 @@
 
     JTPOPEYE program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR AD PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -35,7 +35,8 @@ module jtpopeye_obj(
     input      [17:0]   DJ,
     // SDRAM interface
     output reg [12:0]   obj_addr,
-    input      [31:0]   objrom_data,
+    input      [15:0]   obj_data0,
+    input      [15:0]   obj_data1,
     // pixel data
     output reg [ 2:0]   OBJC,
     output reg [ 1:0]   OBJV
@@ -49,7 +50,7 @@ module jtpopeye_obj(
 // DJ[13:12] - count start
 
 always @(posedge clk)
-    obj_addr <= { DJ[17], DJ[10:1], DJ[0]^~INITEO   };
+    obj_addr <= { DJ[16], DJ[17], DJ[10:1], DJ[0]^~INITEO   };
 
 reg hflip;
 reg [15:0] objd0, objd1;
@@ -60,12 +61,16 @@ reg [4:0] cnt;  // device 5E, video sheet 2/3
 wire RV = ~RV_n;
 wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
 
+reg [31:0] rom_latch;
+
 always @(posedge clk) if( pxl_cen ) begin // 5E
     if( HB )
-        cnt <= 4'd0;
+        cnt <= 5'd0;
     else begin
-        if( H[1:0]==2'b11 )
+        if( H[1:0]==2'b11 ) begin
             cnt <= { &pload, pload };
+            rom_latch <= {obj_data1, obj_data0};
+        end 
         else
             cnt <= { cnt[3:0]==4'b1110, cnt[3:0]+4'd1 };
     end
@@ -73,19 +78,19 @@ end
 
 always @(posedge clk) if( pxl_cen ) begin // 3C
     if( H[1:0]==2'b11 ) begin
-        objc   <= DJ[16:14];
+        objc   <= DJ[16:14]; // shouldn't it be inverted?
         hflip  <= DJ[11] ^ RV;
     end
 end
 
 reg HFLIP;
 reg last_carry;
-wire carry_posedge = cnt[4] && !last_carry;
+wire carry = cnt[4];
 
 // devices 4K, 4L, 4J, 5K, 4F, 4H, 4E and 5F, video sheet 2/3
 always @(posedge clk) if(pxl2_cen) begin : shift_register
-    if( carry_posedge ) begin
-        { objd1, objd0 } <= objrom_data;
+    if( carry ) begin
+        { objd1, objd0 } <= rom_latch;
     end else begin
         objd1 <= HFLIP ? { objd1[14:0], 1'b0 } : { 1'b0, objd1[15:1] }; // pink
         objd0 <= HFLIP ? { objd0[14:0], 1'b0 } : { 1'b0, objd0[15:1] }; // green
@@ -94,8 +99,8 @@ end
 
 always @(posedge clk) if(pxl_cen) begin : u_4C
     last_carry <= cnt[4];
-    if( carry_posedge ) begin
-        OBJC <= objc;
+    if( carry && ! last_carry) begin
+        OBJC  <= objc;
         HFLIP <= hflip;
     end
 end

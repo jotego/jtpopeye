@@ -15,9 +15,14 @@ initial begin
     end
     // Sprite in the middle of the screen
     ram0[4] = 8'd100;  // Y
-    ram1[4] = 8'd140;  // X
+    ram1[4] = 8'd190;  // X
     ram2[4] = 8'h1f;   // MSB=hflip, rest = ID
     ram3[4] = 8'h01;   // 4 = sprite bank, 3 = Y LSB, 2:0 = pal
+
+    ram0[5] = 8'd109;  // Y
+    ram1[5] = 8'd198;  // X
+    ram2[5] = 8'h20;   // MSB=hflip, rest = ID
+    ram3[5] = 8'h01;   // 4 = sprite bank, 3 = Y LSB, 2:0 = pal
 
     f0 = $fopen("dma_ram0.hex","w");
     f1 = $fopen("dma_ram1.hex","w");

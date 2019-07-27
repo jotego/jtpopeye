@@ -1,7 +1,7 @@
 # Common files
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) jtpopeye.qip ]
 
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_mist.v      ]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_mist.sv      ]
 # SDRAM
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_rom.v       ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../modules/jtframe/hdl/jtgng_sdram.v        ]

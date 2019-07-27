@@ -24,13 +24,14 @@ module jtpopeye_objrom(
     input       [14:0]  prog_addr,
     input       [ 7:0]  prog_data,
     input       [ 1:0]  prog_mask,
-    input       [ 7:0]  prom_we,
+    input       [ 3:0]  prom_we,
     // ROM access
     input       [12:0]  obj_addr,  // 32 kB
-    output reg  [31:0]  obj_dout
+    output reg  [15:0]  obj_dout0,
+    output reg  [15:0]  obj_dout1
 );
 
-wire [7:0] obj0_data, obj1_data, obj2_data, obj3_data;
+wire [7:0] objk_data, objj_data, objf_data, obje_data;
 
 wire prom_1e_we = prom_we[0];
 wire prom_1f_we = prom_we[1];
@@ -38,12 +39,8 @@ wire prom_1j_we = prom_we[2];
 wire prom_1k_we = prom_we[3];
 
 always @(posedge clk) begin
-    obj_dout <= {
-        obj3_data,
-        obj2_data,
-        obj1_data,
-        obj0_data
-    };
+    obj_dout0 <= { objk_data, objj_data };
+    obj_dout1 <= { objf_data, obje_data };
 end
 
 // Object ROMs
@@ -54,7 +51,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
     .rd_addr( obj_addr[12:0]  ),
     .wr_addr( prog_addr[12:0] ),
     .we     ( prom_1e_we      ),
-    .q      ( obj0_data       )
+    .q      ( obje_data       )
 );
 
 jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
@@ -64,7 +61,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
     .rd_addr( obj_addr[12:0]  ),
     .wr_addr( prog_addr[12:0] ),
     .we     ( prom_1f_we      ),
-    .q      ( obj1_data       )
+    .q      ( objf_data       )
 );
 
 jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
@@ -74,7 +71,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
     .rd_addr( obj_addr[12:0]  ),
     .wr_addr( prog_addr[12:0] ),
     .we     ( prom_1j_we      ),
-    .q      ( obj2_data       )
+    .q      ( objj_data       )
 );
 
 jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
@@ -84,6 +81,6 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
     .rd_addr( obj_addr[12:0]  ),
     .wr_addr( prog_addr[12:0] ),
     .we     ( prom_1k_we      ),
-    .q      ( obj3_data       )
+    .q      ( objk_data       )
 );
 endmodule // jtgng_rom
