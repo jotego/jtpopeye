@@ -180,7 +180,7 @@ jtpopeye_rom u_rom(
 jtpopeye_objrom u_objrom(
     .clk         ( clk             ),
     // ROM loading
-    .prog_addr   ( prog_addr[14:0] ),
+    .prog_addr   ( prog_addr[12:0] ),
     .prog_data   ( prog_data       ),
     .prog_mask   ( prog_mask       ), // active low
     .prom_we     ( prom_we[13:10]  ),

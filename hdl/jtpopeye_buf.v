@@ -61,7 +61,8 @@ wire [5:0] wr_addr   = DO[7:2];
 
 reg [5:0] ADR0, ADR1;
 wire [17:0] DJ0, DJ1;
-wire line_sel = V[0];
+wire line_sel0 =  V[0]; // line_sel marks the line selected for output
+wire line_sel1 = ~V[0];
 // wire DJ_sel;
 reg we0, we1;
 
@@ -89,24 +90,19 @@ end
 
 wire we_cmp = H[0]==1'b0 && !inzone_b;
 
-always @(posedge clk) if(pxl_cen) begin
-    ADR0 <= !line_sel ? scan_addr : wr_addr;
-    ADR1 <=  line_sel ? scan_addr : wr_addr;
+always @(posedge clk) begin
+    ADR0 <= line_sel0 ? scan_addr : wr_addr;
+    ADR1 <= line_sel1 ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
-    `ifndef OBJTEST
-    we0      <=  V[0] ? we_cmp : H[1:0]==2'b11;
-    we1      <= !V[0] ? we_cmp : H[1:0]==2'b11;
-    `else 
-    we0 <= 1'b0;
-    we1 <= 1'b0;
-    `endif
-    ram0_din <= { DO[28], DO[26:24]&{3{V[0]}}, // ram0 uses V[0]
+    we0      <= line_sel0 ? H[1:0]==2'b11 : we_cmp;
+    we1      <= line_sel1 ? H[1:0]==2'b11 : we_cmp;
+    ram0_din <= { DO[28], DO[26:24]&{3{~line_sel0}}, // ram0 uses V[0]
             DO[1:0], DO[23:21], DO[20:16], 
             adder_data, DO[27] };
     // ram1 uses ~V[0]
     ram1_din <= { 
             DO[28],    // obj ID MSB (or sprite bank as MAME calls it)
-            DO[26:24]&{3{~V[0]}}, // palette, (set to 0 to clear data after reading)
+            DO[26:24]&{3{~line_sel1}}, // palette, (set to 0 to clear data after reading)
             DO[1:0],   // sub H
             DO[23],    // h flip
             DO[22:16], // obj ID 
@@ -126,32 +122,24 @@ wire [2:0] objy0, objy1;
 
 jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
-    .cen    ( pxl_cen        ),
+    .cen    ( 1'b1           ),
     .data   ( ram0_din       ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
-    .q      ( { DJ0[17:3], objy0 } )
+    .q      ( DJ0[17:0]      )
 );
 
 // 1P and 3P memories in schematic
 jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
-    .cen    ( pxl_cen        ),
+    .cen    ( 1'b1           ),
     .data   ( ram1_din       ),
     .addr   ( ADR1           ),
     .we     ( we1            ),
-    .q      ( { DJ1[17:3], objy1 } )
+    .q      ( DJ1[17:0]      )
 );
 
-`ifdef OBJTEST
-    assign DJ0[2:0] = V[2:0];
-    assign DJ1[2:0] = V[2:0];
-`else 
-    assign DJ0[2:0] = objy0;
-    assign DJ1[2:0] = objy1;
-`endif
-
 always @(posedge clk) if(pxl_cen)
-    if( H[1:0]==2'b11 ) DJ <= line_sel ? DJ1 : DJ0;
+    if( H[1:0]==2'b01 ) DJ <= line_sel1 ? DJ1 : DJ0;
 
 endmodule // jtpopeye_dma

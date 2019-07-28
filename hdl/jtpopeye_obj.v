@@ -45,12 +45,9 @@ module jtpopeye_obj(
 // DJ[0] - object's Y LSB (interlaced)
 // DJ[3:1] - object's Y (mod 8)
 // { DJ[17], DJ[10:4] } - object ID
-// DJ[16:14] - object's palette
+// DJ[16:14] - object's palette. If == 3'b000 then result colour is always black
 // DJ[11] - hflip
 // DJ[13:12] - count start
-
-always @(posedge clk)
-    obj_addr <= { DJ[16], DJ[17], DJ[10:1], DJ[0]^~INITEO   };
 
 reg hflip;
 reg [15:0] objd0, objd1;
@@ -59,9 +56,8 @@ reg [2:0] objc;
 reg [4:0] cnt;  // device 5E, video sheet 2/3
 
 wire RV = ~RV_n;
-wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
-
-reg [31:0] rom_latch;
+// wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
+wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, 2'b00 };
 
 always @(posedge clk) if( pxl_cen ) begin // 5E
     if( HB )
@@ -69,7 +65,7 @@ always @(posedge clk) if( pxl_cen ) begin // 5E
     else begin
         if( H[1:0]==2'b11 ) begin
             cnt <= { &pload, pload };
-            rom_latch <= {obj_data1, obj_data0};
+            obj_addr <= { DJ[16], DJ[17], DJ[10:1], DJ[0]^~INITEO   };
         end 
         else
             cnt <= { cnt[3:0]==4'b1110, cnt[3:0]+4'd1 };
@@ -90,7 +86,7 @@ wire carry = cnt[4];
 // devices 4K, 4L, 4J, 5K, 4F, 4H, 4E and 5F, video sheet 2/3
 always @(posedge clk) if(pxl2_cen) begin : shift_register
     if( carry ) begin
-        { objd1, objd0 } <= rom_latch;
+        { objd1, objd0 } <= { obj_data1, obj_data0 };
     end else begin
         objd1 <= HFLIP ? { objd1[14:0], 1'b0 } : { 1'b0, objd1[15:1] }; // pink
         objd0 <= HFLIP ? { objd0[14:0], 1'b0 } : { 1'b0, objd0[15:1] }; // green
