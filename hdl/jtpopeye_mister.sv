@@ -102,9 +102,7 @@ module emu
 
 `include "build_id.v" 
 localparam CONF_STR = {
-    //   00000000011111111112222222222333333333344444444445
-    //   12345678901234567890123456789012345678901234567890
-        "A.JTPOPEYE;;", // 12
+        "A.POP;;",
         "-;",
         "R0,Reset;",
         "J,Punch,Start 1P,Start 2P,Coin,Pause;",

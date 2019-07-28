@@ -26,7 +26,6 @@ module jtpopeye_objrom(
     // ROM loading
     input       [12:0]  prog_addr,
     input       [ 7:0]  prog_data,
-    input       [ 1:0]  prog_mask,
     input       [ 3:0]  prom_we,
     // ROM access
     input       [12:0]  obj_addr,  // 32 kB

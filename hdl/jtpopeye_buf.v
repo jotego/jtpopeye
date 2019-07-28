@@ -46,7 +46,7 @@ reg [2:0] adder_data;
 
 always @(*) begin // do not latch
     ROVI =  { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
-        + { 8'd0, ~RV_n ^ ROHVCK }; // carry in
+        + { 8'd0, RV_n ^ ROHVCK }; // carry in
     { ROVI_hc, nc } = 4'd15 + { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
     adder_data = {3{DO[27]}} ^ ROVI[2:0];
 end
@@ -87,7 +87,7 @@ end
 
 wire we_cmp = H[0]==1'b0 && !inzone_b && !ROHVS;
 
-always @(posedge clk) begin
+always @(posedge clk) begin // do not clock gate or OBJ pixels will get shifted to the right
     ADR0 <= line_sel0 ? scan_addr : wr_addr;
     ADR1 <= line_sel1 ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;

@@ -176,38 +176,33 @@ jtpopeye_rom u_rom(
     .data_read   ( data_read     ),
     .refresh_en  ( refresh_en    )
 );
-
-jtpopeye_objrom u_objrom(
-    .clk         ( clk             ),
-    // ROM loading
-    .prog_addr   ( prog_addr[12:0] ),
-    .prog_data   ( prog_data       ),
-    .prog_mask   ( prog_mask       ), // active low
-    .prom_we     ( prom_we[13:10]  ),
-
-    .obj_addr    ( obj_addr        ), // 32 kB
-    .obj_dout0   ( obj_data0       ),
-    .obj_dout1   ( obj_data1       )
-);
 `else 
 jtpopeye_bram u_rom(
     .clk         ( clk             ),
     // ROM loading
     .prog_addr   ( prog_addr[14:0] ),
     .prog_data   ( prog_data       ),
-    .prog_mask   ( prog_mask       ), // active low
-    .prom_we     ( prom_we[13:6]   ),
+    .prom_we     ( prom_we[9:6]    ),
 
     .main_addr   ( main_addr       ), // 32 kB, addressed as 8-bit words
-    .obj_addr    ( obj_addr        ), // 32 kB
-
     .main_dout   ( main_data       ),
     .main_cs     ( main_cs         ),
-    .obj_dout    ( obj_data        )
 );
 assign main_ok = 1'b1;
 assign ready   = 1'b1;
 `endif
+
+jtpopeye_objrom u_objrom(
+    .clk         ( clk             ),
+    // ROM loading
+    .prog_addr   ( prog_addr[12:0] ),
+    .prog_data   ( prog_data       ),
+    .prom_we     ( prom_we[13:10]  ),
+
+    .obj_addr    ( obj_addr        ), // 32 kB
+    .obj_dout0   ( obj_data0       ),
+    .obj_dout1   ( obj_data1       )
+);
 
 reg [1:0] main_rst_n=2'b0;
 always @(negedge clk) begin

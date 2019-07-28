@@ -127,7 +127,7 @@ reg [7:0] txtv0;
 always @(posedge clk) if(pxl_cen) begin
     if( H[2:0]==3'd7 ) begin // TXTSHIFT
         txtv0 <= txtv;
-        txtc0 <= pause ? 4'd1 : txtc;
+        txtc0 <= pause ? 4'd0 : txtc; // 0 GREEN, 1 BLUE
     end
     else txtv0 <= RV ? { txtv0[6:0], 1'b0 } : { 1'b0, txtv0[7:1] };
     TXTV <= ~(RV ? txtv0[7] : txtv0[0]);

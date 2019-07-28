@@ -23,29 +23,20 @@ module jtpopeye_bram(
     // ROM loading
     input       [14:0]  prog_addr,
     input       [ 7:0]  prog_data,
-    input       [ 1:0]  prog_mask,
     input       [ 7:0]  prom_we,
     // ROM access
     input       [14:0]  main_addr, // 32 kB, addressed as 8-bit words
-    input       [12:0]  obj_addr,  // 32 kB
 
     output reg  [ 7:0]  main_dout,
-    output reg  [31:0]  obj_dout,
     input               main_cs
 );
 
 wire [7:0] main0_data, main1_data, main2_data, main3_data;
-wire [7:0] obj0_data, obj1_data, obj2_data, obj3_data;
 
 wire prom_7a_we = prom_we[0];
 wire prom_7b_we = prom_we[1];
 wire prom_7c_we = prom_we[2];
 wire prom_7e_we = prom_we[3];
-
-wire prom_1e_we = prom_we[4];
-wire prom_1f_we = prom_we[5];
-wire prom_1j_we = prom_we[6];
-wire prom_1k_we = prom_we[7];
 
 always @(posedge clk) if(main_cs) begin
     case( main_addr[14:13] )
@@ -55,56 +46,6 @@ always @(posedge clk) if(main_cs) begin
         2'd3: main_dout <= main3_data;
     endcase
 end
-
-always @(posedge clk) begin
-    obj_dout <= {
-        obj3_data,
-        obj2_data,
-        obj1_data,
-        obj0_data
-    };
-end
-
-// Object ROMs
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
-    .clk    ( clk             ),
-    .cen    ( 1'b1            ),
-    .data   ( prog_data       ),
-    .rd_addr( obj_addr[12:0]  ),
-    .wr_addr( prog_addr[12:0] ),
-    .we     ( prom_1e_we      ),
-    .q      ( obj0_data       )
-);
-
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
-    .clk    ( clk             ),
-    .cen    ( 1'b1            ),
-    .data   ( prog_data       ),
-    .rd_addr( obj_addr[12:0]  ),
-    .wr_addr( prog_addr[12:0] ),
-    .we     ( prom_1f_we      ),
-    .q      ( obj1_data       )
-);
-
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
-    .clk    ( clk             ),
-    .cen    ( 1'b1            ),
-    .data   ( prog_data       ),
-    .rd_addr( obj_addr[12:0]  ),
-    .wr_addr( prog_addr[12:0] ),
-    .we     ( prom_1j_we      ),
-    .q      ( obj2_data       )
-);
-
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
-    .clk    ( clk             ),
-    .cen    ( 1'b1            ),
-    .data   ( prog_data       ),
-    .rd_addr( obj_addr[12:0]  ),
-    .wr_addr( prog_addr[12:0] ),
-    .we     ( prom_1k_we      ),
-    .q      ( obj3_data       )
-);
 
 // Main CPU ROMs
 jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7a")) u_main0(
@@ -146,6 +87,5 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7e")) u_main3(
     .we     ( prom_7e_we      ),
     .q      ( main3_data      )
 );
-
 
 endmodule // jtgng_rom

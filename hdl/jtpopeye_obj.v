@@ -98,7 +98,7 @@ always @(posedge clk) if(pxl2_cen) begin : u_4C
 end
 
 always @(posedge clk) begin : u_5J
-    if(VB) begin
+    if( VB ) begin
         OBJV <= 2'b00;      // Low outputs during blank as per LS157 behaviour
     end else begin
         OBJV <= HFLIP ? { objd1[15], objd0[15] } : { objd1[0], objd0[0] };
