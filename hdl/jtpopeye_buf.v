@@ -32,7 +32,6 @@ module jtpopeye_buf(
 
     input      [ 7:0]   H,
     input      [ 7:0]   V,
-    input               HB,
     input               H2O,
     input      [28:0]   DO,
 
@@ -98,13 +97,13 @@ always @(posedge clk) begin // do not clock gate or OBJ pixels will get shifted 
             adder_data, DO[27] };
     // ram1 uses ~V[0]
     ram1_din <= { 
-            DO[28],    // obj ID MSB (or sprite bank as MAME calls it)
+            DO[28],     // obj ID MSB (or sprite bank as MAME calls it)
             DO[26:24]&{3{~line_sel1}}, // palette, (set to 0 to clear data after reading)
-            DO[1:0],   // sub H
-            DO[23],    // h flip
-            DO[22:16], // obj ID 
+            DO[1:0],    // sub H
+            DO[23],     // h flip
+            DO[22:16],  // obj ID 
             adder_data, // sub V
-            DO[27] };  // v flip
+            DO[27] };   // v flip
 end
 
 // DJ[0] - object's Y LSB (interlaced)
@@ -140,6 +139,6 @@ jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
 // 10 si
 // 11 no
 always @(posedge clk) if(pxl_cen)
-    if( H[1:0]==2'b00 ) DJ <= line_sel1 ? DJ1 : DJ0;
+    if( !H[0] ) DJ <= line_sel1 ? DJ1 : DJ0;
 
 endmodule // jtpopeye_dma

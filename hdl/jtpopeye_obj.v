@@ -56,9 +56,7 @@ reg [2:0] objc;
 reg [4:0] cnt;  // device 5E, video sheet 2/3
 
 wire RV = ~RV_n;
-//wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
-wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, DJ[13:12] ^ {2{~RV}} };
-// wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, 2'b00 };
+wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, DJ[13:12] ^ {2{RV_n}} };
 
 always @(posedge clk) if( pxl_cen ) begin // 5E
     if( HB )

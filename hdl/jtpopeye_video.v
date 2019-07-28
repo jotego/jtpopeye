@@ -212,7 +212,6 @@ jtpopeye_buf u_buf(
 
     .H                  ( H             ),
     .V                  ( V             ),
-    .HB                 ( HB            ),
     .H2O                ( H2O           ),
     .DO                 ( DO            ), // gfx buffer
 

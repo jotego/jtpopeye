@@ -102,12 +102,15 @@ module emu
 
 `include "build_id.v" 
 localparam CONF_STR = {
-        "A.POP;;",
-        "-;",
-        "R0,Reset;",
-        "J,Punch,Start 1P,Start 2P,Coin,Pause;",
-        //"V,v",`BUILD_DATE, " http://patreon.com/topapate;"
-        "V,BETA version http://patreon.com/topapate;"
+    "A.POP;;",
+    "-;",
+    "F,rom;",
+    "O1,Aspect Ratio,Original,Wide;",
+    "O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+    "R0,Reset;",
+    "J,Punch,Start 1P,Start 2P,Coin,Pause;",
+    //"V,v",`BUILD_DATE, " http://patreon.com/topapate;"
+    "V,BETA version http://patreon.com/topapate;"
 };
 
 assign VGA_F1 = 0;
@@ -152,7 +155,7 @@ wire [15:0] joy_0, joy_1;
 wire        forced_scandoubler;
 wire        downloading;
 
-assign LED_USER  = { 1'b0, downloading };
+assign LED_USER  = downloading;
 assign LED_DISK  = 2'b0;
 assign LED_POWER = 2'b0;
 
