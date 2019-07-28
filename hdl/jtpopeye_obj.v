@@ -56,8 +56,9 @@ reg [2:0] objc;
 reg [4:0] cnt;  // device 5E, video sheet 2/3
 
 wire RV = ~RV_n;
-// wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
-wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, 2'b00 };
+//wire [3:0] pload = { ~&DJ[16:14], 1'b1, DJ[13:12] ^ {2{RV}} };
+wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, DJ[13:12] ^ {2{~RV}} };
+// wire [3:0] pload = { DJ[16:14]!=3'b000, 1'b1, 2'b00 };
 
 always @(posedge clk) if( pxl_cen ) begin // 5E
     if( HB )
@@ -66,16 +67,11 @@ always @(posedge clk) if( pxl_cen ) begin // 5E
         if( H[1:0]==2'b11 ) begin
             cnt <= { &pload, pload };
             obj_addr <= { DJ[16], DJ[17], DJ[10:1], DJ[0]^~INITEO   };
+            objc   <= DJ[16:14];
+            hflip  <= DJ[11] ^ RV;
         end 
         else
             cnt <= { cnt[3:0]==4'b1110, cnt[3:0]+4'd1 };
-    end
-end
-
-always @(posedge clk) if( pxl_cen ) begin // 3C
-    if( H[1:0]==2'b11 ) begin
-        objc   <= DJ[16:14]; // shouldn't it be inverted?
-        hflip  <= DJ[11] ^ RV;
     end
 end
 
@@ -93,11 +89,11 @@ always @(posedge clk) if(pxl2_cen) begin : shift_register
     end
 end
 
-always @(posedge clk) if(pxl_cen) begin : u_4C
+always @(posedge clk) if(pxl2_cen) begin : u_4C
     last_carry <= cnt[4];
-    if( carry && ! last_carry) begin
+    if( carry  ) begin
         OBJC  <= objc;
-        HFLIP <= hflip;
+        HFLIP <= hflip;  // shouldn't it be inverted?
     end
 end
 

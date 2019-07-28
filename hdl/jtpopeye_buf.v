@@ -42,17 +42,14 @@ module jtpopeye_buf(
 
 reg ROVI_hc; // half carry
 reg [3:0] nc;
+reg [2:0] adder_data;
 
 always @(*) begin // do not latch
     ROVI =  { 1'b0, DO[15:8] } + { 1'b0, V[7:0] } 
         + { 8'd0, ~RV_n ^ ROHVCK }; // carry in
-end
-
-always @(*) begin
     { ROVI_hc, nc } = 4'd15 + { 1'b0, ROVI[7:4] } + { 4'b0, ROVI[3] }; // 3T LS283
+    adder_data = {3{DO[27]}} ^ ROVI[2:0];
 end
-
-wire [2:0] adder_data = {3{DO[27]}} ^ ROVI[2:0];
 
 reg [17:0] ram0_din, ram1_din;
 
@@ -88,7 +85,7 @@ always @(*) begin
     { inzone_b, inzone1 } = { 1'b0, inzone0[7:4] } + 5'hf + {4'h0, inzone0[3] };
 end
 
-wire we_cmp = H[0]==1'b0 && !inzone_b;
+wire we_cmp = H[0]==1'b0 && !inzone_b && !ROHVS;
 
 always @(posedge clk) begin
     ADR0 <= line_sel0 ? scan_addr : wr_addr;
@@ -122,7 +119,7 @@ wire [2:0] objy0, objy1;
 
 jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
-    .cen    ( 1'b1           ),
+    .cen    ( pxl_cen        ),
     .data   ( ram0_din       ),
     .addr   ( ADR0           ),
     .we     ( we0            ),
@@ -132,14 +129,17 @@ jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
 // 1P and 3P memories in schematic
 jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
-    .cen    ( 1'b1           ),
+    .cen    ( pxl_cen        ),
     .data   ( ram1_din       ),
     .addr   ( ADR1           ),
     .we     ( we1            ),
     .q      ( DJ1[17:0]      )
 );
-
+// 00
+// 01 si
+// 10 si
+// 11 no
 always @(posedge clk) if(pxl_cen)
-    if( H[1:0]==2'b01 ) DJ <= line_sel1 ? DJ1 : DJ0;
+    if( H[1:0]==2'b00 ) DJ <= line_sel1 ? DJ1 : DJ0;
 
 endmodule // jtpopeye_dma
