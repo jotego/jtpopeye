@@ -23,6 +23,7 @@ wire DOTCK;
 wire GND;
 wire H2O;
 wire HB;
+wire HBDn;
 wire Net__1B1_Pad10_;
 wire Net__1B1_Pad12_;
 wire Net__1B1_Pad3_;
@@ -134,8 +135,11 @@ wire Net__4K1_Pad15_;
 wire Net__4K1_Pad2_;
 wire Net__4L1_Pad13_;
 wire Net__4L1_Pad14_;
+wire Net__5B1_Pad2_;
+wire Net__5C1_Pad11_;
 wire Net__5C1_Pad5_;
 wire Net__5C1_Pad6_;
+wire Net__5C1_Pad8_;
 wire Net__5E1_Pad1_;
 wire Net__5F1_Pad13_;
 wire Net__5F1_Pad14_;
@@ -156,7 +160,6 @@ wire Net__6C2_Pad9_;
 wire Net__6D1_Pad14_;
 wire Net__6D1_Pad2_;
 wire Net__6D1_Pad3_;
-wire Net__6E1_Pad11_;
 wire Net__6E1_Pad15_;
 wire Net__6E1_Pad3_;
 wire Net__6E1_Pad4_;
@@ -190,6 +193,7 @@ wire Net__7K1_Pad9_;
 wire Net__7L1_Pad11_;
 wire Net__7M1_Pad10_;
 wire Net__7M1_Pad15_;
+wire Net__8B1_Pad10_;
 wire Net__8B1_Pad12_;
 wire Net__8B1_Pad2_;
 wire Net__8B1_Pad3_;
@@ -1345,13 +1349,25 @@ jt7404 u_5A1(
     .in13      ( H[1]                     ) /* pin 13*/ 
 );
 
+jt7400 u_5B1(
+    .in1       ( HB                       ) /* pin 1*/ ,
+    .in2       ( Net__5B1_Pad2_           ) /* pin 2*/ ,
+    .out3      ( HBDn                     ) /* pin 3*/ 
+);
+
 jt7474 u_5C1(
     .cl1_b     ( 1'b1                     ) /* pin 1*/ ,
     .d1        ( HB                       ) /* pin 2*/ ,
     .clk1      ( VB                       ) /* pin 3*/ ,
     .pr1_b     ( 1'b1                     ) /* pin 4*/ ,
     .q1        ( Net__5C1_Pad5_           ) /* pin 5*/ ,
-    .q1_b      ( Net__5C1_Pad6_           ) /* pin 6*/ 
+    .q1_b      ( Net__5C1_Pad6_           ) /* pin 6*/ ,
+    .q2_b      ( Net__5C1_Pad8_           ) /* pin 8*/ ,
+    .q2        ( Net__5B1_Pad2_           ) /* pin 9*/ ,
+    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
+    .clk2      ( Net__5C1_Pad11_          ) /* pin 11*/ ,
+    .d2        ( HB                       ) /* pin 12*/ ,
+    .cl2_b     ( 1'b1                     ) /* pin 13*/ 
 );
 
 jt7486 u_5D1(
@@ -1525,7 +1541,7 @@ jt74161 u_6E1(
                   Net__6E1_Pad5_,
                   Net__6E1_Pad4_,
                   Net__6E1_Pad3_}),
-    .q         ({ Net__6E1_Pad11_,
+    .q         ({ Net__5C1_Pad11_,
                   Net__6D1_Pad14_,
                   Net__3D1_Pad11_,
                   Net__3D1_Pad10_})
@@ -1535,7 +1551,7 @@ jt7486 u_6F1(
     .in1       ( RVn                      ) /* pin 1*/ ,
     .in2       ( 1'b1                     ) /* pin 2*/ ,
     .out3      ( _video2_RVx              ) /* pin 3*/ ,
-    .in4       ( Net__6E1_Pad11_          ) /* pin 4*/ ,
+    .in4       ( Net__5C1_Pad11_          ) /* pin 4*/ ,
     .in5       ( _video2_RVx              ) /* pin 5*/ ,
     .out6      ( H[3]                     ) /* pin 6*/ ,
     .out8      ( H2O                      ) /* pin 8*/ ,
@@ -1746,7 +1762,7 @@ jt7474 u_8B1(
     .q1_b      ( Net__8B1_Pad2_           ) /* pin 6*/ ,
     .q2_b      ( _video2_HBn              ) /* pin 8*/ ,
     .q2        ( HB                       ) /* pin 9*/ ,
-    .pr2_b     ( 1'b1                     ) /* pin 10*/ ,
+    .pr2_b     ( Net__8B1_Pad10_          ) /* pin 10*/ ,
     .clk2      ( _video2_Hclk             ) /* pin 11*/ ,
     .d2        ( Net__8B1_Pad12_          ) /* pin 12*/ ,
     .cl2_b     ( 1'b1                     ) /* pin 13*/ 

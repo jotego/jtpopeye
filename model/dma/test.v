@@ -122,7 +122,6 @@ dma uut(
     .ROHVS      ( ROHVS     ),
     // from timing
     .V          ( V         ),
-    .HBDn       ( HBDn      ),
     .VB         ( VB        ),
     // from CPU    
     .DD         ( DD        ),
@@ -173,25 +172,25 @@ jtpopeye_dma u_dmanew (
 
 
 jtpopeye_timing u_timing (
-    .rst_n     (rst_n     ),
-    .clk       (clk       ),
-    .pxl2_cen  (pxl2_cen  ),
-    .pxl_cen   (pxl_cen   ),
-    .RV_n      (1'b1      ),
-    .V         (V         ),
-    .H         (H         ),
-    .H2O       (H2O       ),
-    .HB        (HB        ),
-    .HBD_n     (HBDn      ),
+    .rst_n     ( rst_n    ),
+    .clk       ( clk      ),
+    .pxl2_cen  ( pxl2_cen ),
+    .pxl_cen   ( pxl_cen  ),
+    .RV_n      ( 1'b1     ),
+    .V         ( V        ),
+    .H         ( H        ),
+    .H2O       ( H2O      ),
+    .HB        ( HB       ),
+    .HBD_n     ( HBDn     ),
     .pre_HBDn  ( pre_HBDn ),
-    .VB        (VB        ),
-    .INITEO    (INITEO    ),
-    .SY_n      (SY_n      ),
-    .HS        (HS        ),
-    .VS        (VS        ),
-    .prog_addr (8'd0      ),
-    .prom_7j_we(1'b0      ),
-    .prom_din  (4'd0      )
+    .VB        ( VB       ),
+    .INITEO    ( INITEO   ),
+    .SY_n      ( SY_n     ),
+    .HS        ( HS       ),
+    .VS        ( VS       ),
+    .prog_addr ( 8'd0     ),
+    .prom_7j_we( 1'b0     ),
+    .prom_din  ( 4'd0     )
 );
 
 endmodule

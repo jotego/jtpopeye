@@ -8,8 +8,7 @@ module dma(
     
     // from timing
     input   [7:0] V,
-    input   HBDn,
-    input   VB,
+    input   VB,    
     
     // from CPU
     inout   [7:0] DD,
