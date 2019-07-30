@@ -90,8 +90,13 @@ always @(posedge clk) begin // do not clock gate or OBJ pixels will get shifted 
     ADR0 <= line_sel0 ? scan_addr : wr_addr;
     ADR1 <= line_sel1 ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
+    `ifndef OBJTEST
     we0      <= line_sel0 ? H[1:0]==2'b11 : we_cmp;
     we1      <= line_sel1 ? H[1:0]==2'b11 : we_cmp;
+    `else 
+    we0 <= 1'b0;
+    we1 <= 1'b0;
+    `endif
     ram0_din <= { DO[28], DO[26:24]&{3{~line_sel0}}, // ram0 uses V[0]
             DO[1:0], DO[23:21], DO[20:16], 
             adder_data, DO[27] };
