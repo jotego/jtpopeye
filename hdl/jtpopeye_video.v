@@ -211,6 +211,7 @@ jtpopeye_buf u_buf(
     .RV_n               ( RV_n          ),     // Flip
 
     .H                  ( H             ),
+    .HB                 ( HB            ),
     .V                  ( V             ),
     .H2O                ( H2O           ),
     .DO                 ( DO            ), // gfx buffer

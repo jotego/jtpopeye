@@ -31,6 +31,7 @@ module jtpopeye_buf(
     input               RV_n,
 
     input      [ 7:0]   H,
+    input               HB,
     input      [ 7:0]   V,
     input               H2O,
     input      [28:0]   DO,
@@ -91,8 +92,8 @@ always @(posedge clk) begin // do not clock gate or OBJ pixels will get shifted 
     ADR1 <= line_sel1 ? scan_addr : wr_addr;
     // DJ_sel = line_sel ? ~(ROVI_hc | (ROHVS | ~H[0])) : 1'b1;
     `ifndef OBJTEST
-    we0      <= line_sel0 ? H[1:0]==2'b11 : we_cmp;
-    we1      <= line_sel1 ? H[1:0]==2'b11 : we_cmp;
+    we0      <= line_sel0 ? (H[1:0]==2'b11 && !HB): we_cmp;
+    we1      <= line_sel1 ? (H[1:0]==2'b11 && !HB): we_cmp;
     `else 
     we0 <= 1'b0;
     we1 <= 1'b0;
