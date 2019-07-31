@@ -280,7 +280,6 @@ assign VGA_VS   = VS;
 reg  [1:0]    dip_level;
 wire [1:0]    dip_lives = status[6:5];
 wire [1:0]    dip_bonus = status[8:7];
-wire          dip_test  = 0; // ~status[15];
 
 // play level. Latch all inputs to game module
 always @(posedge clk_sys) begin

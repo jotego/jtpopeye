@@ -72,11 +72,11 @@ end
 
 reg [11:0] ram_addr;
 wire [7:0] ram_dout;
-reg nibble_sel;
-
-always @(*) begin
-    nibble_sel = !CSBW_n ? !AD[12] : ROVl[7];
-end
+// reg nibble_sel;
+// 
+// always @(*) begin
+//     nibble_sel = !CSBW_n ? !AD[12] : ROVl[7];
+// end
 
 always @(posedge clk) if(pxl_cen) begin
     if( ROH[1:0]==2'b11 && CSBW_n)
