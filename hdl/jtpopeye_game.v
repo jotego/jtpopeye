@@ -186,7 +186,7 @@ jtpopeye_bram u_rom(
 
     .main_addr   ( main_addr       ), // 32 kB, addressed as 8-bit words
     .main_dout   ( main_data       ),
-    .main_cs     ( main_cs         ),
+    .main_cs     ( main_cs         )
 );
 assign main_ok = 1'b1;
 assign ready   = 1'b1;

@@ -62,17 +62,15 @@ module jtpopeye_mist(
 );
 
 localparam CONF_STR = {
-    //   00000000011111111112222222222333333333344444444445
-    //   12345678901234567890123456789012345678901234567890
-        "JTPOPEYE;;", // 10
-        "O1,Pause,OFF,ON;", // 16
-        "F,rom;", // 6
-        "O23,Difficulty,Normal,Easy,Hard,Very hard;", // 42
-        "O4,Test mode,OFF,ON;", // 20
-        "O56,Lives,1,2,3,4;",  // 18
-        "O9,Screen filter,ON,OFF;", // 24
-        "TF,RST ,OFF,ON;", // 15
-        "V,http://patreon.com/topapate;" // 30
+        "JTPOPEYE;;",
+        "O1,Pause,OFF,ON;",
+        "F,rom;",
+        "O23,Difficulty,Normal,Easy,Hard,Very hard;",
+        "O56,Lives,4,3,2,1;",
+        "O78,Bonus,40k,60k,80k,No Bonus;",        
+        //"O9,Screen filter,ON,OFF;", // 24
+        "TF,RST ,OFF,ON;",
+        "V,http://patreon.com/topapate;"
 };
 
 
@@ -97,12 +95,12 @@ reg dip_pause;
 always @(posedge clk_sys) dip_pause <= ~status[1] & ~game_pause;
 `endif
 
-wire dip_upright = 1'b1;
+wire dip_upright = 1'b0;
 reg [1:0] dip_level;
 wire dip_demosnd = 1'b0;
-wire [1:0] dip_lives  = status[6:5];
-wire [3:0] dip_price  = 4'hf;
-wire [1:0] dip_bonus  = 2'b11;
+wire [1:0] dip_lives = status[6:5];
+wire [3:0] dip_price = 4'hf;
+wire [1:0] dip_bonus = status[8:7];
 
 wire [21:0]   prog_addr;
 wire [ 7:0]   prog_data;
@@ -135,12 +133,12 @@ wire        pxl_cen, pxl2_cen, pxl4_cen;
 // play level. Latch all inputs to game module
 always @(posedge clk_sys) begin
     case( status[3:2] )
-        2'b00: dip_level <= 2'b01; // normal
-        2'b01: dip_level <= 2'b00; // easy
-        2'b10: dip_level <= 2'b10; // hard
-        2'b11: dip_level <= 2'b11; // very hard
+        2'b00: dip_level <= 2'b10; // normal
+        2'b01: dip_level <= 2'b11; // easy
+        2'b10: dip_level <= 2'b01; // hard
+        2'b11: dip_level <= 2'b00; // very hard
     endcase // status[3:2]
-    en_mixing  <= ~status[9];
+    en_mixing  <= 1'b0; //~status[9];
     coin_input <= |game_coin;
 end
 

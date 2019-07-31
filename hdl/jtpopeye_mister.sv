@@ -107,12 +107,13 @@ localparam CONF_STR = {
     "A.POP;;",
     "-;",
     "F,rom;",
-    "O1,Aspect Ratio,Original,Wide;",
-    "O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+    "O23,Difficulty,Normal,Easy,Hard,Very hard;",
+    "O56,Lives,4,3,2,1;",  // 18    
+    "O78,Bonus,40k,60k,80k,No Bonus;",
+    "-;",
     "R0,Reset;",
     "J,Punch,Start 1P,Start 2P,Coin,Pause;",
-    //"V,v",`BUILD_DATE, " http://patreon.com/topapate;"
-    "V,BETA version http://patreon.com/topapate;"
+    "V,v",`BUILD_DATE, " http://patreon.com/topapate;"
 };
 
 assign VGA_F1 = 0;
@@ -166,37 +167,37 @@ assign HDMI_ARY = status[1] ? 8'd9  : status[2] ? 8'd3 : 8'd4;
 
 hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 (
-    .clk_sys    ( clk_sys       ),
-    .HPS_BUS    ( HPS_BUS       ),
+    .clk_sys       ( clk_sys       ),
+    .HPS_BUS       ( HPS_BUS       ),
 
-    .conf_str   ( CONF_STR      ),
+    .conf_str      ( CONF_STR      ),
 
-    .buttons    ( buttons       ),
-    .status     ( status        ),
+    .buttons       ( buttons       ),
+    .status        ( status        ),
     .forced_scandoubler(forced_scandoubler),
 
-    .ioctl_download(downloading),
-    .ioctl_wr   ( ioctl_wr      ),
-    .ioctl_addr ( ioctl_addr    ),
-    .ioctl_dout ( ioctl_data    ),
+    .ioctl_download(downloading    ),
+    .ioctl_wr      ( ioctl_wr      ),
+    .ioctl_addr    ( ioctl_addr    ),
+    .ioctl_dout    ( ioctl_data    ),
 
-    .joystick_0 ( joy_0         ),
-    .joystick_1 ( joy_1         ),
-    .ps2_key    ( ps2_key       )
+    .joystick_0    ( joy_0         ),
+    .joystick_1    ( joy_1         ),
+    .ps2_key       ( ps2_key       )
 );
 
 wire       pressed = ps2_key[9];
 wire [7:0] code    = ps2_key[7:0];
 
-reg btn_one_player = 0;
+reg btn_one_player  = 0;
 reg btn_two_players = 0;
-reg btn_left = 0;
-reg btn_right = 0;
-reg btn_down = 0;
-reg btn_up = 0;
-reg btn_fire1 = 0;
-reg btn_coin  = 0;
-reg btn_pause = 0;
+reg btn_left        = 0;
+reg btn_right       = 0;
+reg btn_down        = 0;
+reg btn_up          = 0;
+reg btn_fire1       = 0;
+reg btn_coin        = 0;
+reg btn_pause       = 0;
 
 always @(posedge clk_sys) begin
     reg old_state;
@@ -246,7 +247,7 @@ always @(posedge clk_sys) begin
     if(status[0] | buttons[1]) pause <= 0;
 end
 
-wire dip_upright = 1'b1;
+wire dip_upright = 1'b0;
 wire dip_demosnd = 1'b0;
 wire [3:0] dip_price  = 4'b0;
 
@@ -270,17 +271,26 @@ assign HDMI_VS  = VS;
 assign HDMI_SL  = 2'b0;
 
 // base video
-wire SY_n;
 assign VGA_R    = { red,   red,   red[2:1] };
 assign VGA_G    = { green, green, green[2:1] };
 assign VGA_B    = { 4{blue} };
 assign VGA_HS   = HS;
 assign VGA_VS   = VS;
 
-wire [1:0]    dip_level = 0; // ~status[13:12];
-wire [1:0]    dip_lives = 0; // ~status[9:8];
-wire [1:0]    dip_bonus = 0; // ~status[11:10];
+reg  [1:0]    dip_level;
+wire [1:0]    dip_lives = status[6:5];
+wire [1:0]    dip_bonus = status[8:7];
 wire          dip_test  = 0; // ~status[15];
+
+// play level. Latch all inputs to game module
+always @(posedge clk_sys) begin
+    case( status[3:2] )
+        2'b00: dip_level <= 2'b10; // normal
+        2'b01: dip_level <= 2'b11; // easy
+        2'b10: dip_level <= 2'b01; // hard
+        2'b11: dip_level <= 2'b00; // very hard
+    endcase // status[3:2]
+end
 
 wire [4:0] game_joystick1 = { m_punch,  m_up,  m_down,  m_left,  m_right  };
 wire [4:0] game_joystick2 = { m2_punch, m2_up, m2_down, m2_left, m2_right };
@@ -296,7 +306,7 @@ assign VGA_CE = pxl_cen;
 assign ROTATE = 2'b00;
 `ifdef SIMULATION
 assign sim_pxl_clk = clk_sys;
-assign sim_pxl_cen = cen6;
+assign sim_pxl_cen = pxl_cen;
 `endif
 
 jtpopeye_game u_game(
@@ -312,7 +322,7 @@ jtpopeye_game u_game(
     .VB             ( VB                    ),
     .HS             ( HS                    ),
     .VS             ( VS                    ),
-    .SY_n           ( SY_n                  ),
+    .SY_n           (                       ),
     // cabinet I/O
     .start_button   ( game_start            ),
     .coin_input     ( m_coin                ),
@@ -321,14 +331,14 @@ jtpopeye_game u_game(
     .service        ( game_service          ),
 
     // UART
-    .uart_rx        ( 1'b0           ),
-    .uart_tx        (                ),
+    .uart_rx        ( 1'b0             ),
+    .uart_tx        (                  ),
 
     // ROM LOAD
-    .downloading    ( downloading    ),
+    .downloading    ( downloading      ),
     .ioctl_addr     ( ioctl_addr[21:0] ),
-    .ioctl_data     ( ioctl_data     ),
-    .ioctl_wr       ( ioctl_wr       ),
+    .ioctl_data     ( ioctl_data       ),
+    .ioctl_wr       ( ioctl_wr         ),
 
     // DIP Switches
     .dip_pause      ( game_pause     ),  // not a DIP on real hardware
@@ -342,7 +352,7 @@ jtpopeye_game u_game(
     .snd            ( AUDIO_L[15:6]  ),
     .sample         ( /* unused  */  ),
     // Debug
-    .gfx_en         ( 4'd0           )
+    .gfx_en         ( ~4'd0          )
 );
 
 assign AUDIO_L[5:0] = 6'd0;

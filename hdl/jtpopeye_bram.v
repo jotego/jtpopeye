@@ -23,7 +23,7 @@ module jtpopeye_bram(
     // ROM loading
     input       [14:0]  prog_addr,
     input       [ 7:0]  prog_data,
-    input       [ 7:0]  prom_we,
+    input       [ 3:0]  prom_we,
     // ROM access
     input       [14:0]  main_addr, // 32 kB, addressed as 8-bit words
 
