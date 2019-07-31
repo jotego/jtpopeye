@@ -91,7 +91,7 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
     if( !rst_n ) begin
         {msb_we, lsb_we}  <= 2'b0;
         DWRBK_last <= 1'b0;
-    end else if(pxl_cen) begin
+    end else begin
         DWRBK_last <= DWRBK;
         if( (DWRBK && !DWRBK_last) && !CSBW_n ) begin
             // set RAM address for reading

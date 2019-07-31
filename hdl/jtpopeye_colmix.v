@@ -49,7 +49,7 @@ wire [7:0] bak_rgb, obj_rgb, txt_rgb;
 reg txt_cs, obj_cs, bak_cs;
 
 // latch priorities to process on the next clock edge
-always @(posedge clk) if(pxl2_cen) begin
+always @(*) begin
     txt_cs <= !txtv; // txtv low -> text selected
     obj_cs <= |objv;
     bak_cs <= VB_n & HBD_n;

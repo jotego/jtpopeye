@@ -80,6 +80,8 @@ module emu
     output [15:0] AUDIO_R,
     output        AUDIO_S,   // 1 - signed audio samples, 0 - unsigned
 
+    output  [1:0] ROTATE,
+
     //SDRAM interface with lower latency
     output        SDRAM_CLK,
     output        SDRAM_CKE,
@@ -290,6 +292,12 @@ wire game_service = 1'b0;
 wire rst_n = ~(RESET | status[0] | buttons[1]);
 
 assign VGA_CE = pxl_cen;
+
+assign ROTATE = 2'b00;
+`ifdef SIMULATION
+assign sim_pxl_clk = clk_sys;
+assign sim_pxl_cen = cen6;
+`endif
 
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
