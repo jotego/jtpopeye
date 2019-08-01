@@ -34,7 +34,7 @@ module jtpopeye_timing(
     output              HBD_n, // HB - DMA
     output reg          pre_HBDn,
     output reg          VB,
-    output reg          INITEO  ,
+    output reg          INITEO,
     output reg          SY_n,       // composite sync
     // HS and VS were not present in the original board
     output reg          HS,
@@ -110,13 +110,13 @@ always @(posedge clk or negedge rst_n)
     if( !rst_n ) begin
         preEO   <= 1'b0;
         VBl     <= 1'b0;
-        INITEO   <= 1'b0;
+        INITEO  <= 1'b0;
     end else begin
         VBl <= VB;
         if( VB && !VBl ) begin
             preEO    <= ~HB;
         end
-        INITEO   <= ~(preEO ^ RV);
+        INITEO  <= ~(preEO ^ RV);
     end
 
 
