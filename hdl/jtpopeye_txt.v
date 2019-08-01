@@ -28,8 +28,9 @@ module jtpopeye_txt(
     input      [12:0]   AD,
     input      [ 7:0]   DD,
     input      [ 7:0]   H,
-    input               HB,
     input      [ 7:0]   V,
+    input               HB,
+    input               VB,
     input               RV, // flip
     input               CSV,
     input               MEMWRO,
@@ -131,6 +132,7 @@ always @(posedge clk) if(pxl_cen) begin
         txtc0 <= pause ? 4'd0 : txtc; // 0 GREEN, 1 BLUE
     end
     else txtv0 <= RV ? { txtv0[6:0], 1'b0 } : { 1'b0, txtv0[7:1] };
+    if( VB ) txtv0 <= 8'b0;
 end
 
 // latch output signals (without pixel CEN)

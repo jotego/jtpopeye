@@ -151,8 +151,10 @@ jtpopeye_video_dec u_dec(
 // These are latched by signal ROHVCK in video sheet 1/3
 reg [2:0] preOBJC;
 reg preBAKC;
-always @(posedge clk) if(pxl2_cen) begin
-    if( !ROHVCK) begin
+always @(posedge clk) begin : attr_latch
+    reg last_ROHVCK;
+    last_ROHVCK <= ROHVCK;
+    if( ROHVCK && !last_ROHVCK ) begin
         preOBJC = DO[26:24];
         preBAKC = DO[27];
     end
@@ -170,8 +172,9 @@ jtpopeye_txt u_txt(
     .AD                 ( ADvideo       ),
     .DD                 ( DD            ),
     .H                  ( H             ),
-    .HB                 ( HB            ),
     .V                  ( V             ),
+    .HB                 ( HB            ),
+    .VB                 ( VB            ),
     .RV                 ( RV            ), // flip
     .CSV                ( CSV           ),
     .MEMWRO             ( MEMWRO        ),
