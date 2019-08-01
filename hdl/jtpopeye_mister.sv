@@ -116,10 +116,8 @@ localparam CONF_STR = {
     "V,v",`BUILD_DATE, " http://patreon.com/topapate;"
 };
 
-assign VGA_F1 = 0;
-
 /// SDRAM is not used:
-assign SDRAM_DQ = 16'hzzzz;
+assign SDRAM_DQ  = 16'hzzzz;
 assign SDRAM_CLK =  1'b0;
 assign SDRAM_CKE =  1'b0;
 assign SDRAM_A   = 13'b0;
@@ -176,7 +174,7 @@ hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
     .status        ( status        ),
     .forced_scandoubler(forced_scandoubler),
 
-    .ioctl_download(downloading    ),
+    .ioctl_download( downloading   ),
     .ioctl_wr      ( ioctl_wr      ),
     .ioctl_addr    ( ioctl_addr    ),
     .ioctl_dout    ( ioctl_data    ),
@@ -223,20 +221,20 @@ reg m_start1, m_start2, m_coin;
 reg m2_up, m2_down, m2_left, m2_right, m2_punch, m2_jump;
 
 always @(posedge clk_sys) begin
-    m_up     <= ~(btn_up    | joy_0[3]);
-    m_down   <= ~(btn_down  | joy_0[2]);
-    m_left   <= ~(btn_left  | joy_0[1]);
-    m_right  <= ~(btn_right | joy_0[0]);
-    m_punch  <= ~(btn_fire1 | joy_0[4]);
-    m_pause  <= ~(btn_pause | joy_0[9]);
-    m_start1 <= ~(btn_one_player  | joy_0[6]);
-    m_start2 <= ~(btn_two_players | joy_0[7]);
-    m_coin   <= ~(btn_coin        | joy_0[8]);
-    m2_up    <= ~joy_1[3];
-    m2_down  <= ~joy_1[2];
-    m2_left  <= ~joy_1[1];
-    m2_right <= ~joy_1[0];
-    m2_punch <= ~joy_1[4];
+    m_up     <= (btn_up    | joy_0[3]);
+    m_down   <= (btn_down  | joy_0[2]);
+    m_left   <= (btn_left  | joy_0[1]);
+    m_right  <= (btn_right | joy_0[0]);
+    m_punch  <= (btn_fire1 | joy_0[4]);
+    m_pause  <= (btn_pause | joy_0[9]);
+    m_start1 <= (btn_one_player  | joy_0[6]);
+    m_start2 <= (btn_two_players | joy_0[7]);
+    m_coin   <= ~(btn_coin       | joy_0[8]);
+    m2_up    <= joy_1[3];
+    m2_down  <= joy_1[2];
+    m2_left  <= joy_1[1];
+    m2_right <= joy_1[0];
+    m2_punch <= joy_1[4];
 end
 reg pause = 0;
 always @(posedge clk_sys) begin
@@ -276,6 +274,14 @@ assign VGA_G    = { green, green, green[2:1] };
 assign VGA_B    = { 4{blue} };
 assign VGA_HS   = HS;
 assign VGA_VS   = VS;
+assign VGA_DE   = ~(VB | HB);   // Display enable
+reg even = 1'b0;
+always @(posedge clk_sys) begin : field_bit
+    reg last_VS;
+    last_VS <= VS;
+    if ( !last_VS && VS ) even <= ~even;
+end
+assign VGA_F1 = even;
 
 reg  [1:0]    dip_level;
 wire [1:0]    dip_lives = status[6:5];
@@ -296,11 +302,11 @@ wire [4:0] game_joystick2 = { m2_punch, m2_up, m2_down, m2_left, m2_right };
 wire [1:0] game_start     = { m_start2, m_start1 };
 
 wire pxl2_cen, pxl_cen;
-wire game_pause = m_pause;
+wire game_pause = pause;
 wire game_service = 1'b0;
 wire rst_n = ~(RESET | status[0] | buttons[1]);
 
-assign VGA_CE = pxl_cen;
+assign VGA_CE = pxl2_cen;
 
 assign ROTATE = 2'b00;
 `ifdef SIMULATION
@@ -311,8 +317,8 @@ assign sim_pxl_cen = pxl_cen;
 jtpopeye_game u_game(
     .rst_n          ( rst_n                 ),
     .clk            ( clk_sys               ),   // 40 MHz
-    .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
     .pxl_cen        ( pxl_cen               ),   // 10.08 MHz, pixel clock
+    .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
 
     .red            ( red                   ),
     .green          ( green                 ),
@@ -322,6 +328,7 @@ jtpopeye_game u_game(
     .HS             ( HS                    ),
     .VS             ( VS                    ),
     .SY_n           (                       ),
+    .INITEO         ( /*VGA_F1 */               ),
     // cabinet I/O
     .start_button   ( game_start            ),
     .coin_input     ( m_coin                ),

@@ -32,7 +32,8 @@ module jtpopeye_game(
     output          VB,         // vertical blanking
     output          HS,
     output          VS,
-    output          SY_n,      // original composite sync signal
+    output          SY_n,       // original composite sync signal
+    output          INITEO,     // INIT EVEN/ODD interlaced video frame
     // cabinet I/O
     input   [ 1:0]  start_button,
     input           coin_input,
@@ -116,7 +117,7 @@ wire          CSBW_n;
 wire          CSV;
 wire          DWRBK;
 wire          MEMWRO;
-wire          RV_n, INITEO;
+wire          RV_n;
 // ROM access
 wire          main_cs, ready;
 wire   [14:0] main_addr;
