@@ -170,6 +170,7 @@ jtpopeye_txt u_txt(
     .AD                 ( ADvideo       ),
     .DD                 ( DD            ),
     .H                  ( H             ),
+    .HB                 ( HB            ),
     .V                  ( V             ),
     .RV                 ( RV            ), // flip
     .CSV                ( CSV           ),

@@ -28,6 +28,7 @@ module jtpopeye_txt(
     input      [12:0]   AD,
     input      [ 7:0]   DD,
     input      [ 7:0]   H,
+    input               HB,
     input      [ 7:0]   V,
     input               RV, // flip
     input               CSV,
@@ -125,11 +126,15 @@ jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
 reg [7:0] txtv0;
 
 always @(posedge clk) if(pxl_cen) begin
-    if( H[2:0]==3'd7 ) begin // TXTSHIFT
+    if( H[2:0]==3'd7 && !HB) begin // TXTSHIFT / TXTCL signals
         txtv0 <= txtv;
         txtc0 <= pause ? 4'd0 : txtc; // 0 GREEN, 1 BLUE
     end
     else txtv0 <= RV ? { txtv0[6:0], 1'b0 } : { 1'b0, txtv0[7:1] };
+end
+
+// latch output signals (without pixel CEN)
+always @(posedge clk) begin
     TXTV <= ~(RV ? txtv0[7] : txtv0[0]);
     TXTC <= txtc0;
 end
