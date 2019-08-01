@@ -18,24 +18,18 @@
 
 `timescale 1ns/1ps
 
-// 40.32 MHz (T/2=12.4ns) original clock
-// 39.40 MHz (T/2=12.69ns) adjusted for 60Hz display
-
-`define HALF_PERIOD 12.82
-
 module pll_game_mist(
-    input       inclk0, // 27 MHz
-    output reg  c1,     
-    output      c2,     // same as c1 but delayed
+    input        inclk0, // 27 MHz
+    output reg  c1,     // 40.32 MHz
+    output      c2,     // 40.32 MHz delayed
     output      locked
 );
 
 assign locked = 1;
-real t2 = `HALF_PERIOD;
 
 initial begin
     c1 = 1'b0;
-    forever #t2 c1 = ~c1;
+    forever #12.4 c1 = ~c1;
 end
 
 `ifndef SDRAM_DELAY
@@ -53,16 +47,15 @@ endmodule // pll_game_mist
 module pll(
     input       refclk, // 27 MHz
     input       rst,
-    output reg  outclk_0,     
+    output reg  outclk_0,     // 40.32 MHz
     output      locked
 );
 
 assign locked = 1;
-real t2 = `HALF_PERIOD;
 
 initial begin
     outclk_0 = 1'b0;
-    forever #t2 outclk_0 = ~outclk_0;
+    forever #12.4 outclk_0 = ~outclk_0;
 end
 
 endmodule // pll_game_mist
