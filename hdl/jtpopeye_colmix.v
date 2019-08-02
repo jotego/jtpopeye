@@ -22,6 +22,7 @@ module jtpopeye_colmix(
     input              rst_n,
     input              clk,
     input              pxl2_cen,    // object pixel clock
+    input   [2:0]      gfx_en,
     // PROM programming
     input   [7:0]      prog_addr,
     input              prom_4a_we,
@@ -50,9 +51,9 @@ reg txt_cs, obj_cs, bak_cs;
 
 // latch priorities to process on the next clock edge
 always @(posedge clk) if(pxl2_cen) begin
-    txt_cs <= !txtv; // txtv low -> text selected
-    obj_cs <= |objv;
-    bak_cs <= VB_n & HBD_n;
+    txt_cs <= !txtv && gfx_en[0]; // txtv low -> text selected
+    obj_cs <= (|objv) & gfx_en[1];
+    bak_cs <= VB_n & HBD_n & gfx_en[2];
 end
 
 // merge the colours!

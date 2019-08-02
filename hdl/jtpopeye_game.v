@@ -80,7 +80,7 @@ module jtpopeye_game(
     output  [9:0]   snd,
     output          sample,
     // Debug
-    input   [3:0]   gfx_en
+    input   [2:0]   gfx_en
 );
 
 `ifdef MISTER
@@ -266,6 +266,7 @@ jtpopeye_video u_video(
     .cpu_cen    ( cpu_cen       ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
     .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
+    .gfx_en     ( gfx_en        ),
     .pause      ( dip_pause     ),
 
     // CPU interface

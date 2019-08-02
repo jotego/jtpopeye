@@ -78,8 +78,10 @@ wire [7:0] ram_dout;
 //     nibble_sel = !CSBW_n ? !AD[12] : ROVl[7];
 // end
 
-always @(posedge clk) if(pxl_cen) begin
-    if( ROH[1:0]==2'b11 && CSBW_n)
+always @(posedge clk) if(pxl_cen) begin : ROH_edge
+    reg ROH_last;
+    ROH_last <= ROH[1:0] == 2'b11;
+    if( !ROH_last && ROH[1:0]==2'b11 && CSBW_n)
         BAKC <= !ROVl[7] ? ram_dout[3:0] : ram_dout[7:4];
 end
 
@@ -100,7 +102,7 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
         end else begin
             msb_we <= 1'b0;
             lsb_we <= 1'b0;
-            ram_addr <= /*!ROVl[8] ? 12'd0 : */{ROVl[6:1],ROH[7:2]};
+            ram_addr <= ROVl[8] ? 12'd0 : {ROVl[6:1],ROH[7:2]};
         end
     end
 end

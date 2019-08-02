@@ -331,7 +331,7 @@ jtpopeye_game u_game(
     .snd            ( snd[9:0]       ),
     .sample         ( /* unused  */  ),
     // Debug
-    .gfx_en         ( gfx_en         )
+    .gfx_en         ( gfx_en[2:0]    )
 );
 
 endmodule // jtpopeye_mist

@@ -25,6 +25,7 @@ module jtpopeye_video(
     input               cpu_cen,
     input               pxl_cen,  // TXT pixel clock
     input               pxl2_cen, // OBJ pixel clock
+    input      [ 2:0]   gfx_en,
     input               pause,
 
     input      [ 7:0]   DD,
@@ -251,6 +252,7 @@ jtpopeye_colmix u_colmix(
     .rst_n              ( rst_n         ),
     .clk                ( clk           ),
     .pxl2_cen           ( pxl2_cen      ),
+    .gfx_en             ( gfx_en        ),
     // PROM programming
     .prog_addr          ( prog_addr[7:0]),
     .prom_4a_we         ( prom_4a_we    ),

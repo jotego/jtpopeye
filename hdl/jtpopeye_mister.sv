@@ -150,11 +150,11 @@ wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_data;
 
 wire [10:0] ps2_key;
-
 wire [15:0] joy_0, joy_1;
 
 wire        forced_scandoubler;
 wire        downloading;
+wire        rst_n;
 
 assign LED_USER  = downloading;
 assign LED_DISK  = 2'b0;
@@ -220,22 +220,29 @@ reg m_up, m_down, m_left, m_right, m_punch, m_jump, m_pause;
 reg m_start1, m_start2, m_coin;
 reg m2_up, m2_down, m2_left, m2_right, m2_punch, m2_jump;
 
-always @(posedge clk_sys) begin
-    m_up     <= (btn_up    | joy_0[3]);
-    m_down   <= (btn_down  | joy_0[2]);
-    m_left   <= (btn_left  | joy_0[1]);
-    m_right  <= (btn_right | joy_0[0]);
-    m_punch  <= (btn_fire1 | joy_0[4]);
-    m_pause  <= (btn_pause | joy_0[9]);
-    m_start1 <= (btn_one_player  | joy_0[6]);
-    m_start2 <= (btn_two_players | joy_0[7]);
-    m_coin   <= ~(btn_coin       | joy_0[8]);
-    m2_up    <= joy_1[3];
-    m2_down  <= joy_1[2];
-    m2_left  <= joy_1[1];
-    m2_right <= joy_1[0];
-    m2_punch <= joy_1[4];
-end
+always @(posedge clk_sys or negedge rst_n) 
+    if( !rst_n ) begin
+        m_coin   <= 1'b0;
+        m_start1 <= 1'b0;
+        m_start2 <= 1'b0;
+        m_pause  <= 1'b0;
+    end else begin
+        m_up     <= (btn_up    | joy_0[3]);
+        m_down   <= (btn_down  | joy_0[2]);
+        m_left   <= (btn_left  | joy_0[1]);
+        m_right  <= (btn_right | joy_0[0]);
+        m_punch  <= (btn_fire1 | joy_0[4]);
+        m_pause  <= (btn_pause | joy_0[9]);
+        m_start1 <= (btn_one_player  | joy_0[6]);
+        m_start2 <= (btn_two_players | joy_0[7]);
+        m_coin   <= (btn_coin        | joy_0[8]);
+        m2_up    <= joy_1[3];
+        m2_down  <= joy_1[2];
+        m2_left  <= joy_1[1];
+        m2_right <= joy_1[0];
+        m2_punch <= joy_1[4];
+    end
+
 reg pause = 0;
 always @(posedge clk_sys) begin
     reg old_pause;
@@ -247,7 +254,7 @@ end
 
 wire dip_upright = 1'b0;
 wire dip_demosnd = 1'b0;
-wire [3:0] dip_price  = 4'b0;
+wire [3:0] dip_price  = 4'hf;
 
 ///////////////////////////////////////////////////////////////////
 
@@ -268,13 +275,40 @@ assign HDMI_HS  = HS;
 assign HDMI_VS  = VS;
 assign HDMI_SL  = 2'b0;
 
+video_cleaner u_cleaner
+(
+    .clk_vid    ( clk_sys  ),
+    .ce_pix     ( pxl2_cen ),
+
+    .R          ( { red,   red,   red[2:1] }   ),
+    .G          ( { green, green, green[2:1] } ),
+    .B          ( { 4{blue} }                  ),
+
+    .HSync      ( HS       ),
+    .VSync      ( VS       ),
+    .HBlank     ( HB       ),
+    .VBlank     ( VB       ),
+
+    // video output signals
+    .VGA_R      ( VGA_R    ),
+    .VGA_G      ( VGA_G    ),
+    .VGA_B      ( VGA_B    ),
+    .VGA_VS     ( VGA_VS   ),
+    .VGA_HS     ( VGA_HS   ),
+    .VGA_DE     ( VGA_DE   ),
+    
+    // optional aligned blank
+    .HBlank_out (          ),
+    .VBlank_out (          )
+);
+
 // base video
-assign VGA_R    = { red,   red,   red[2:1] };
-assign VGA_G    = { green, green, green[2:1] };
-assign VGA_B    = { 4{blue} };
-assign VGA_HS   = HS;
-assign VGA_VS   = VS;
-assign VGA_DE   = ~(VB | HB);   // Display enable
+// assign VGA_R    = { red,   red,   red[2:1] };
+// assign VGA_G    = { green, green, green[2:1] };
+// assign VGA_B    = { 4{blue} };
+// assign VGA_HS   = HS;
+// assign VGA_VS   = VS;
+// assign VGA_DE   = ~(VB | HB);   // Display enable
 reg even = 1'b0;
 always @(posedge clk_sys) begin : field_bit
     reg last_VS;
@@ -304,7 +338,7 @@ wire [1:0] game_start     = { m_start2, m_start1 };
 wire pxl2_cen, pxl_cen;
 wire game_pause = pause;
 wire game_service = 1'b0;
-wire rst_n = ~(RESET | status[0] | buttons[1]);
+assign rst_n = ~(RESET | status[0] | buttons[1] | downloading );
 
 assign VGA_CE = pxl2_cen;
 
@@ -358,7 +392,7 @@ jtpopeye_game u_game(
     .snd            ( AUDIO_L[15:6]  ),
     .sample         ( /* unused  */  ),
     // Debug
-    .gfx_en         ( ~4'd0          )
+    .gfx_en         ( ~3'd0          )
 );
 
 assign AUDIO_L[5:0] = 6'd0;
