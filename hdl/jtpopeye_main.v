@@ -211,6 +211,7 @@ jtgng_ram #(.aw(11),.simfile("ramsim.bin")) u_ram(
 
 jtpopeye_security u_security(
     .clk    ( clk      ),
+    .cen    ( cpu_cen  ),
     .din    ( cpu_dout ),
     .dout   ( sec_data ),
     .rd_n   ( rd_n     ),
@@ -313,7 +314,7 @@ always @(posedge clk or negedge rst_n)
         if( rfsh_mreq_posedge ) clr_nmi_n <= AD[9];
         if( !clr_nmi_n )
             nmi_n <= 1'b1; // clear NMI
-        else if( VB_posedge ) nmi_n <= 1'b0; // set NMI
+        else if( VB_posedge && !pause) nmi_n <= 1'b0; // set NMI
     end
 
 /////////////////////////////////
@@ -359,11 +360,11 @@ always @(posedge clk or negedge rst_n)
         wait_n   <= 1'b1;
     end else begin
         last_rom_cs <= rom_cs;
-        if( rom_cs_posedge || pause ) begin
+        if( rom_cs_posedge ) begin
             wait_n <= 1'b0;
         end
         else begin
-            if(rom_ok && !pause) wait_n <= 1'b1;
+            if(rom_ok) wait_n <= 1'b1;
         end
     end
 
@@ -409,7 +410,7 @@ wire [9:0] pre_snd;
 
 always @(posedge clk) begin
     `ifndef NOSOUND
-    snd <= pre_snd && {10{!pause}};
+    snd <= pre_snd & {10{!pause}};
     `else
     snd <= 10'd0;
     `endif

@@ -35,6 +35,7 @@
 
 module jtpopeye_security(
     input            clk,
+    input            cen,
     input      [7:0] din,
     output reg [7:0] dout,
     input            cs,
@@ -54,27 +55,30 @@ always @(*) begin
     addr0 = 1'b1;
     addr1 = 1'b1;
     oen   = 1'b1;
+    mode  = 1'b1;
     if( csn ) begin
-        if(!rd_n) begin
+        if(!wr_n) begin
             addr0 = A0;
             addr1 = ~A0;
         end
-        if(!wr_n) begin
-            oen = ~A0;
+        if(!rd_n) begin
+            oen =   A0;
+            mode = ~A0;
         end
     end
 end
 
-always @(posedge clk) begin
-    last_addr0 <= addr0;
-    last_addr1 <= addr1;
-    if( addr0 && !last_addr0 )
+wire [7:0] result = (fifo[1] << shift) | (fifo[0] >> (8-shift));
+
+always @(posedge clk) if(cen) begin
+    if( !addr0 )
         shift <= din[2:0];
-    if( addr1 && !last_addr1 ) begin
+    if( !addr1 ) begin
         fifo[0] <= fifo[1];
         fifo[1] <= din;
     end
-    dout <= !oen ? 8'd0 : (fifo[1] << shift) | (fifo[0] >> (8-shift));
+    // dout <= { result[7:3], !oen ? 3'd0 : result[2:0] }; 
+    dout <= result;
 end
 
 endmodule
