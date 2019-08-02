@@ -110,8 +110,8 @@ localparam CONF_STR = {
     "O23,Difficulty,Normal,Easy,Hard,Very hard;",
     "O56,Lives,4,3,2,1;",  // 18    
     "O78,Bonus,40k,60k,80k,No Bonus;",
-    "O9,Sky Skipper,No,Yes;",    
-    "OA,HDMI interlaced,No,Yes;",
+//     "O9,Sky Skipper,No,Yes;",    
+//     "OA,HDMI interlaced,No,Yes;",
     "-;",
     "R0,Reset;",
     "J,Punch,Start 1P,Start 2P,Coin,Pause;",
@@ -165,8 +165,8 @@ assign LED_POWER = 2'b0;
 assign HDMI_ARX = status[1] ? 8'd16 : status[2] ? 8'd4 : 8'd3;
 assign HDMI_ARY = status[1] ? 8'd9  : status[2] ? 8'd3 : 8'd4;
 
-wire skyskipper = status[32'd9];
-wire HDMI_interlaced = status[32'd10];
+wire skyskipper      = 1'b0; // status[32'd9];
+wire HDMI_interlaced = 1'b1; // status[32'd10];
 
 hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 (
@@ -315,12 +315,18 @@ video_cleaner u_cleaner
 // assign VGA_VS   = VS;
 // assign VGA_DE   = ~(VB | HB);   // Display enable
 wire INITEO;
-always @(posedge clk_sys) begin : field_bit
-    //reg last_VS, even;
-    //last_VS <= VS;
-    //if ( !last_VS && VS ) even <= ~even;
-    //VGA_F1 <= even & HDMI_interlaced;
-    VGA_F1 <= INITEO & HDMI_interlaced;
+always @(posedge clk_sys or negedge rst_n) begin : field_bit
+    reg last_VS, even;
+    if( !rst_n) begin
+        last_VS <= 1'b0;
+        even    <= 1'b0;
+        VGA_F1  <= 1'b0;
+    end else begin
+        last_VS <= VS;
+        if ( !last_VS && VS ) even <= ~even;
+        VGA_F1 <= even & HDMI_interlaced;
+    end
+    // VGA_F1 <= INITEO & HDMI_interlaced;
 end
 
 reg  [1:0]    dip_level;

@@ -94,7 +94,7 @@ wire game_pause, game_service;
     initial if(!dip_pause) $display("INFO: DIP pause enabled");
 `else
 reg dip_pause;
-always @(posedge clk_sys) dip_pause <= ~status[1] & ~game_pause;
+always @(posedge clk_sys) dip_pause <= status[1] | game_pause;
 `endif
 
 wire dip_upright = 1'b0;
@@ -320,7 +320,7 @@ jtpopeye_game u_game(
 
     // DIP Switches
 `ifndef ALWAYS_PAUSE
-    .dip_pause      ( game_pause     ),  // not a DIP on real hardware
+    .dip_pause      ( dip_pause      ),  // not a DIP on real hardware
 `else 
     .dip_pause      ( 1'b1           ),
 `endif

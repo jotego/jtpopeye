@@ -50,12 +50,13 @@ reg [2:0] shift;
 reg last_addr0, last_addr1;
 reg addr0, addr1, oen;
 wire csn = ~cs;
+reg [7:0] result;
 
 always @(*) begin
     addr0 = 1'b1;
     addr1 = 1'b1;
     oen   = 1'b1;
-    mode  = 1'b1;
+   // mode  = 1'b1;
     if( csn ) begin
         if(!wr_n) begin
             addr0 = A0;
@@ -63,22 +64,33 @@ always @(*) begin
         end
         if(!rd_n) begin
             oen =   A0;
-            mode = ~A0;
+            //mode = ~A0;
         end
     end
+    // dout = result;
+    // dout = A0 ? 8'd0 : result;
 end
 
-wire [7:0] result = (fifo[1] << shift) | (fifo[0] >> (8-shift));
 
 always @(posedge clk) if(cen) begin
-    if( !addr0 )
-        shift <= din[2:0];
-    if( !addr1 ) begin
-        fifo[0] <= fifo[1];
-        fifo[1] <= din;
+    // if( !addr0 )
+    //     shift <= din[2:0];
+    // if( !addr1 ) begin
+    //     fifo[0] <= fifo[1];
+    //     fifo[1] <= din;
+    // end
+    if( cs && !wr_n ) begin
+        if( A0 ) begin
+            fifo[0] <= fifo[1];
+            fifo[1] <= din;
+        end else begin
+            shift <= din[2:0];
+        end
     end
-    // dout <= { result[7:3], !oen ? 3'd0 : result[2:0] }; 
-    dout <= result;
+    result <= (fifo[1] << shift) | (fifo[0] >> (4'd8-{1'b0,shift}));
+    // dout   <= { result[7:3], A0 ? 3'd0 : result[2:0] }; 
+    if( cs && !rd_n) dout <= A0 ? 8'd0 : result;
 end
+
 
 endmodule
