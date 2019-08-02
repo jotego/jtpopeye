@@ -67,7 +67,8 @@ localparam CONF_STR = {
         "F,rom;",
         "O23,Difficulty,Normal,Easy,Hard,Very hard;",
         "O56,Lives,4,3,2,1;",
-        "O78,Bonus,40k,60k,80k,No Bonus;",        
+        "O78,Bonus,40k,60k,80k,No Bonus;",
+        "O9,Sky Skipper,No,Yes;",
         //"O9,Screen filter,ON,OFF;", // 24
         "TF,RST ,OFF,ON;",
         "V,http://patreon.com/topapate;"
@@ -85,6 +86,7 @@ wire          ioctl_wr;
 wire          coin_cnt;
 
 wire rst_req = status[32'hf];
+wire skyskipper = status[32'd9];
 
 wire game_pause, game_service;
 `ifdef SIMULATION
@@ -314,6 +316,7 @@ jtpopeye_game u_game(
     .prog_data      ( prog_data      ),
     .prog_mask      ( prog_mask      ),
     .prog_we        ( prog_we        ),
+    .skyskipper     ( skyskipper     ),
 
     // DIP Switches
 `ifndef ALWAYS_PAUSE

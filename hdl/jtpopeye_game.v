@@ -67,6 +67,7 @@ module jtpopeye_game(
     output  [ 1:0]  prog_mask,
     output          prog_we,
     `endif
+    input           skyskipper,
 
     // DIP Switches
     input           dip_pause,  // not a DIP on real hardware
@@ -221,6 +222,8 @@ jtpopeye_main u_main(
     .cpu_cen        ( cpu_cen       ),
     .ay_cen         ( ay_cen        ),
     .encrypted      ( encrypted     ),
+    .skyskipper     ( skyskipper    ),
+    .pause          ( dip_pause     ),
     // cabinet I/O
     .joystick1      ( joystick1     ),
     .joystick2      ( joystick2     ),

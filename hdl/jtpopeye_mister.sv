@@ -47,7 +47,7 @@ module emu
     output        VGA_HS,
     output        VGA_VS,
     output        VGA_DE,    // = ~(VBlank | HBlank)
-    output        VGA_F1,    // Interlaced field
+    output  reg   VGA_F1,    // Interlaced field
 
     //Base video clock. Usually equals to CLK_SYS.
     output        HDMI_CLK,
@@ -110,6 +110,8 @@ localparam CONF_STR = {
     "O23,Difficulty,Normal,Easy,Hard,Very hard;",
     "O56,Lives,4,3,2,1;",  // 18    
     "O78,Bonus,40k,60k,80k,No Bonus;",
+    "O9,Sky Skipper,No,Yes;",    
+    "OA,HDMI interlaced,No,Yes;",
     "-;",
     "R0,Reset;",
     "J,Punch,Start 1P,Start 2P,Coin,Pause;",
@@ -162,6 +164,9 @@ assign LED_POWER = 2'b0;
 
 assign HDMI_ARX = status[1] ? 8'd16 : status[2] ? 8'd4 : 8'd3;
 assign HDMI_ARY = status[1] ? 8'd9  : status[2] ? 8'd3 : 8'd4;
+
+wire skyskipper = status[32'd9];
+wire HDMI_interlaced = status[32'd10];
 
 hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
 (
@@ -309,13 +314,14 @@ video_cleaner u_cleaner
 // assign VGA_HS   = HS;
 // assign VGA_VS   = VS;
 // assign VGA_DE   = ~(VB | HB);   // Display enable
-reg even = 1'b0;
+wire INITEO;
 always @(posedge clk_sys) begin : field_bit
-    reg last_VS;
-    last_VS <= VS;
-    if ( !last_VS && VS ) even <= ~even;
+    //reg last_VS, even;
+    //last_VS <= VS;
+    //if ( !last_VS && VS ) even <= ~even;
+    //VGA_F1 <= even & HDMI_interlaced;
+    VGA_F1 <= INITEO & HDMI_interlaced;
 end
-assign VGA_F1 = even;
 
 reg  [1:0]    dip_level;
 wire [1:0]    dip_lives = status[6:5];
@@ -362,7 +368,7 @@ jtpopeye_game u_game(
     .HS             ( HS                    ),
     .VS             ( VS                    ),
     .SY_n           (                       ),
-    .INITEO         ( /*VGA_F1 */               ),
+    .INITEO         ( INITEO                ),
     // cabinet I/O
     .start_button   ( game_start            ),
     .coin_input     ( m_coin                ),
@@ -379,6 +385,7 @@ jtpopeye_game u_game(
     .ioctl_addr     ( ioctl_addr[21:0] ),
     .ioctl_data     ( ioctl_data       ),
     .ioctl_wr       ( ioctl_wr         ),
+    .skyskipper     ( skyskipper       ),
 
     // DIP Switches
     .dip_pause      ( game_pause     ),  // not a DIP on real hardware

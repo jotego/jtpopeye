@@ -24,6 +24,8 @@ module jtpopeye_main(
     input               cpu_cen,
     input               ay_cen,
     input               encrypted,
+    input               skyskipper, // 1 if the ROMs correspond to Sky Skipper
+    input               pause,
     // cabinet I/O
     input   [4:0]       joystick1,
     input   [4:0]       joystick2,
@@ -59,7 +61,7 @@ module jtpopeye_main(
     //
     output              RV_n,   // flip
     // Sound output
-    output     [ 9:0]   snd
+    output reg [ 9:0]   snd
 );
 
 wire [15:0] Ascrambled;
@@ -106,7 +108,9 @@ always @(*) begin
 
     if( !mreq_n ) begin
         case ( AD[15:13] )
-            3'b1_00: ram_cs = AD[11];   // RAM: from 0x8800 to 0x8FFF
+            3'b1_00: ram_cs = AD[11] ^ skyskipper;
+                // RAM: from 0x8800 to 0x8FFF (Popeye)
+                //      from 0x8000 to 0x87FF (Sky Skipper)
             3'b1_01: CSV = 1'b1;        // TXT. 0xA???
             3'b1_10: CSB = 1'b1;        // Background. 0xC000-0xCFFF lower nibbles
                                         // 0xD000-0xDFFF upper nibbles
@@ -126,15 +130,26 @@ reg [7:0] rom_good;
 
 always @(*) begin
     // Address obfuscation
-    AD[2:0]   = ~Ascrambled[2:0]; // 6E
-    AD[ 3]    = ~Ascrambled[4];
-    AD[ 4]    = ~Ascrambled[5];
-    AD[ 5]    = ~Ascrambled[9];
-    AD[ 6]    =  Ascrambled[3];  // 6F
-    AD[ 7]    =  Ascrambled[6];
-    AD[ 8]    =  Ascrambled[7];
+    AD[ 8]    =  Ascrambled[7]; // 6H
     AD[ 9]    =  Ascrambled[8];
-    AD[15:10] =  Ascrambled[15:10]; // 6H
+    AD[15:10] =  Ascrambled[15:10];
+    if( !skyskipper ) begin // Popeye board
+        AD[2:0]   = ~Ascrambled[2:0]; // 6E
+        AD[ 3]    = ~Ascrambled[4];
+        AD[ 4]    = ~Ascrambled[5];
+        AD[ 5]    = ~Ascrambled[9];
+        AD[ 6]    =  Ascrambled[3];  // 6F
+        AD[ 7]    =  Ascrambled[6];
+    end else begin // Sky Skipper board
+        AD[ 0]    =  Ascrambled[6];
+        AD[ 1]    =  Ascrambled[3];
+        AD[ 2]    = ~Ascrambled[9];
+        AD[ 3]    = ~Ascrambled[5];
+        AD[ 4]    = ~Ascrambled[4];
+        AD[ 5]    = ~Ascrambled[2];
+        AD[ 6]    = ~Ascrambled[1];
+        AD[ 7]    = ~Ascrambled[0];
+    end
     if(encrypted) begin
         // Original ROM contents are scrambled, fix it:
         rom_addr = AD[14:0];
@@ -346,11 +361,11 @@ always @(posedge clk or negedge rst_n)
         wait_n   <= 1'b1;
     end else begin
         last_rom_cs <= rom_cs;
-        if( rom_cs_posedge ) begin
+        if( rom_cs_posedge || pause ) begin
             wait_n <= 1'b0;
         end
         else begin
-            if(rom_ok) wait_n <= 1'b1;
+            if(rom_ok && !pause) wait_n <= 1'b1;
         end
     end
 
@@ -394,11 +409,13 @@ wire bc = (iowr & AD[0]) | ay_cs;
 
 wire [9:0] pre_snd;
 
-`ifndef NOSOUND
-assign snd = pre_snd;
-`else 
-assign snd = 10'd0;
-`endif
+always @(posedge clk) begin
+    `ifndef NOSOUND
+    snd <= pre_snd && {10{!pause}};
+    `else
+    snd <= 10'd0;
+    `endif
+end
 
 jt49_bus u_ay( // note that input ports are not multiplexed
     .rst_n  ( rst_n     ),
