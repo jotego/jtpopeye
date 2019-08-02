@@ -211,8 +211,6 @@ jtgng_ram #(.aw(11),.simfile("ramsim.bin")) u_ram(
 
 jtpopeye_security u_security(
     .clk    ( clk      ),
-    .cen    ( cpu_cen  ),
-    .rst_n  ( rst_n    ),
     .din    ( cpu_dout ),
     .dout   ( sec_data ),
     .rd_n   ( rd_n     ),

@@ -18,57 +18,63 @@
 
 `timescale 1ns/1ps
 
-//               MemWR  ||  MemRD
-// sec_cs A0  || A[1:0] || /OE || Mode
-//   0    0   ||  10    ||  1  ||   0
-//   0    1   ||  01    ||  0  ||   1
-//   1    x   ||  11    ||  1  ||   1
+// 7J: '139 decoder
+// /MemWR and /MemRD serve as enable signals. If H all outputs will be H
+//
+// /OE is the same as addr1
+// Mode is the same addr0. Mode pin is not used in this model.
+//
+//    CPU         || /MemWR ||  /MemRD
+// /sec_cs addr0  || A[1:0] || /OE     || Mode
+// ===========================================
+//   0     0      ||  10    ||  1      ||   0
+//   0     1      ||  01    ||  0      ||   1
+//   1     x      ||  11    ||  1      ||   1
+
+// based on code provided by www.JAMMARCADE.net
 
 module jtpopeye_security(
-    input              clk,
-    input              cen /* synthesis direct_enable = 1 */,
-    input              rst_n,
-    input      [7:0]   din,
-    output reg [7:0]   dout,
-    input              rd_n,
-    input              wr_n,
-    input              cs,
-    input              A0
+    input            clk,
+    input      [7:0] din,
+    output reg [7:0] dout,
+    input            cs,
+    input            A0,
+    input            rd_n,
+    input            wr_n
 );
 
-reg  [2:0] shift;
-reg  [7:0] data0, data1;
-reg  [7:0] code;
-reg  [7:0] data0_sh, data1_sh;
+reg [7:0] fifo [1:0];
+reg [2:0] shift;
+
+reg last_addr0, last_addr1;
+reg addr0, addr1, oen;
+wire csn = ~cs;
 
 always @(*) begin
-    data0_sh = data0 >> (8-shift);
-    data1_sh = data1 << shift;
-    code = data0_sh | data1_sh;
-end
-
-always @(posedge clk or negedge rst_n)
-    if( !rst_n ) begin 
-        data0 <= 8'd0;
-        data1 <= 8'd0;
-        dout  <= 8'd0;
-        shift <= 3'd0;
-    end else if( cen ) if(cs) begin
-        if( !wr_n ) begin
-            `ifdef SIMULATION
-            $display("INFO: Write to security device A[%d] = %x", A0, din);
-            `endif
-            if( !A0 )
-                shift <= din[2:0];
-            else begin
-                data0 <= data1;
-                data1 <= din;
-            end
+    addr0 = 1'b1;
+    addr1 = 1'b1;
+    oen   = 1'b1;
+    if( csn ) begin
+        if(!rd_n) begin
+            addr0 = A0;
+            addr1 = ~A0;
         end
-        if( !rd_n ) begin
-            dout <= A0 ? 8'd0 : code;
+        if(!wr_n) begin
+            oen = ~A0;
         end
     end
+end
 
+always @(posedge clk) begin
+    last_addr0 <= addr0;
+    last_addr1 <= addr1;
+    if( addr0 && !last_addr0 )
+        shift <= din[2:0];
+    if( addr1 && !last_addr1 ) begin
+        fifo[0] <= fifo[1];
+        fifo[1] <= din;
+    end
+    dout <= !oen ? 8'd0 : (fifo[1] << shift) | (fifo[0] >> (8-shift));
+end
 
-endmodule // jtpopeye_security
+endmodule
