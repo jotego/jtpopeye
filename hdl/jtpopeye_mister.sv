@@ -104,12 +104,15 @@ module emu
 
 `include "build_id.v" 
 localparam CONF_STR = {
-    "A.POP;;",
+    "JTPOP;;",
+    "O1,Credits,OFF,ON;",
     "-;",
     "F,rom;",
-    "O23,Difficulty,Normal,Easy,Hard,Very hard;",
-    "O56,Lives,4,3,2,1;",  // 18    
-    "O78,Bonus,40k,60k,80k,No Bonus;",
+    "O2,Aspect Ratio,Original,Wide;",
+    "O35,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
+    "OGH,Difficulty,Normal,Easy,Hard,Very hard;",
+    "OIJ,Lives,4,3,2,1;",  // 18    
+    "OKL,Bonus,40k,60k,80k,No Bonus;",
 //     "O9,Sky Skipper,No,Yes;",    
 //     "OA,HDMI interlaced,No,Yes;",
     "-;",
@@ -162,190 +165,124 @@ assign LED_USER  = downloading;
 assign LED_DISK  = 2'b0;
 assign LED_POWER = 2'b0;
 
-assign HDMI_ARX = status[1] ? 8'd16 : status[2] ? 8'd4 : 8'd3;
-assign HDMI_ARY = status[1] ? 8'd9  : status[2] ? 8'd3 : 8'd4;
-
 wire skyskipper      = 1'b0; // status[32'd9];
 wire HDMI_interlaced = 1'b1; // status[32'd10];
 
-hps_io #(.STRLEN($size(CONF_STR)>>3)) hps_io
-(
-    .clk_sys       ( clk_sys       ),
-    .HPS_BUS       ( HPS_BUS       ),
+wire [4:0] game_joy1, game_joy2;
+wire [1:0] game_start, game_coin;
 
-    .conf_str      ( CONF_STR      ),
+wire [2:0] red, green;
+wire [1:0] blue;
 
-    .buttons       ( buttons       ),
-    .status        ( status        ),
-    .forced_scandoubler(forced_scandoubler),
+wire [3:0] game_r = { red, red[2] };
+wire [3:0] game_g = { green, green[2] };
+wire [3:0] game_b = { blue, blue };
 
-    .ioctl_download( downloading   ),
-    .ioctl_wr      ( ioctl_wr      ),
-    .ioctl_addr    ( ioctl_addr    ),
-    .ioctl_dout    ( ioctl_data    ),
-
-    .joystick_0    ( joy_0         ),
-    .joystick_1    ( joy_1         ),
-    .ps2_key       ( ps2_key       )
-);
-
-wire       pressed = ps2_key[9];
-wire [7:0] code    = ps2_key[7:0];
-
-reg btn_one_player  = 0;
-reg btn_two_players = 0;
-reg btn_left        = 0;
-reg btn_right       = 0;
-reg btn_down        = 0;
-reg btn_up          = 0;
-reg btn_fire1       = 0;
-reg btn_coin        = 0;
-reg btn_pause       = 0;
-
-always @(posedge clk_sys) begin
-    reg old_state;
-    old_state <= ps2_key[10];
-    
-    if(old_state != ps2_key[10]) begin
-        case(code)
-            'h75: btn_up          <= pressed; // up
-            'h72: btn_down        <= pressed; // down
-            'h6B: btn_left        <= pressed; // left
-            'h74: btn_right       <= pressed; // right
-            'h05: btn_one_player  <= pressed; // F1
-            'h06: btn_two_players <= pressed; // F2
-            'h04: btn_coin        <= pressed; // F3
-            'h0C: btn_pause       <= pressed; // F4
-            'h14: btn_fire1       <= pressed; // ctrl
-        endcase
-    end
-end
-
-reg m_up, m_down, m_left, m_right, m_punch, m_jump, m_pause;
-reg m_start1, m_start2, m_coin;
-reg m2_up, m2_down, m2_left, m2_right, m2_punch, m2_jump;
-
-always @(posedge clk_sys or negedge rst_n) 
-    if( !rst_n ) begin
-        m_coin   <= 1'b0;
-        m_start1 <= 1'b0;
-        m_start2 <= 1'b0;
-        m_pause  <= 1'b0;
-    end else begin
-        m_up     <= (btn_up    | joy_0[3]);
-        m_down   <= (btn_down  | joy_0[2]);
-        m_left   <= (btn_left  | joy_0[1]);
-        m_right  <= (btn_right | joy_0[0]);
-        m_punch  <= (btn_fire1 | joy_0[4]);
-        m_pause  <= (btn_pause | joy_0[9]);
-        m_start1 <= (btn_one_player  | joy_0[6]);
-        m_start2 <= (btn_two_players | joy_0[7]);
-        m_coin   <= (btn_coin        | joy_0[8]);
-        m2_up    <= joy_1[3];
-        m2_down  <= joy_1[2];
-        m2_left  <= joy_1[1];
-        m2_right <= joy_1[0];
-        m2_punch <= joy_1[4];
-    end
-
-reg pause = 0;
-always @(posedge clk_sys) begin
-    reg old_pause;
-    
-    old_pause <= m_pause;
-    if(~old_pause & m_pause) pause <= ~pause;
-    if(status[0] | buttons[1]) pause <= 0;
-end
-
-wire dip_upright = 1'b0;
-wire dip_demosnd = 1'b0;
-wire [3:0] dip_price  = 4'hf;
+wire       HS, VS;
 
 ///////////////////////////////////////////////////////////////////
 
 
-wire [2:0] red, green;
-wire [1:0] blue;
-wire HSync,VSync,HBlank,VBlank;
-wire HS, VS, HB, VB;
-
-assign VGA_CLK  = clk_sys;
-assign HDMI_CLK = VGA_CLK;
-assign HDMI_CE  = VGA_CE;
-assign HDMI_R   = VGA_R;
-assign HDMI_G   = VGA_G;
-assign HDMI_B   = VGA_B;
-assign HDMI_DE  = VGA_DE;
-assign HDMI_HS  = HS;
-assign HDMI_VS  = VS;
-assign HDMI_SL  = 2'b0;
-
-video_cleaner u_cleaner
-(
-    .clk_vid    ( clk_sys  ),
-    .ce_pix     ( pxl2_cen ),
-
-    .R          ( { red,   red,   red[2:1] }   ),
-    .G          ( { green, green, green[2:1] } ),
-    .B          ( { 4{blue} }                  ),
-
-    .HSync      ( HS       ),
-    .VSync      ( VS       ),
-    .HBlank     ( HB       ),
-    .VBlank     ( VB       ),
-
-    // video output signals
-    .VGA_R      ( VGA_R    ),
-    .VGA_G      ( VGA_G    ),
-    .VGA_B      ( VGA_B    ),
-    .VGA_VS     ( VGA_VS   ),
-    .VGA_HS     ( VGA_HS   ),
-    .VGA_DE     ( VGA_DE   ),
-    
-    // optional aligned blank
-    .HBlank_out (          ),
-    .VBlank_out (          )
+jtframe_mister #(
+    .CONF_STR      ( CONF_STR       ),
+    .THREE_BUTTONS ( 1'b0           ))
+u_frame(
+    .clk_sys        ( clk_sys        ),
+    .clk_rom        ( clk_sys        ),
+    .clk_vga        ( clk_sys        ),
+    .pll_locked     ( pll_locked     ),
+    // interface with microcontroller
+    .status         ( status         ),
+    .HPS_BUS        ( HPS_BUS        ),
+    .buttons        ( buttons        ),
+    // Base video
+    .game_r         ( game_r         ),
+    .game_g         ( game_g         ),
+    .game_b         ( game_b         ),
+    .LHBL           ( LHBL_dly       ),
+    .LVBL           ( LVBL_dly       ),
+    .hs             ( HS             ),
+    .vs             ( VS             ),
+    .pxl_cen        ( pxl_cen        ),
+    .pxl2_cen       ( pxl2_cen       ),
+    // SDRAM interface
+    .SDRAM_CLK      ( SDRAM_CLK      ),
+    .SDRAM_DQ       ( SDRAM_DQ       ),
+    .SDRAM_A        ( SDRAM_A        ),
+    .SDRAM_DQML     ( SDRAM_DQML     ),
+    .SDRAM_DQMH     ( SDRAM_DQMH     ),
+    .SDRAM_nWE      ( SDRAM_nWE      ),
+    .SDRAM_nCAS     ( SDRAM_nCAS     ),
+    .SDRAM_nRAS     ( SDRAM_nRAS     ),
+    .SDRAM_nCS      ( SDRAM_nCS      ),
+    .SDRAM_BA       ( SDRAM_BA       ),
+    .SDRAM_CKE      ( SDRAM_CKE      ),
+    // ROM load
+    .ioctl_addr     ( ioctl_addr     ),
+    .ioctl_data     ( ioctl_data     ),
+    .ioctl_wr       ( ioctl_wr       ),
+    .prog_addr      (                ),
+    .prog_data      (                ),
+    .prog_mask      (                ),
+    .prog_we        (                ),
+    .prog_rd        ( 1'b0           ),
+    .downloading    ( downloading    ),
+    .dwnld_busy     ( downloading    ),
+    // ROM access from game
+    .loop_rst       ( loop_rst       ),
+    .sdram_addr     ( sdram_addr     ),
+    .sdram_req      ( sdram_req      ),
+    .sdram_ack      ( sdram_ack      ),
+    .data_read      ( data_read      ),
+    .data_rdy       ( data_rdy       ),
+    .refresh_en     ( refresh_en     ),
+//////////// board
+    .rst            ( rst            ),
+    .rst_n          ( rst_n          ), // unused
+    .game_rst       ( game_rst       ),
+    .game_rst_n     (                ),
+    // reset forcing signals:
+    .rst_req        ( rst_req        ),
+    // joystick
+    .game_joystick1 ( game_joy1      ),
+    .game_joystick2 ( game_joy2      ),
+    .game_coin      ( game_coin      ),
+    .game_start     ( game_start     ),
+    .game_service   (                ), // unused
+    .LED            ( LED_USER       ),
+    // DIP and OSD settings
+    .enable_fm      ( enable_fm      ),
+    .enable_psg     ( enable_psg     ),
+    .dip_test       ( dip_test       ),
+    .dip_pause      ( dip_pause      ),
+    .dip_flip       ( dip_flip       ),
+    .dip_fxlevel    ( dip_fxlevel    ),
+    // screen
+    .rotate         ( ROTATE         ),
+    // HDMI
+    .hdmi_r         ( HDMI_R         ),
+    .hdmi_g         ( HDMI_G         ),
+    .hdmi_b         ( HDMI_B         ),
+    .hdmi_hs        ( HDMI_HS        ),
+    .hdmi_vs        ( HDMI_VS        ),
+    .hdmi_clk       ( HDMI_CLK       ),
+    .hdmi_cen       ( HDMI_CE        ),
+    .hdmi_de        ( HDMI_DE        ),
+    .hdmi_sl        ( HDMI_SL        ),
+    .hdmi_arx       ( HDMI_ARX       ),
+    .hdmi_ary       ( HDMI_ARY       ),
+    // scan doubler output to VGA pins
+    .scan2x_r       ( VGA_R          ),
+    .scan2x_g       ( VGA_G          ),
+    .scan2x_b       ( VGA_B          ),
+    .scan2x_hs      ( VGA_HS         ),
+    .scan2x_vs      ( VGA_VS         ),
+    .scan2x_clk     ( VGA_CLK        ),
+    .scan2x_cen     ( VGA_CE         ),
+    .scan2x_de      ( VGA_DE         ),
+    // Debug
+    .gfx_en         ( gfx_en         )
 );
-
-// base video
-// assign VGA_R    = { red,   red,   red[2:1] };
-// assign VGA_G    = { green, green, green[2:1] };
-// assign VGA_B    = { 4{blue} };
-// assign VGA_HS   = HS;
-// assign VGA_VS   = VS;
-// assign VGA_DE   = ~(VB | HB);   // Display enable
-wire INITEO;
-always @(posedge clk_sys or negedge rst_n) begin : field_bit
-    reg last_VS, even;
-    if( !rst_n) begin
-        last_VS <= 1'b0;
-        even    <= 1'b0;
-        VGA_F1  <= 1'b0;
-    end else begin
-        last_VS <= VS;
-        if ( !last_VS && VS ) even <= ~even;
-        VGA_F1 <= even & HDMI_interlaced;
-    end
-    // VGA_F1 <= INITEO & HDMI_interlaced;
-end
-
-reg  [1:0]    dip_level;
-wire [1:0]    dip_lives = status[6:5];
-wire [1:0]    dip_bonus = status[8:7];
-
-// play level. Latch all inputs to game module
-always @(posedge clk_sys) begin
-    case( status[3:2] )
-        2'b00: dip_level <= 2'b10; // normal
-        2'b01: dip_level <= 2'b11; // easy
-        2'b10: dip_level <= 2'b01; // hard
-        2'b11: dip_level <= 2'b00; // very hard
-    endcase // status[3:2]
-end
-
-wire [4:0] game_joystick1 = { m_punch,  m_up,  m_down,  m_left,  m_right  };
-wire [4:0] game_joystick2 = { m2_punch, m2_up, m2_down, m2_left, m2_right };
-wire [1:0] game_start     = { m_start2, m_start1 };
 
 wire pxl2_cen, pxl_cen;
 wire game_pause = pause;
@@ -361,26 +298,26 @@ assign sim_pxl_cen = pxl_cen;
 `endif
 
 jtpopeye_game u_game(
-    .rst_n          ( rst_n                 ),
-    .clk            ( clk_sys               ),   // 40 MHz
-    .pxl_cen        ( pxl_cen               ),   // 10.08 MHz, pixel clock
-    .pxl2_cen       ( pxl2_cen              ),   // 10.08 MHz, pixel clock
+    .rst_n          ( rst_n            ),
+    .clk            ( clk_sys          ),   // 40 MHz
+    .pxl_cen        ( pxl_cen          ),   // 10.08 MHz, pixel clock
+    .pxl2_cen       ( pxl2_cen         ),
 
-    .red            ( red                   ),
-    .green          ( green                 ),
-    .blue           ( blue                  ),
-    .HB             ( HB                    ),
-    .VB             ( VB                    ),
-    .HS             ( HS                    ),
-    .VS             ( VS                    ),
-    .SY_n           (                       ),
-    .INITEO         ( INITEO                ),
+    .red            ( red              ),
+    .green          ( green            ),
+    .blue           ( blue             ),
+    .HB             ( HB               ),
+    .VB             ( VB               ),
+    .HS             ( HS               ),
+    .VS             ( VS               ),
+    .SY_n           (                  ),
+    .INITEO         ( INITEO           ),
     // cabinet I/O
-    .start_button   ( game_start            ),
-    .coin_input     ( m_coin                ),
-    .joystick1      ( game_joystick1        ),
-    .joystick2      ( game_joystick2        ),
-    .service        ( game_service          ),
+    .start_button   ( game_start       ),
+    .coin_input     ( game_coin        ),
+    .joystick1      ( game_joy1        ),
+    .joystick2      ( game_joy2        ),
+    .service        ( game_service     ),
 
     // UART
     .uart_rx        ( 1'b0             ),
@@ -395,12 +332,7 @@ jtpopeye_game u_game(
 
     // DIP Switches
     .dip_pause      ( game_pause     ),  // not a DIP on real hardware
-    .dip_upright    ( dip_upright    ),
-    .dip_level      ( dip_level      ),  // difficulty level
-    .dip_bonus      ( dip_bonus      ),
-    .dip_demosnd    ( dip_demosnd    ),
-    .dip_price      ( dip_price      ),
-    .dip_lives      ( dip_lives      ),
+    .status         ( status         ),
     // Sound output
     .snd            ( AUDIO_L[15:6]  ),
     .sample         ( /* unused  */  ),

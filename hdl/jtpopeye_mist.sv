@@ -63,12 +63,12 @@ module jtpopeye_mist(
 
 localparam CONF_STR = {
         "JTPOPEYE;;",
-        "O1,Pause,OFF,ON;",
+        "O1,Credits,OFF,ON;",
         "F,rom;",
-        "O23,Difficulty,Normal,Easy,Hard,Very hard;",
-        "O56,Lives,4,3,2,1;",
-        "O78,Bonus,40k,60k,80k,No Bonus;",
-        "O9,Sky Skipper,No,Yes;",
+        "OGH,Difficulty,Normal,Easy,Hard,Very hard;",
+        "OIJ,Lives,4,3,2,1;",  // 18    
+        "OKL,Bonus,40k,60k,80k,No Bonus;",
+        // "O9,Sky Skipper,No,Yes;",
         //"O9,Screen filter,ON,OFF;", // 24
         "TF,RST ,OFF,ON;",
         "V,http://patreon.com/topapate;"
@@ -163,35 +163,17 @@ assign sim_vs = VS;
 assign sim_hs = HS;
 `endif
 
-wire [7:0] rgbx2;
-wire [5:0] redx2   = { rgbx2[7:5], rgbx2[7:5] };
-wire [5:0] greenx2 = { rgbx2[4:2], rgbx2[4:2] };
-wire [5:0] bluex2  = {3{rgbx2[1:0]}};
-
-wire HSx2;
-
-jtframe_scan2x #(.DW(8), .HLEN( (256+64)*2) ) u_scan2x(
-    .rst_n      ( rst_n     ),
-    .clk        ( clk_sys   ),
-    .base_cen   ( pxl2_cen  ),
-    .basex2_cen ( pxl4_cen  ),
-    .base_pxl   ( {red, green, blue } ),
-    .x2_pxl     ( rgbx2     ),
-    .HS         ( HS        ),
-    .x2_HS      ( HSx2      )
-);
-
-jtframe_mist #( .CONF_STR(CONF_STR), .CONF_STR_LEN(CONF_STR_LEN),
-    .SIGNED_SND(1'b0), .THREE_BUTTONS(1'b0), .GAME_INPUTS_ACTIVE_LOW(1'b0)
-    )
+jtframe_mist #(
+    .CONF_STR              ( CONF_STR ),
+    .SIGNED_SND            ( 1'b0     ),
+    .THREE_BUTTONS         ( 1'b0     ),
+    .GAME_INPUTS_ACTIVE_LOW( 1'b0     ))
 u_frame(
     .clk_sys        ( clk_sys        ),
     .clk_rom        ( clk_sys        ),
     .clk_vga        ( clk_sys        ),
     .status         ( status         ),
     .pll_locked     ( pll_locked     ),
-    // Base video
-    .osd_rotate     ( 2'b00          ),
     // convert from 3-bit colour to 4-bit colour
     .game_r         ( r4             ),
     .game_g         ( g4             ),
@@ -200,13 +182,9 @@ u_frame(
     .LVBL           ( ~VB            ),
     .hs             ( HS             ),
     .vs             ( VS             ),
-    // VGA video (without OSD)
-    .vga_r          ( redx2          ),
-    .vga_g          ( greenx2        ),
-    .vga_b          ( bluex2         ),
-    .vga_hsync      ( HSx2           ),
-    .vga_vsync      ( VS             ), 
-    // VGA
+    .pxl_cen        ( pxl2_cen       ),
+    .pxl2_cen       ( pxl4_cen       ),
+    // MiST VGA pins
     .VGA_R          ( VGA_R          ),
     .VGA_G          ( VGA_G          ),
     .VGA_B          ( VGA_B          ),
@@ -240,7 +218,9 @@ u_frame(
     .prog_data      ( prog_data      ),
     .prog_mask      ( prog_mask      ),
     .prog_we        ( prog_we        ),
+    .prog_rd        ( 1'b0           ),
     .downloading    ( downloading    ),
+    .dwnld_busy     ( downloading    ),
     // ROM access from game
     .loop_rst       ( loop_rst       ),
     .sdram_addr     ( sdram_addr     ),
@@ -257,7 +237,8 @@ u_frame(
     .dip_flip       ( /* unused */   ),
     .rst_req        ( rst_req        ),
     // Sound
-    .snd            ( { snd, 6'd0 }  ),
+    .snd_left       ( { snd, 6'd0 }  ),
+    .snd_right      ( { snd, 6'd0 }  ),
     .AUDIO_L        ( AUDIO_L        ),
     .AUDIO_R        ( AUDIO_R        ),
     // joystick
@@ -319,17 +300,9 @@ jtpopeye_game u_game(
     .skyskipper     ( skyskipper     ),
 
     // DIP Switches
-`ifndef ALWAYS_PAUSE
     .dip_pause      ( dip_pause      ),  // not a DIP on real hardware
-`else 
-    .dip_pause      ( 1'b1           ),
-`endif
-    .dip_upright    ( dip_upright    ),
-    .dip_level      ( dip_level      ),  // difficulty level
-    .dip_bonus      ( dip_bonus      ),
-    .dip_demosnd    ( dip_demosnd    ),
-    .dip_price      ( dip_price      ),
-    .dip_lives      ( dip_lives      ),
+    .status         ( status         ),
+
     // Sound output
     .snd            ( snd[9:0]       ),
     .sample         ( /* unused  */  ),

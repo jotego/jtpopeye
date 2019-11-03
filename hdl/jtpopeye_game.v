@@ -142,6 +142,15 @@ jtpopeye_cen u_cen(
 
 assign sample = ay_cen;
 
+jtpopeye_dip u_dip(
+    .clk        (  clk        ),
+    .status     (  status     ),
+    .dip_level  (  dip_level  ),
+    .dip_lives  (  dip_lives  ),
+    .dip_bonus  (  dip_bonus  )
+);
+
+
 jtpopeye_prom_we u_prom_we(
     .clk_rom        ( clk           ),
     .clk_rgb        ( clk           ),

@@ -16,8 +16,22 @@ I hope you will have as much fun with it as I had it while making it!
 Supported Games
 ===============
 
-* Popeye
-* Sky Skipper
+* Popeye (unprotected versions)
+
+To do list
+==========
+
+* Add support for protection. 
+    I have tried a bit but somehow I don't get the interface right. Schematics and MAME code don't have the same interface and probably protection fails because my interface is wrong. When protection fails the game gets reset when you try to start playing
+    
+* Sky Skipper support. This is suppose to be easy to do but I think it requires its own protection module too. This game is a Nintendo rarety.
+* Sprite issues
+    1. The K of the title is missing, that's a sprite not a character
+    2. There is horizontal line missing in Popeye's face
+
+* Interlaced video
+    Only sprites are interlaced. It is possible to read the ROM data at high resolution directly without affecting accuracy of the main CPU/GPU interaction. It would be better to produce deinterlaced video in order to show it more cleanly in HDMI screens.
+
 
 Modules
 =======
