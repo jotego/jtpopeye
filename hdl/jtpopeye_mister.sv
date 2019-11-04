@@ -121,18 +121,6 @@ localparam CONF_STR = {
     "V,v",`BUILD_DATE, " http://patreon.com/topapate;"
 };
 
-/// SDRAM is not used:
-assign SDRAM_DQ  = 16'hzzzz;
-assign SDRAM_CLK =  1'b0;
-assign SDRAM_CKE =  1'b0;
-assign SDRAM_A   = 13'b0;
-assign SDRAM_BA  =  2'b0;
-assign SDRAM_DQML=  1'b1;
-assign SDRAM_DQMH=  1'b1;
-assign SDRAM_nCS =  1'b1;
-assign SDRAM_nCAS=  1'b1;
-assign SDRAM_nRAS=  1'b1;
-assign SDRAM_nWE =  1'b1;
 ////////////////////   CLOCKS   ///////////////////
 
 wire clk_sys;
@@ -159,9 +147,8 @@ wire [15:0] joy_0, joy_1;
 
 wire        forced_scandoubler;
 wire        downloading;
-wire        rst_n;
+wire        rst, rst_n;
 
-assign LED_USER  = downloading;
 assign LED_DISK  = 2'b0;
 assign LED_POWER = 2'b0;
 
@@ -229,7 +216,7 @@ u_frame(
     .downloading    ( downloading    ),
     .dwnld_busy     ( downloading    ),
     // ROM access from game
-    .loop_rst       ( loop_rst       ),
+    .loop_rst       ( 1'b0           ),
     .sdram_addr     ( 22'd0          ),
     .sdram_req      ( 1'b0           ),
     .sdram_ack      (                ),
@@ -240,7 +227,7 @@ u_frame(
     .rst            ( rst            ),
     .rst_n          ( rst_n          ), // unused
     .game_rst       ( game_rst       ),
-    .game_rst_n     (                ),
+    .game_rst_n     ( game_rst_n     ),
     // reset forcing signals:
     .rst_req        ( rst_req        ),
     // joystick
@@ -285,9 +272,6 @@ u_frame(
 );
 
 wire game_service = 1'b0;
-assign rst_n = ~(RESET | status[0] | buttons[1] | downloading );
-
-assign VGA_CE = pxl2_cen;
 
 assign ROTATE = 2'b00;
 `ifdef SIMULATION

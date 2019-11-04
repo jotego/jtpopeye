@@ -168,8 +168,8 @@ u_frame(
     .LVBL           ( ~VB            ),
     .hs             ( HS             ),
     .vs             ( VS             ),
-    .pxl_cen        ( pxl2_cen       ),
-    .pxl2_cen       ( pxl4_cen       ),
+    .pxl_cen        ( pxl_cen        ),
+    .pxl2_cen       ( pxl2_cen       ),
     // MiST VGA pins
     .VGA_R          ( VGA_R          ),
     .VGA_G          ( VGA_G          ),
@@ -283,7 +283,6 @@ jtpopeye_game u_game(
     .prog_data      ( prog_data      ),
     .prog_mask      ( prog_mask      ),
     .prog_we        ( prog_we        ),
-    .skyskipper     ( skyskipper     ),
 
     // DIP Switches
     .dip_pause      ( dip_pause      ),  // not a DIP on real hardware
