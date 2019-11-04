@@ -113,7 +113,7 @@ localparam CONF_STR = {
     "OGH,Difficulty,Normal,Easy,Hard,Very hard;",
     "OIJ,Lives,4,3,2,1;",  // 18    
     "OKL,Bonus,40k,60k,80k,No Bonus;",
-//     "O9,Sky Skipper,No,Yes;",    
+    "OM,Sky Skipper,No,Yes;",
 //     "OA,HDMI interlaced,No,Yes;",
     "-;",
     "R0,Reset;",
@@ -151,7 +151,7 @@ wire [31:0] status;
 wire  [1:0] buttons;
 
 wire        ioctl_wr;
-wire [24:0] ioctl_addr;
+wire [21:0] ioctl_addr;
 wire  [7:0] ioctl_data;
 
 wire [10:0] ps2_key;
@@ -165,10 +165,9 @@ assign LED_USER  = downloading;
 assign LED_DISK  = 2'b0;
 assign LED_POWER = 2'b0;
 
-wire skyskipper      = 1'b0; // status[32'd9];
 wire HDMI_interlaced = 1'b1; // status[32'd10];
 
-wire [4:0] game_joy1, game_joy2;
+wire [9:0] game_joy1, game_joy2;
 wire [1:0] game_start, game_coin;
 
 wire [2:0] red, green;
@@ -179,6 +178,7 @@ wire [3:0] game_g = { green, green[2] };
 wire [3:0] game_b = { blue, blue };
 
 wire       HS, VS;
+wire [3:0] gfx_en;
 
 ///////////////////////////////////////////////////////////////////
 
@@ -221,21 +221,21 @@ u_frame(
     .ioctl_addr     ( ioctl_addr     ),
     .ioctl_data     ( ioctl_data     ),
     .ioctl_wr       ( ioctl_wr       ),
-    .prog_addr      (                ),
-    .prog_data      (                ),
-    .prog_mask      (                ),
-    .prog_we        (                ),
+    .prog_addr      ( 22'd0          ),
+    .prog_data      ( 8'd0           ),
+    .prog_mask      ( 2'b11          ),
+    .prog_we        ( 1'b1           ),
     .prog_rd        ( 1'b0           ),
     .downloading    ( downloading    ),
     .dwnld_busy     ( downloading    ),
     // ROM access from game
     .loop_rst       ( loop_rst       ),
-    .sdram_addr     ( sdram_addr     ),
-    .sdram_req      ( sdram_req      ),
-    .sdram_ack      ( sdram_ack      ),
-    .data_read      ( data_read      ),
-    .data_rdy       ( data_rdy       ),
-    .refresh_en     ( refresh_en     ),
+    .sdram_addr     ( 22'd0          ),
+    .sdram_req      ( 1'b0           ),
+    .sdram_ack      (                ),
+    .data_read      (                ),
+    .data_rdy       (                ),
+    .refresh_en     ( 1'b0           ),
 //////////// board
     .rst            ( rst            ),
     .rst_n          ( rst_n          ), // unused
@@ -256,7 +256,7 @@ u_frame(
     .dip_test       ( dip_test       ),
     .dip_pause      ( dip_pause      ),
     .dip_flip       ( dip_flip       ),
-    .dip_fxlevel    ( dip_fxlevel    ),
+    .dip_fxlevel    (                ),
     // screen
     .rotate         ( ROTATE         ),
     // HDMI
@@ -284,8 +284,6 @@ u_frame(
     .gfx_en         ( gfx_en         )
 );
 
-wire pxl2_cen, pxl_cen;
-wire game_pause = pause;
 wire game_service = 1'b0;
 assign rst_n = ~(RESET | status[0] | buttons[1] | downloading );
 
@@ -314,9 +312,9 @@ jtpopeye_game u_game(
     .INITEO         ( INITEO           ),
     // cabinet I/O
     .start_button   ( game_start       ),
-    .coin_input     ( game_coin        ),
-    .joystick1      ( game_joy1        ),
-    .joystick2      ( game_joy2        ),
+    .coin_input     ( game_coin[0]     ),
+    .joystick1      ( game_joy1[4:0]   ),
+    .joystick2      ( game_joy2[4:0]   ),
     .service        ( game_service     ),
 
     // UART
@@ -325,19 +323,18 @@ jtpopeye_game u_game(
 
     // ROM LOAD
     .downloading    ( downloading      ),
-    .ioctl_addr     ( ioctl_addr[21:0] ),
+    .ioctl_addr     ( ioctl_addr       ),
     .ioctl_data     ( ioctl_data       ),
     .ioctl_wr       ( ioctl_wr         ),
-    .skyskipper     ( skyskipper       ),
 
     // DIP Switches
-    .dip_pause      ( game_pause     ),  // not a DIP on real hardware
-    .status         ( status         ),
+    .dip_pause      ( dip_pause        ),  // not a DIP on real hardware
+    .status         ( status           ),
     // Sound output
-    .snd            ( AUDIO_L[15:6]  ),
-    .sample         ( /* unused  */  ),
+    .snd            ( AUDIO_L[15:6]    ),
+    .sample         ( /* unused  */    ),
     // Debug
-    .gfx_en         ( ~3'd0          )
+    .gfx_en ( {gfx_en[3], gfx_en[1:0]} )
 );
 
 assign AUDIO_L[5:0] = 6'd0;

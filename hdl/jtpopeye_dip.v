@@ -24,18 +24,21 @@ module jtpopeye_dip(
     output reg [ 1:0] dip_bonus,
     output            dip_upright,
     output            dip_demosnd,
-    output     [ 3:0] dip_price
+    output     [ 3:0] dip_price,
+    output            skyskipper
 );
 
 assign dip_upright = 1'b0;
 assign dip_demosnd = 1'b0;
 assign dip_price   = 4'hf;
-assign dip_lives   = status[18:19];
-assign dip_bonus   = status[20:21];
+assign dip_lives   = status[19:18];
+assign dip_bonus   = status[21:20];
+assign skyskipper  = status[22];
+
 
 // play level. Latch all inputs to game module
 always @(posedge clk) begin
-    case( status[16:17] )
+    case( status[17:16] )
         2'b00: dip_level <= 2'b10; // normal
         2'b01: dip_level <= 2'b11; // easy
         2'b10: dip_level <= 2'b01; // hard

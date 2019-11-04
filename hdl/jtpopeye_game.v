@@ -67,16 +67,10 @@ module jtpopeye_game(
     output  [ 1:0]  prog_mask,
     output          prog_we,
     `endif
-    input           skyskipper,
 
     // DIP Switches
     input           dip_pause,  // not a DIP on real hardware
-    input           dip_upright,
-    input   [1:0]   dip_level, // difficulty level
-    input   [1:0]   dip_bonus, 
-    input           dip_demosnd,
-    input   [3:0]   dip_price,
-    input   [1:0]   dip_lives,
+    input   [31:0]  status,
     // Sound output
     output  [9:0]   snd,
     output          sample,
@@ -142,12 +136,24 @@ jtpopeye_cen u_cen(
 
 assign sample = ay_cen;
 
+wire [ 1:0] dip_level;
+wire [ 1:0] dip_lives;
+wire [ 1:0] dip_bonus;
+wire        dip_upright;
+wire        dip_demosnd;
+wire [ 3:0] dip_price;
+wire        skyskipper;
+
 jtpopeye_dip u_dip(
-    .clk        (  clk        ),
-    .status     (  status     ),
-    .dip_level  (  dip_level  ),
-    .dip_lives  (  dip_lives  ),
-    .dip_bonus  (  dip_bonus  )
+    .clk        ( clk         ),
+    .status     ( status      ),
+    .dip_level  ( dip_level   ),
+    .dip_lives  ( dip_lives   ),
+    .dip_bonus  ( dip_bonus   ),
+    .dip_upright( dip_upright ),
+    .dip_demosnd( dip_demosnd ),
+    .dip_price  ( dip_price   ),
+    .skyskipper ( skyskipper  )
 );
 
 

@@ -68,8 +68,7 @@ localparam CONF_STR = {
         "OGH,Difficulty,Normal,Easy,Hard,Very hard;",
         "OIJ,Lives,4,3,2,1;",  // 18    
         "OKL,Bonus,40k,60k,80k,No Bonus;",
-        // "O9,Sky Skipper,No,Yes;",
-        //"O9,Screen filter,ON,OFF;", // 24
+        "OM,Sky Skipper,No,Yes;",
         "TF,RST ,OFF,ON;",
         "V,http://patreon.com/topapate;"
 };
@@ -86,7 +85,6 @@ wire          ioctl_wr;
 wire          coin_cnt;
 
 wire rst_req = status[32'hf];
-wire skyskipper = status[32'd9];
 
 wire game_pause, game_service;
 `ifdef SIMULATION
@@ -131,18 +129,6 @@ wire        data_rdy;
 wire        refresh_en;
 wire        pll_locked;
 wire        pxl_cen, pxl2_cen, pxl4_cen;
-
-// play level. Latch all inputs to game module
-always @(posedge clk_sys) begin
-    case( status[3:2] )
-        2'b00: dip_level <= 2'b10; // normal
-        2'b01: dip_level <= 2'b11; // easy
-        2'b10: dip_level <= 2'b01; // hard
-        2'b11: dip_level <= 2'b00; // very hard
-    endcase // status[3:2]
-    en_mixing  <= 1'b0; //~status[9];
-    coin_input <= |game_coin;
-end
 
 wire [3:0]
     r4 = { red, red[2] },
@@ -270,7 +256,7 @@ jtpopeye_game u_game(
     .SY_n           ( SY_n                  ),
     // cabinet I/O
     .start_button   ( game_start            ),
-    .coin_input     ( coin_input            ),
+    .coin_input     ( game_coin             ),
     .joystick1      ( game_joystick1[4:0]   ),
     .joystick2      ( game_joystick2[4:0]   ),
     .service        ( game_service          ),

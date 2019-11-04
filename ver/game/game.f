@@ -3,9 +3,9 @@
 ../../modules/jtframe/hdl/ram/jtgng_prom.v
 ../../modules/jtframe/hdl/ram/jtgng_ram.v
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
-../../modules/jtframe/hdl/video/jtframe_scan2x.v
 ../../modules/jtframe/hdl/jt74.v
 ../../hdl/jtpopeye_rom.v
+../../hdl/jtpopeye_dip.v
 ../../hdl/jtpopeye_bram.v
 ../../hdl/jtpopeye_security.v
 ../../hdl/jtpopeye_timing.v
