@@ -107,7 +107,7 @@ always @(posedge clk or negedge rst_n) begin: ram_ports
     end
 end
 
-jtgng_ram #(.aw(12), .dw(4)) u_msb(
+jtframe_ram #(.aw(12), .dw(4)) u_msb(
     .clk    ( clk            ),
     .cen    ( 1'b1           ),
     .data   ( DD[3:0]        ),
@@ -116,7 +116,7 @@ jtgng_ram #(.aw(12), .dw(4)) u_msb(
     .q      ( ram_dout[7:4]  )
 );
 
-jtgng_ram #(.aw(12), .dw(4)) u_lsb(
+jtframe_ram #(.aw(12), .dw(4)) u_lsb(
     .clk    ( clk            ),
     .cen    ( 1'b1           ),
     .data   ( DD[3:0]        ),

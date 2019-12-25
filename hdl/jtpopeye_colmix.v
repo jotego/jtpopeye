@@ -33,6 +33,8 @@ module jtpopeye_colmix(
     // mixing
     input              HBD_n,
     input              VB_n,
+    output             LHBL_dly,
+    output             LVBL_dly,
     // video data
     input   [4:0]      bakc,
     input   [5:0]      objc,
@@ -68,8 +70,15 @@ always @(posedge clk) if(pxl2_cen) begin
     endcase
 end
 
+jtframe_sh #(.width(2),.stages(8)) u_sh(
+    .clk    (   clk                  ),
+    .clk_en ( pxl2_cen               ),
+    .din    ( { VB_n, HBD_n }        ),
+    .drop   ( { LVBL_dly, LHBL_dly } )
+);
+
 // Background
-jtgng_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.4a")) u_prom_4a(
+jtframe_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.4a")) u_prom_4a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),
@@ -83,7 +92,7 @@ jtgng_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.4a")) u_prom_4a(
 
 wire [7:0] obj_addr = { objc, objv };
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
+jtframe_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),
@@ -93,7 +102,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5b")) u_prom_5b(
     .q      ( obj_rgb[3:0]      )
 );
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
+jtframe_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din[3:0]     ),  // data in the file is in the LSB's
@@ -105,7 +114,7 @@ jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-c.5a")) u_prom_5a(
 
 // TXT
 
-jtgng_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.3a")) u_prom_3a(
+jtframe_prom #(.aw(5),.dw(8),.simfile("../../rom/tpp2-c.3a")) u_prom_3a(
     .clk    ( clk               ),
     .cen    ( pxl2_cen          ),
     .data   ( prom_din          ),

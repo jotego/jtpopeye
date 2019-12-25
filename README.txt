@@ -1,7 +1,7 @@
 JTPOPEYE FPGA Clone of Popeye arcade games by Jose Tejada (@topapate)
 =========================================================================
 
-This clone has been made thanks to Scralings' suggestion. He is a director patron and introduced me to this big game. Thanks Scralings!
+This clone has been made thanks to Scralings' suggestion. He is a director patron and introduced me to this great game. Thanks Scralings!
 
 You can show your appreciation through
     * Patreon: https://patreon.com/topapate
@@ -23,7 +23,8 @@ To do list
 
 * Add support for protection. 
     I have tried a bit but somehow I don't get the interface right. Schematics and MAME code don't have the same interface and probably protection fails because my interface is wrong. When protection fails the game gets reset when you try to start playing
-    
+* Fix sprite bug affecting letter K in the title screen
+* Fix graphic glitch affecting one horizontal line on Popeye face    
 * Sky Skipper support. This is suppose to be easy to do but I think it requires its own protection module too. This game is a Nintendo rarety.
 * Sprite issues
     1. The K of the title is missing, that's a sprite not a character
@@ -54,12 +55,20 @@ doc             documents related to the original hardware or the clone
 ver             simulation files
 syn             synthesis folder
 
-Clone Structure
-===============
+Compile instructions
+====================
 
-The top level module is called jtpopeye_mist for MiST and jtpopeye_mister for MiSTer. This is the module that is really dependent on the board. If you want to port jtgng to a different FPGA board you will need to modify this file. Most other files will likely stay the same
+I use linux as my development system. This means that I use many bash scripts, environment variables and symbolic links. I recommend using linux to compile the cores. 
 
-The game itself in module jtpopeye_game. It is written using an arbitrary clock (active on positive edge) and a clock enable signal (switching on the negative edge). From jtpopeye_game down the hierarchy, everything should be highly portable.
+1. git submodule init
+2. git submodule update
+3. source setprj.sh
+4. MiST:
+        jtpopeye
+   MiSTer:
+        jtpopeye -mr
+
+That will create the output files in the mist(er) folder.
 
 Keyboard (MiST, ZX-UNO)
 =======================

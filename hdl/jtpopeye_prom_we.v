@@ -61,7 +61,7 @@ always @(posedge clk_rom) begin
         if( ioctl_addr < PROM_ADDR ) begin
             prog_addr <= { 1'b0, ioctl_addr[21:1] };
             prog_we   <= 1'b1;
-            prog_mask <= {ioctl_addr[0], ~ioctl_addr[0]};
+            prog_mask <= {~ioctl_addr[0], ioctl_addr[0]};
             prom_we0  <= 14'd0;
         end
         else begin // PROMs

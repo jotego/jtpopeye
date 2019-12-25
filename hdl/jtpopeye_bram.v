@@ -48,7 +48,7 @@ always @(posedge clk) if(main_cs) begin
 end
 
 // Main CPU ROMs
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7a")) u_main0(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-c.7a")) u_main0(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -58,7 +58,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7a")) u_main0(
     .q      ( main0_data      )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7b")) u_main1(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-c.7b")) u_main1(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -68,7 +68,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7b")) u_main1(
     .q      ( main1_data      )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7c")) u_main2(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-c.7c")) u_main2(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -78,7 +78,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7c")) u_main2(
     .q      ( main2_data      )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-c.7e")) u_main3(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-c.7e")) u_main3(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),

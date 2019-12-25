@@ -1,10 +1,11 @@
 ../../modules/jtframe/hdl/jtframe_uart.v
 ../../modules/jtframe/hdl/cpu/jtframe_z80.v
-../../modules/jtframe/hdl/ram/jtgng_prom.v
-../../modules/jtframe/hdl/ram/jtgng_ram.v
+../../modules/jtframe/hdl/ram/jtframe_prom.v
+../../modules/jtframe/hdl/ram/jtframe_ram.v
+../../modules/jtframe/hdl/sdram/jtframe_rom.v
 ../../modules/jtframe/hdl/sdram/jtframe_romrq.v
-../../modules/jtframe/hdl/jt74.v
-../../hdl/jtpopeye_rom.v
+../../modules/jtframe/hdl/jtframe_sh.v
+../../modules/jtframe/hdl/clocking/jtframe_frac_cen.v
 ../../hdl/jtpopeye_dip.v
 ../../hdl/jtpopeye_bram.v
 ../../hdl/jtpopeye_security.v
@@ -12,7 +13,6 @@
 ../../hdl/jtpopeye_main.v
 ../../hdl/jtpopeye_bck.v
 ../../hdl/jtpopeye_buf.v
-../../hdl/jtpopeye_cen.v
 ../../hdl/jtpopeye_colmix.v
 ../../hdl/jtpopeye_dma.v
 ../../hdl/jtpopeye_video.v

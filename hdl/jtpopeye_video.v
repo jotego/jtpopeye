@@ -63,7 +63,8 @@ module jtpopeye_video(
     output              SY_n,
     output              HS,
     output              VS,
-
+    output              LHBL_dly,
+    output              LVBL_dly,
     output      [2:0]   red,
     output      [2:0]   green,
     output      [1:0]   blue
@@ -88,7 +89,6 @@ wire        RV = ~RV_n;
 wire        H2O;
 
 jtpopeye_timing u_timing(
-    .rst_n              ( rst_n         ),
     .clk                ( clk           ),
     .pxl_cen            ( pxl_cen       ),
     .pxl2_cen           ( pxl2_cen      ),
@@ -263,6 +263,8 @@ jtpopeye_colmix u_colmix(
     // mixing
     .HBD_n              ( HBD_n         ), // HB - DMA
     .VB_n               ( ~VB           ),
+    .LHBL_dly           ( LHBL_dly      ),
+    .LVBL_dly           ( LVBL_dly      ),
     // video data
     .bakc               ( BAKC          ),
     .objc               ( OBJC          ),

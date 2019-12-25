@@ -70,5 +70,5 @@ print_char("  Victor Gomariz L. de G.       ")
 print_char("                                ")
 print_char("                                ")
 
-save_hex( "msg.hex", char_ram )
+save_hex( "../mist/msg.hex", char_ram )
 save_bin( "../ver/game/msg.bin", char_ram )

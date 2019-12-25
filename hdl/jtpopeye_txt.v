@@ -68,7 +68,7 @@ end
 // H[7:3] -> 32 tiles, 8-pixel wide
 // V[7:3] -> 32 tiles, 8-pixel height
 // Screen size 32x32x8x8 = 256x256
-jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
+jtframe_ram #(.aw(10), .dw(8)) u_ram_5pr(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
     .data   ( din            ),
@@ -79,7 +79,7 @@ jtgng_ram #(.aw(10), .dw(8)) u_ram_5pr(
 
 wire [7:0] pause_data;
 
-jtgng_ram #(.aw(10), .dw(8),.synfile("msg.hex"),.simfile("msg.bin")) u_ram_pause(
+jtframe_ram #(.aw(10), .dw(8),.synfile("msg.hex"),.simfile("msg.bin")) u_ram_pause(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
     .data   ( 8'h00          ),
@@ -94,7 +94,7 @@ always @(posedge clk) if(pxl_cen) begin
 end
 
 // Colour, same data for 8 pixels
-jtgng_ram #(.aw(10), .dw(4)) u_ram_5s(
+jtframe_ram #(.aw(10), .dw(4)) u_ram_5s(
     .clk    ( clk            ),
     .cen    ( cpu_cen        ),
     .data   ( din[3:0]       ),
@@ -112,7 +112,7 @@ reg [10:0] rom_addr_mux;
 always @(posedge clk)
     rom_addr_mux <= pause ? {pause_data, V[2:0] } : rom_addr;
 
-jtgng_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
+jtframe_prom #(.aw(11),.dw(8),.simfile("../../rom/tpp2-v.5n"),
     .offset(12'h800)
 ) u_prom_5n(
     .clk    ( clk               ),

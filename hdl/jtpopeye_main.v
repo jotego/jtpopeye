@@ -197,7 +197,7 @@ always @(posedge clk) begin
     end
 end
 
-jtgng_ram #(.aw(11),.simfile("ramsim.bin")) u_ram(
+jtframe_ram #(.aw(11),.simfile("ramsim.bin")) u_ram(
     .clk    ( clk        ),
     .cen    ( 1'b1       ),
     .data   ( ram_din    ),
@@ -368,11 +368,14 @@ always @(posedge clk or negedge rst_n)
         end
     end
 
+reg cpu_cenw;
+always @(negedge clk) cpu_cenw <= cpu_cen & wait_n;
+
 jtframe_z80 u_cpu(
     .rst_n      ( rst_n       ),
     .clk        ( clk         ),
-    .cen        ( cpu_cen     ),
-    .wait_n     ( wait_n      ),
+    .cen        ( cpu_cenw    ),
+    .wait_n     ( 1'b1        ),
     .int_n      ( 1'b1        ),
     .nmi_n      ( nmi_n       ),
     .busrq_n    ( busrq_n     ),

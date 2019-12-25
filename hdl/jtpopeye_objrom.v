@@ -48,7 +48,7 @@ always @(posedge clk) begin
 end
 
 // Object ROMs
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -58,7 +58,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1e")) u_obj0(
     .q      ( obje_data       )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -68,7 +68,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1f")) u_obj1(
     .q      ( objf_data       )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),
@@ -78,7 +78,7 @@ jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1j")) u_obj2(
     .q      ( objj_data       )
 );
 
-jtgng_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
+jtframe_prom #(.aw(13), .simfile("../../rom/tpp2-v.1k")) u_obj3(
     .clk    ( clk             ),
     .cen    ( 1'b1            ),
     .data   ( prog_data       ),

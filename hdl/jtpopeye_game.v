@@ -18,35 +18,33 @@
 
 `timescale 1ns/1ps
 
+//  5.04MHz  TXT pixel clock
+// 10.08MHz  OBJ pixel clock
+// 20.16MHz  OBJ pixel clock x2
+
 module jtpopeye_game(
-    input           rst_n,
-    input           clk,        // 20 MHz
+    input           rst,
+    input           clk,        // 48 MHz
     output          pxl_cen,    //  5.04MHz  TXT pixel clock
     output          pxl2_cen,   // 10.08MHz  OBJ pixel clock
-    output          pxl4_cen,   // 20.16MHz  OBJ pixel clock x2
 
     output   [2:0]  red,
     output   [2:0]  green,
-    output   [1:0]  blue,
-    output          HB,         // horizontal blanking
-    output          VB,         // vertical blanking
+    output   [2:0]  blue,
+    output          LHBL,
+    output          LVBL,
+    output          LHBL_dly,
+    output          LVBL_dly,
     output          HS,
     output          VS,
-    output          SY_n,       // original composite sync signal
-    output          INITEO,     // INIT EVEN/ODD interlaced video frame
     // cabinet I/O
     input   [ 1:0]  start_button,
-    input           coin_input,
-    input   [ 4:0]  joystick1,
-    input   [ 4:0]  joystick2,
-    input           service,
-
-    // UART
-    input           uart_rx,
-    output          uart_tx,
-
-    `ifndef MISTER
+    input   [ 1:0]  coin_input,
+    input   [ 6:0]  joystick1,
+    input   [ 6:0]  joystick2,
     // SDRAM interface
+    input           downloading,
+    output          dwnld_busy,
     input           loop_rst,
     output          sdram_req,
     output  [21:0]  sdram_addr,
@@ -54,29 +52,50 @@ module jtpopeye_game(
     input           data_rdy,
     input           sdram_ack,
     output          refresh_en,
-    `endif
-
     // ROM LOAD
-    input           downloading,
     input   [21:0]  ioctl_addr,
     input   [ 7:0]  ioctl_data,
     input           ioctl_wr,
-    `ifndef MISTER
     output  [21:0]  prog_addr,
     output  [ 7:0]  prog_data,
     output  [ 1:0]  prog_mask,
     output          prog_we,
-    `endif
+    output          prog_rd,
 
     // DIP Switches
-    input           dip_pause,  // not a DIP on real hardware
     input   [31:0]  status,
+    input           dip_pause,
+    input           dip_flip,
+    input           dip_test,
+    input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB    
     // Sound output
-    output  [9:0]   snd,
+    output  [15:0]  snd,
     output          sample,
+    input           enable_psg, // unused
+    input           enable_fm,  // unused
     // Debug
-    input   [2:0]   gfx_en
+    input   [3:0]   gfx_en
 );
+
+// These signals are used by games which need
+// to read back from SDRAM during the ROM download process
+assign prog_rd    = 1'b0;
+assign dwnld_busy = downloading;
+assign snd[4:0]   = 5'd0;
+assign snd[15]    = 1'b0;
+wire   pause      = ~dip_pause;
+
+wire    rst_n = ~rst;
+wire    pxl4_cen;
+assign  blue[0] = blue[2];
+wire    HB;       // horizontal blanking
+wire    VB;       // vertical blanking
+wire    SY_n;     // original composite sync signal
+wire    INITEO;   // INIT EVEN/ODD interlaced video frame
+wire    service = ~joystick1[5];
+
+assign LHBL = ~HB;
+assign LVBL = ~VB;
 
 `ifdef MISTER
 wire [21:0]  prog_addr;
@@ -124,14 +143,26 @@ wire   [3:0]  dip_sw1 = dip_price;
 wire          encrypted;    // is this an encrypted ROM?
 wire          main_ok;
 
-jtpopeye_cen u_cen(
-    .clk        ( clk           ),  // 20 MHz
-    .H0_cen     ( H0_cen        ),
-    .cpu_cen    ( cpu_cen       ),
-    .ay_cen     ( ay_cen        ),
-    .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
-    .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
-    .pxl4_cen   ( pxl4_cen      )   // OBJ pixel clock x 2
+wire [3:0] pxls_cen;
+assign pxl4_cen = pxls_cen[0];
+assign pxl2_cen = pxls_cen[1];
+assign pxl_cen  = pxls_cen[2];
+assign H0_cen   = pxls_cen[3];
+
+jtframe_frac_cen #(4) u_cen_video(
+    .clk    ( clk       ),  // 48MHz
+    .n      ( 10'd21    ),  // numerator
+    .m      ( 10'd50    ),  // denominator
+    .cen    ( pxls_cen  ),  // 20.16 MHz
+    .cenb   (           )
+);
+
+jtframe_frac_cen #(2) u_cen_cpu(
+    .clk    ( clk       ),  // 48MHz
+    .n      ( 10'd1     ),  // numerator
+    .m      ( 10'd12    ),  // denominator
+    .cen    ( {ay_cen, cpu_cen} ),  // 4 MHz
+    .cenb   (           )
 );
 
 assign sample = ay_cen;
@@ -173,15 +204,29 @@ jtpopeye_prom_we u_prom_we(
 );
 
 `ifndef MISTER
-jtpopeye_rom u_rom(
-    .rst_n       ( rst_n         ),
+jtframe_rom #(
+    .SLOT6_AW    ( 15     ),    // main
+    .SLOT6_DW    ( 8      ),
+    .SLOT6_OFFSET( 0      )
+) u_rom(
+    .rst         ( ~rst_n        ),
     .clk         ( clk           ),
+    .vblank      ( VB            ),
 
-    .main_addr   ( main_addr     ), // 32 kB, addressed as 8-bit words
+    .slot0_cs    ( 1'b0          ),
+    .slot1_cs    ( 1'b0          ),
+    .slot2_cs    ( 1'b0          ),
+    .slot3_cs    ( 1'b0          ),
+    .slot4_cs    ( 1'b0          ),
+    .slot5_cs    ( 1'b0          ),
+    .slot6_cs    ( main_cs       ),
+    .slot7_cs    ( 1'b0          ),
+    .slot8_cs    ( 1'b0          ),
 
-    .main_dout   ( main_data     ),
-    .main_cs     ( main_cs       ),
-    .main_ok     ( main_ok       ),
+    .slot6_addr  ( main_addr     ), // 32 kB, addressed as 8-bit words
+    .slot6_ok    ( main_ok       ),
+    .slot6_dout  ( main_data     ),
+
     .ready       ( ready         ),
     // SDRAM interface
     .downloading ( downloading   ),
@@ -238,12 +283,12 @@ jtpopeye_main u_main(
     .ay_cen         ( ay_cen        ),
     .encrypted      ( encrypted     ),
     .skyskipper     ( skyskipper    ),
-    .pause          ( dip_pause     ),
+    .pause          ( pause         ),
     // cabinet I/O
-    .joystick1      ( joystick1     ),
-    .joystick2      ( joystick2     ),
-    .start_button   ( start_button  ),
-    .coin_input     ( coin_input    ),
+    .joystick1      (~joystick1[4:0]),
+    .joystick2      (~joystick2[4:0]),
+    .start_button   (~start_button  ),
+    .coin_input     ( coin_input[0] ),
     .service        ( service       ),
     // DMA
     .INITEO         ( INITEO        ),
@@ -274,7 +319,7 @@ jtpopeye_main u_main(
 
     .RV_n           ( RV_n          ),   // flip
     // Sound output
-    .snd            ( snd           )
+    .snd            ( snd[14:5]     )
 );
 
 jtpopeye_video u_video(
@@ -284,8 +329,8 @@ jtpopeye_video u_video(
     .cpu_cen    ( cpu_cen       ),
     .pxl_cen    ( pxl_cen       ),  // TXT pixel clock
     .pxl2_cen   ( pxl2_cen      ),  // OBJ pixel clock
-    .gfx_en     ( gfx_en        ),
-    .pause      ( dip_pause     ),
+    .gfx_en     ( {gfx_en[3], gfx_en[1:0]} ),
+    .pause      ( pause         ),
 
     // CPU interface
     .DD         ( DD            ),
@@ -322,10 +367,11 @@ jtpopeye_video u_video(
     .HS         ( HS            ),
     .VS         ( VS            ),
     .SY_n       ( SY_n          ),
-
+    .LHBL_dly   ( LHBL_dly      ),
+    .LVBL_dly   ( LVBL_dly      ),
     .red        ( red           ),
     .green      ( green         ),
-    .blue       ( blue          )      // LSB is always zero
+    .blue       ( blue[2:1]     )      // LSB is always zero
 );
 
 endmodule // jtpopeye_game

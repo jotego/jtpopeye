@@ -19,22 +19,21 @@
 `timescale 1ns/1ps
 
 module jtpopeye_timing(
-    input               rst_n,
     input               clk,
     input               pxl2_cen,   // OBJ pixel runs at twice the speed
     input               pxl_cen,
 
     input               RV_n,     // Flip
 
-    output  reg [7:0]   V,
+    output  reg [7:0]   V = 8'd0,
     output  reg [7:0]   H,
     output  reg         H2O,
     // blankings
-    output reg          HB,
+    output reg          HB = 1'b0,
     output              HBD_n, // HB - DMA
-    output reg          pre_HBDn,
+    output reg          pre_HBDn = 1'b1,
     output reg          VB,
-    output reg          INITEO,
+    output reg          INITEO = 1'b0,
     output reg          SY_n,       // composite sync
     // HS and VS were not present in the original board
     output reg          HS,
@@ -49,8 +48,8 @@ module jtpopeye_timing(
 wire RV = ~RV_n;
 wire [3:0] prom_data;
 // H counter
-reg [7:0] Hcnt;
-reg [9:0] Vcnt;
+reg [7:0] Hcnt = 8'd0;
+reg [9:0] Vcnt = 10'd0;
 
 `ifdef SIMULATION
 initial begin
@@ -65,7 +64,8 @@ always @(*) begin
     H2O    = Hcnt[2] ^ RV;
 end
 
-reg preEO;
+reg preEO = 1'b0;
+reg VBl   = 1'b0;
 
 //////////////////////////////////////////////////////////
 // H counter: This uses an asynchronous reset
@@ -84,12 +84,7 @@ reg preEO;
 // but I bet some boards out there got HB off by one clock cycle
 // This produces a horizontal line interval of 63.488us = 15.75 kHz
 
-always @(posedge clk or negedge rst_n)
-    if(!rst_n) begin
-        Hcnt <= 'd0;        
-        HB   <= 1'b0;
-        V    <= 8'd0;
-    end else
+always @(posedge clk )
     if(pxl_cen) begin   // 20.16/4 MHz
         if( Hcnt!= 8'hFF)
             Hcnt <= Hcnt+8'h1;
@@ -104,14 +99,8 @@ always @(posedge clk or negedge rst_n)
         end
     end
 
-reg VBl;
 
-always @(posedge clk or negedge rst_n)
-    if( !rst_n ) begin
-        preEO   <= 1'b0;
-        VBl     <= 1'b0;
-        INITEO  <= 1'b0;
-    end else begin
+always @(posedge clk) begin
         VBl <= VB;
         if( VB && !VBl ) begin
             preEO    <= ~HB;
@@ -122,18 +111,13 @@ always @(posedge clk or negedge rst_n)
 
 //////////////////////////////////////////////////////////
 // /HBD generation, 7474, 7400, (5C, 5B, video sheet 2/3)
-reg HB3;
+reg HB3 = 1'b0;
 
 assign HBD_n = ~( HB3 & HB ); // This is HB inverted and starting 8 pixels later
 
-always @(posedge clk or negedge rst_n) begin :HBDn_generator
-    if( !rst_n ) begin
-        HB3  <= 1'b0;
-        pre_HBDn <= 1'b1;
-    end else if(pxl_cen) begin
-        if( Hcnt[2:0]==3'b111 ) HB3 <= HB;
-        if( Hcnt[2:0]==3'b110 ) pre_HBDn <= ~HB;
-    end
+always @(posedge clk) if(pxl_cen) begin
+    if( Hcnt[2:0]==3'b111 ) HB3 <= HB;
+    if( Hcnt[2:0]==3'b110 ) pre_HBDn <= ~HB;
 end
 
 // V counter
@@ -141,18 +125,15 @@ wire Vup = prom_data[1];
 reg  Vupl;
 wire Vup_edge = Vup && !Vupl;
 
-always @(posedge clk or negedge rst_n) 
-    if( !rst_n ) begin
-        Vcnt <= 10'd0;
-    end else begin
-        Vupl <= Vup;
-        if( Vup_edge ) begin
-            Vcnt[0]   <= ~Vcnt[9] & ~Vcnt[0];   // 8E (first FF)
-            Vcnt[8:1] <= Vcnt[9] ? 8'd0 : Vcnt[8:1] + {7'd0,Vcnt[0]}; // 7F, 8F
-            Vcnt[9]   <= &Vcnt[8:0];    // 8E (second FF)
-            if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
-        end
+always @(posedge clk ) begin
+    Vupl <= Vup;
+    if( Vup_edge ) begin
+        Vcnt[0]   <= ~Vcnt[9] & ~Vcnt[0];   // 8E (first FF)
+        Vcnt[8:1] <= Vcnt[9] ? 8'd0 : Vcnt[8:1] + {7'd0,Vcnt[0]}; // 7F, 8F
+        Vcnt[9]   <= &Vcnt[8:0];    // 8E (second FF)
+        if( &Vcnt[4:0] ) VB <= &Vcnt[8:6]; // Vertical blank
     end
+end
 
 // Composite sync
 reg pre_SY_n;
@@ -185,7 +166,7 @@ end
 // Timing PROM
 wire [7:0] prom_addr = { HB, Hcnt[7:1] };
 
-jtgng_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-v.7j")) u_prom_7j(
+jtframe_prom #(.aw(8),.dw(4),.simfile("../../rom/tpp2-v.7j")) u_prom_7j(
     .clk    ( clk               ),
     .cen    ( 1'b1              ),
     .data   ( prom_din          ),

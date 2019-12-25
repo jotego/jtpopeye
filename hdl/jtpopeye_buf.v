@@ -122,7 +122,7 @@ end
 // 1M and 3M memories in schematic
 wire [2:0] objy0, objy1;
 
-jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
+jtframe_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( ram0_din       ),
@@ -132,7 +132,7 @@ jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram0(
 );
 
 // 1P and 3P memories in schematic
-jtgng_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
+jtframe_ram #(.aw(6), .dw(18),.simhexfile("objtest.hex")) u_ram1(
     .clk    ( clk            ),
     .cen    ( pxl_cen        ),
     .data   ( ram1_din       ),
