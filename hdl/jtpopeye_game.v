@@ -37,6 +37,7 @@ module jtpopeye_game(
     output          LVBL_dly,
     output          HS,
     output          VS,
+    output          field,
     // cabinet I/O
     input   [ 1:0]  start_button,
     input   [ 1:0]  coin_input,
@@ -69,7 +70,7 @@ module jtpopeye_game(
     input           dip_test,
     input   [ 1:0]  dip_fxlevel, // Not a DIP on the original PCB    
     // Sound output
-    output  [15:0]  snd,
+    output  [15:0]  snd,        // unsigned
     output          sample,
     input           enable_psg, // unused
     input           enable_fm,  // unused
@@ -81,8 +82,7 @@ module jtpopeye_game(
 // to read back from SDRAM during the ROM download process
 assign prog_rd    = 1'b0;
 assign dwnld_busy = downloading;
-assign snd[4:0]   = 5'd0;
-assign snd[15]    = 1'b0;
+assign snd[5:0]   = 6'd0;
 wire   pause      = ~dip_pause;
 
 wire    rst_n = ~rst;
@@ -96,13 +96,7 @@ wire    service = ~joystick1[5];
 
 assign LHBL = ~HB;
 assign LVBL = ~VB;
-
-`ifdef MISTER
-wire [21:0]  prog_addr;
-wire [ 7:0]  prog_data;
-wire [ 1:0]  prog_mask;
-wire         prog_we;
-`endif
+assign field = INITEO;
 
 wire          H0_cen;   //  2.52 MHz
 wire          cpu_cen, ay_cen;
@@ -288,7 +282,7 @@ jtpopeye_main u_main(
     .joystick1      (~joystick1[4:0]),
     .joystick2      (~joystick2[4:0]),
     .start_button   (~start_button  ),
-    .coin_input     ( coin_input[0] ),
+    .coin_input     (~coin_input[0] ),
     .service        ( service       ),
     // DMA
     .INITEO         ( INITEO        ),
@@ -319,7 +313,7 @@ jtpopeye_main u_main(
 
     .RV_n           ( RV_n          ),   // flip
     // Sound output
-    .snd            ( snd[14:5]     )
+    .snd            ( snd[15:6]     )
 );
 
 jtpopeye_video u_video(

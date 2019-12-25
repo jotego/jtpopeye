@@ -14,5 +14,5 @@ export YM2149=1
 
 ../../modules/jtframe/bin/sim.sh -mist $* -sysname popeye \
     -modules ../../modules -d GAME_ROM_LEN=$(stat -c%s $GAME_ROM_PATH) \
-    -d COLORW=3
+    -d COLORW=3 -d JTFRAME_INTERLACED
 # -d SIMULATE_OSD
