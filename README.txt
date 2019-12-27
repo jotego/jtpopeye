@@ -16,11 +16,13 @@ I hope you will have as much fun with it as I had it while making it!
 Supported Games
 ===============
 
+* CRT screens
 * Popeye (unprotected versions)
 
 To do list
 ==========
 
+* VGA output on MiST may not work on some screens
 * Add support for protection. 
     I have tried a bit but somehow I don't get the interface right. Schematics and MAME code don't have the same interface and probably protection fails because my interface is wrong. When protection fails the game gets reset when you try to start playing
 * Fix sprite bug affecting letter K in the title screen
@@ -29,7 +31,9 @@ To do list
 * Sprite issues
     1. The K of the title is missing, that's a sprite not a character
     2. There is horizontal line missing in Popeye's face
-
+    3. Sprites are incorrectly rendered around the screen left and right borders
+    4. Note that the sprite overlay is correct. Sprites do hide each other in this video hardware.
+* Credits: the game starts with 90 credits. That already happened once and I fixed it but I don't remember the cause now.
 * Interlaced video
     Only sprites are interlaced. It is possible to read the ROM data at high resolution directly without affecting accuracy of the main CPU/GPU interaction. It would be better to produce deinterlaced video in order to show it more cleanly in HDMI screens.
 
@@ -99,7 +103,12 @@ Copy your .zip files to the rom folder and run the makefile in it. Then copy the
 SD Card
 =======
 
-For MiST(er) copy the file core.rbf to the SD card at the root directory. Copy also the rom you have generated with the name jtpopeye.rom. It will get loaded at start.
+For MiST(er) copy the file core.rbf to the SD card at the root directory. Copy also the rom you have generated with the name jtpopeye.rom. It will get loaded at start. You can also use the included MRA files.
+
+Release History
+===============
+
+27th Dec 2019, public release
 
 Credits
 =======
@@ -108,7 +117,7 @@ Jose Tejada Gomez. Twitter @topapate
 Project is hosted in http://www.github.com/jotego/jtpopeye
 License: GPL3, you are obligued to publish your code if you use mine
 
-Special thanks to Scralings and Alexey Melnikov
+Special thanks to Scralings, Alexey Melnikov, Bruno Silva and Rysha
 
 Patreon supporters for Popeye core
 ==================================

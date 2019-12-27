@@ -94,8 +94,8 @@ wire    SY_n;     // original composite sync signal
 wire    INITEO;   // INIT EVEN/ODD interlaced video frame
 wire    service = ~joystick1[5];
 
-assign LHBL = ~HB;
-assign LVBL = ~VB;
+assign LHBL = LHBL_dly; // ~HB;
+assign LVBL = LVBL_dly; // ~VB;
 assign field = INITEO;
 
 wire          H0_cen;   //  2.52 MHz
@@ -138,6 +138,8 @@ wire          encrypted;    // is this an encrypted ROM?
 wire          main_ok;
 
 wire [3:0] pxls_cen;
+// wire obj_pxl_cen, txt_pxl_cen;
+
 assign pxl4_cen = pxls_cen[0];
 assign pxl2_cen = pxls_cen[1];
 assign pxl_cen  = pxls_cen[2];

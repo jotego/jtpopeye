@@ -29,11 +29,11 @@ module jtpopeye_dip(
 );
 
 assign dip_upright = 1'b0;
-assign dip_demosnd = 1'b0;
+assign dip_demosnd = status[22];
 assign dip_price   = 4'hf;
 assign dip_lives   = status[19:18];
 assign dip_bonus   = status[21:20];
-assign skyskipper  = status[22];
+assign skyskipper  = status[23];
 
 
 // play level. Latch all inputs to game module

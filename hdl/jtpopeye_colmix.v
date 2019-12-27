@@ -33,8 +33,8 @@ module jtpopeye_colmix(
     // mixing
     input              HBD_n,
     input              VB_n,
-    output             LHBL_dly,
-    output             LVBL_dly,
+    output reg         LHBL_dly,
+    output reg         LVBL_dly,
     // video data
     input   [4:0]      bakc,
     input   [5:0]      objc,
@@ -59,8 +59,11 @@ always @(posedge clk) if(pxl2_cen) begin
 end
 
 // merge the colours!
+wire  preLVBL, preLHBL;
+wire blankn = preLHBL | preLVBL;
 always @(posedge clk) if(pxl2_cen) begin
-    if( !VB_n || !HBD_n) { red, green, blue } <= 8'd0;
+    { LVBL_dly, LHBL_dly } <= { preLVBL, preLHBL };
+    if( !blankn ) { red, green, blue } <= 8'd0;
     else
     casez( {txt_cs, obj_cs, bak_cs} )
         3'b1??: {blue, green, red } <= ~txt_rgb;
@@ -69,12 +72,12 @@ always @(posedge clk) if(pxl2_cen) begin
         default:{blue, green, red } <= 8'd0;
     endcase
 end
-
-jtframe_sh #(.width(2),.stages(8)) u_sh(
+//23
+jtframe_sh #(.width(2),.stages(17)) u_sh(
     .clk    (   clk                  ),
     .clk_en ( pxl2_cen               ),
     .din    ( { VB_n, HBD_n }        ),
-    .drop   ( { LVBL_dly, LHBL_dly } )
+    .drop   ( { preLVBL, preLHBL} )
 );
 
 // Background
