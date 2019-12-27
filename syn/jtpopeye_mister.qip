@@ -1,6 +1,0 @@
-set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_mister.sv      ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../hdl/jtpopeye_bram.v      ]
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) jtpopeye.qip ]
-# PLL
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) mister/pll.qip ]
-
